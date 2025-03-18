@@ -1,0 +1,8 @@
+models/user.model:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: Summary
+        description: Description
+      normalization_context:
+        groups: ["transaction:list"]

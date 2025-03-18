@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  postgresdb:
+    image: postgres:latest
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    restart: always
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=${POSTGRESDB_USER}
+      - POSTGRES_PASSWORD=${POSTGRESDB_ROOT_PASSWORD}
+      - POSTGRES_DB=${POSTGRESDB_DATABASE}
+      - POSTGRES_INITDB_ARGS=--auth-host=md5 --auth-local=md5
+      - DATABASE_URL=${DATABASE_URL}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+      - ./Docker/db/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:Z # :Z pour podman
+
+  app:
+    build:
+      context: ./Docker
+      dockerfile: Dockerfile
+    container_name: ${APP_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "8000:80" # backend
+    volumes:
+      - ./backend:/var/www/html/backend
+      - .env:/var/www/html/.env
+    privileged: true
+    depends_on:
+      - postgresdb
+
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis_container"
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  db-volume:
+  redis_data:
