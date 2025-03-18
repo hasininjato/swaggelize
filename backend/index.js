@@ -81,6 +81,7 @@ app.use('/api/auth', authRoutes);
 swaggelize.swaggelize("./app/models", "api", app);
 
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
+// console.log(JSON.stringify(swaggerDocs, null, 2))
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.listen(port, () => {

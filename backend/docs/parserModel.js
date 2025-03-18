@@ -4,13 +4,14 @@
 const fs = require('fs');
 const path = require('path');
 const parser = require('@babel/parser');
+const utils = require("./utils");
 
 const parserModel = (modelPath) => {
-    const files = getModelFiles(modelPath)
+    const files = utils.getFileInDirectory(modelPath);
     const fields = [];
     files.forEach(file => {
         const filePath = `${modelPath}/${file}`;
-        const code = readFileContent(filePath);
+        const code = utils.readFileContent(filePath);
         const field = parseCode(code);
         if (field.length > 0) {
             fields.push({
@@ -20,16 +21,6 @@ const parserModel = (modelPath) => {
         }
     });
     return fields;
-}
-
-const getModelFiles = (directoryPath) => {
-    try {
-        return fs.readdirSync(directoryPath)
-            .filter(file => fs.statSync(path.join(directoryPath, file)).isFile());
-    } catch (err) {
-        console.error("Error reading directory:", err.message);
-        return [];
-    }
 }
 
 const parseCode = (code) => {
@@ -79,15 +70,6 @@ const parseCode = (code) => {
     }
 
     return fields;
-}
-
-const readFileContent = (filePath) => {
-    try {
-        return fs.readFileSync(filePath, 'utf8');
-    } catch (err) {
-        console.error("Error reading file:", err.message);
-        return null;
-    }
 }
 
 const getMethodsFromComment = (comment) => {
