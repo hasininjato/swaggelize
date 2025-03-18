@@ -11,7 +11,6 @@ const readFileContent = (filePath) => {
 }
 
 const getFileInDirectory = (directoryPath) => {
-    console.log(directoryPath)
     try {
         return fs.readdirSync(directoryPath)
             .filter(file => fs.statSync(path.join(directoryPath, file)).isFile());

@@ -1,8 +1,6 @@
 /**
  * parse the js model
  */
-const fs = require('fs');
-const path = require('path');
 const parser = require('@babel/parser');
 const utils = require("./utils");
 
