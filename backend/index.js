@@ -82,7 +82,7 @@ syncDb()
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 
-swaggelize.swaggelize("./app/models", "api", app);
+// swaggelize.swaggelize("./app/models", "api", app);
 
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
 // console.log(JSON.stringify(swaggerDocs, null, 2))
