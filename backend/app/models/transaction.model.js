@@ -12,6 +12,7 @@ const Transaction = sequelize.define('Transaction', {
     /**
      * @swag
      * methods: item, list, put, post
+     * description: Amount of the transaction
      */
     amount: {
         type: DataTypes.DECIMAL,
@@ -30,6 +31,7 @@ const Transaction = sequelize.define('Transaction', {
     /**
      * @swag
      * methods: item, list, put, post
+     * description: Description of the transaction
      */
     description: {
         type: DataTypes.STRING,

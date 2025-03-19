@@ -54,6 +54,10 @@ const swaggerOptions = {
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
                 },
+                basicAuth: {
+                    type: 'http',
+                    scheme: 'basic',
+                }
             },
         },
         servers: [

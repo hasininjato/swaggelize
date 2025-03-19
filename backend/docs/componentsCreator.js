@@ -4,15 +4,41 @@
 const fs = require('fs');
 const path = require('path');
 
-const create = (code) => {
+const createSchemas = (code) => {
+    let component = {};
     code.forEach(element => {
-        // console.log(element)
-        // console.log(JSON.stringify(element, null, 2))
         const modelName = getModelName(element.filename);
-        // console.log(modelName.charAt(0).toUpperCase() + modelName.slice(1))
-        createComponentDir();
-        createServicesYamlFile(modelName);
+        const modelNameCapitalize = capitalizeFirstLetter(modelName);
+        element.swag.forEach((elt) => {
+            const fieldName = elt.name;
+            const type = elt.value.type.toLowerCase();
+
+            elt.methods.forEach((method) => {
+                const componentName = `${modelNameCapitalize}${capitalizeFirstLetter(method)}`;
+
+                // Initialize the component object
+                if (!component[componentName]) {
+                    component[componentName] = {
+                        type: "object",
+                        properties: {}
+                    };
+                }
+                component[componentName].properties[fieldName] = {
+                    type: type == "decimal" ? "number" : "string",
+                    description: elt.description
+                };
+            });
+        });
     });
+    return {
+        components: {
+            schemas: component
+        }
+    }
+}
+
+const create = (code) => {
+
 }
 
 const getModelName = (modelPath) => {
@@ -43,4 +69,9 @@ const createServicesYamlFile = (modelName) => {
     });
 }
 
-module.exports = { create }
+const capitalizeFirstLetter = (str) => {
+    if (!str) return str; // Handle empty string or null/undefined
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+module.exports = { create, createSchemas }
