@@ -1,6 +1,7 @@
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
+const utils = require("./utils");
 
 const modelParser = (code) => {
     const ast = parser.parse(code, {
@@ -83,11 +84,16 @@ const modelParser = (code) => {
                                 }
                             }
                         }
+                        const { methods, description } = utils.getMethodsAndDescriptionFromComment(comment.value.trim());
+                        // console.log(methods, description)
 
                         if (context) {
                             swagComments.push({
                                 ...context,
-                                comment: comment.value.trim(),
+                                comment: {
+                                    methods: methods,
+                                    description: description
+                                },
                             });
                         }
                     }

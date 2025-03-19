@@ -6,6 +6,7 @@ const parser = (modelPath) => {
     files.forEach((file) => {
         const code = utils.readFileContent(`${modelPath}/${file}`);
         const model = modelParser.modelParser(code);
+        console.log(JSON.stringify(model, null, 4))
         // console.log(utils.getMethodsAndDescriptionFromComment(model));
     })
 }

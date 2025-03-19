@@ -22,8 +22,6 @@ const getFileInDirectory = (directoryPath) => {
 
 const getMethodsAndDescriptionFromComment = (comment) => {
     // Clean up the comment
-    console.log(comment);
-    return;
     const cleanedComment = comment
         .replace(/^\s*\*\s*/gm, '')  // Remove leading asterisks and spaces
         .replace(/@swag/g, '')  // Remove the @swag annotation
@@ -33,11 +31,14 @@ const getMethodsAndDescriptionFromComment = (comment) => {
         .split('\n')  // Split by lines
         .find(line => line.toLowerCase().includes('methods'));  // Find the line with 'methods'
 
-    const methodsArray = methodsLine
-        .replace('methods:', '')  // Remove the 'methods:' prefix
-        .trim()  // Trim spaces
-        .split(',')  // Split by comma
-        .map(method => method.trim());  // Trim spaces around each method
+    let methodsArray = [];
+    if (methodsLine != undefined) {
+        methodsArray = methodsLine
+            .replace('methods:', '')  // Remove the 'methods:' prefix
+            .trim()  // Trim spaces
+            .split(',')  // Split by comma
+            .map(method => method.trim());  // Trim spaces around each method
+    }
 
     // Extract description
     const descriptionLine = cleanedComment
