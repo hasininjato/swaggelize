@@ -102,6 +102,13 @@ const modelParser = (code) => {
         }
     });
 
+    const sequelizeModelName = code.match(/const (\w+)\s*=\s*sequelize\.define/);
+
+    return {
+        sequelizeModel: sequelizeModelName[1],
+        value: swagComments
+    };
+
     return swagComments;
 }
 
