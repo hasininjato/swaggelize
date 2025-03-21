@@ -98,16 +98,17 @@ const swaggelizeOptions = {
             }
         ],
     },
-    servicesPath: './app.docs/services',
+    servicesPath: './app/docs/services',
     modelsPath: './app/models',
+    defaultSecurity: 'jwt',
     routesVariable: app
 }
 
 const openapiDoc = swaggelize.parser(swaggelizeOptions);
 
-const swaggerDocs = swaggerjsdoc(swaggerOptions)
-// console.log(JSON.stringify(swaggerDocs, null, 2))
+// const swaggerDocs = swaggerjsdoc(swaggerOptions)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc))
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

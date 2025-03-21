@@ -2,6 +2,7 @@ const utils = require("./utils");
 const modelParser = require("./modelParser");
 const fs = require("fs");
 const componentsCreator = require("./componentCreator");
+const servicesParser = require("./servicesParser");
 
 const parser = (swaggelizeOptions) => {
     const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
@@ -38,6 +39,7 @@ const parser = (swaggelizeOptions) => {
             schemas: schemas
         }
     };
+    servicesParser.servicesParser(servicesPath);
     return openapi;
 }
 
