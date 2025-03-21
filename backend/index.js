@@ -101,7 +101,8 @@ const swaggelizeOptions = {
     servicesPath: './app/docs/services',
     modelsPath: './app/models',
     defaultSecurity: 'jwt',
-    routesVariable: app
+    routesVariable: app,
+    middlewareAuth: 'verifyToken'
 }
 
 const openapiDoc = swaggelize.parser(swaggelizeOptions);

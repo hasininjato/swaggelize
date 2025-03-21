@@ -1,4 +1,4 @@
-model/User:
+User:
   collectionOperations:
     security:
       get:
@@ -9,14 +9,22 @@ model/User:
           groups:
             - user:list
             - transaction:list
-    post:
-      openapi_context:
-        summary: Summary
-        description: Description
-      normalization_context:
-        groups:
-          - user:list
-          - transaction:list
+      post:
+        openapi_context:
+          summary: Summary
+          description: Description
+        normalization_context:
+          groups:
+            - user:list
+            - transaction:list
+      customGestList:
+        openapi_context:
+          summary: Summary
+          description: Description
+        normalization_context:
+          groups:
+            - user:list
+            - transaction:list
   security:
     itemOperations:
       get:
