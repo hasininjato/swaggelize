@@ -108,8 +108,6 @@ const modelParser = (code) => {
         sequelizeModel: sequelizeModelName[1],
         value: swagComments
     };
-
-    return swagComments;
 }
 
 module.exports = { modelParser };

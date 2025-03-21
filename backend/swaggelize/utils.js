@@ -58,8 +58,14 @@ const getMethodsAndDescriptionFromComment = (comment) => {
     };
 }
 
+const capitalizeFirstLetter = (str) => {
+    if (!str) return str; // Handle empty string or null/undefined
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
-    getMethodsAndDescriptionFromComment
+    getMethodsAndDescriptionFromComment,
+    capitalizeFirstLetter
 }
