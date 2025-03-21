@@ -3,16 +3,50 @@ const modelParser = require("./modelParser");
 const fs = require("fs");
 const componentsCreator = require("./componentCreator");
 
-const parser = (modelPath) => {
-    const files = utils.getFileInDirectory(modelPath);
+const parser = (swaggelizeOptions) => {
+    const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
+    const servicesPath = swaggelizeOptions.servicesPath;
+    const modelsPath = swaggelizeOptions.modelsPath;
+    const routesVariable = swaggelizeOptions.routesVariable;
+    const files = utils.getFileInDirectory(modelsPath);
+    let schemas = {};
+    const securitySchemes = {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "basicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    };
     files.forEach((file) => {
-        const code = utils.readFileContent(`${modelPath}/${file}`);
+        const code = utils.readFileContent(`${modelsPath}/${file}`);
         const model = modelParser.modelParser(code);
-        componentsCreator.createSchemas(model);
-        // fs.writeFileSync(`${file}.json`, JSON.stringify(model, null, 4))
+        const schema = componentsCreator.createSchemas(model);
+        schemas = {
+            schemas: schema
+        }
     })
+    const openapi = {
+        ...openapiInformation(swaggerDefinition),
+        components: {
+            ...securitySchemes,
+            schemas: schemas
+        }
+    };
+    return openapi;
 }
 
-parser("./app/models");
+const openapiInformation = (swaggerDefinition) => {
+    return {
+        openapi: swaggerDefinition.openapi,
+        info: swaggerDefinition.info,
+        servers: swaggerDefinition.servers
+    }
+}
 
 module.exports = { parser };

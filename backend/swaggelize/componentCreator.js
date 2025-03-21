@@ -35,7 +35,23 @@ const createSchemas = (code) => {
             })
         }
     });
-    console.log(JSON.stringify(component, null, 4))
+    return component;
 }
 
-module.exports = { createSchemas }
+const securitySchemes = () => {
+    return {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "basicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    }
+}
+
+module.exports = { createSchemas, securitySchemes }

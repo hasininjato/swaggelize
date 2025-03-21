@@ -17,7 +17,7 @@ const userRoutes = require('./app/routes/user.transaction.route');
 const authRoutes = require('./app/routes/auth.route');
 
 
-const swaggelize = require("./docs/index")
+const swaggelize = require("./swaggelize/index");
 
 const app = express()
 
@@ -82,11 +82,32 @@ syncDb()
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 
-// swaggelize.swaggelize("./app/models", "api", app);
+const swaggelizeOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Sample test API',
+            description: 'Liste des API endpoints pour le test provenant de L3M holding',
+            contact: {
+                name: 'Hasininjato Rojovaao'
+            },
+        },
+        servers: [
+            {
+                url: "http://localhost:8000/api"
+            }
+        ],
+    },
+    servicesPath: './app.docs/services',
+    modelsPath: './app/models',
+    routesVariable: app
+}
+
+const openapiDoc = swaggelize.parser(swaggelizeOptions);
 
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
 // console.log(JSON.stringify(swaggerDocs, null, 2))
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc))
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
