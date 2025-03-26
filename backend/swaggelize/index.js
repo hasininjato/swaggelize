@@ -10,6 +10,7 @@ const parser = (swaggelizeOptions) => {
     const modelsPath = swaggelizeOptions.modelsPath;
     const routesVariable = swaggelizeOptions.routesVariable;
     const middlewareAuth = swaggelizeOptions.middlewareAuth;
+    const routePrefix = swaggelizeOptions.routePrefix;
     const files = utils.getFileInDirectory(modelsPath);
     let schemas = {};
     const securitySchemes = {
@@ -40,7 +41,8 @@ const parser = (swaggelizeOptions) => {
             schemas: schemas
         }
     };
-    servicesParser.servicesParser(servicesPath, routesVariable);
+    const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix);
+    console.log(services)
     return openapi;
 }
 

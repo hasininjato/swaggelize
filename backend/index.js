@@ -77,7 +77,7 @@ const syncDb = async () => {
     }
 }
 
-syncDb()
+// syncDb()
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -95,6 +95,9 @@ const swaggelizeOptions = {
         servers: [
             {
                 url: "http://localhost:8000/api"
+            },
+            {
+                url: "http://localhost:3000/api"
             }
         ],
     },
@@ -102,14 +105,17 @@ const swaggelizeOptions = {
     modelsPath: './app/models',
     defaultSecurity: 'jwt',
     routesVariable: app,
-    middlewareAuth: 'verifyToken'
+    middlewareAuth: 'verifyToken',
+    routePrefix: "/api"
 }
 
 const openapiDoc = swaggelize.parser(swaggelizeOptions);
 
-// const swaggerDocs = swaggerjsdoc(swaggerOptions)
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc))
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+const swaggerDocs = swaggerjsdoc(swaggerOptions)
+
+// console.log(JSON.stringify(swaggerDocs, null, 4))
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
