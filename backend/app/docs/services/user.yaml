@@ -21,22 +21,25 @@ User:
       input:
         - user:list
         - transaction:list
-      method: 'GET'
-      path: '/users/test'
+      method: "GET"
+      path: "/users/test"
   itemOperations:
     get:
       openapi_context:
         summary: Summary
         description: Description
-      normalization_context:
-        groups:
-          - user:list
-          - transaction:list
+      output:
+        - user:item
+        - transaction:list
     put:
       openapi_context:
         summary: Summary
         description: Description
-      normalization_context:
-        groups:
-          - user:list
-          - transaction:list
+      input:
+        - user:put
+      output:
+        - user:item
+    delete:
+      openapi_context:
+        summary: Summary
+        description: Description
