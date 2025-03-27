@@ -44,7 +44,7 @@ const parser = (swaggelizeOptions) => {
             schemas: schemas
         }
     };
-    console.log(JSON.stringify(schemas, null, 4))
+    // console.log(JSON.stringify(schemas, null, 4))
     // console.log(JSON.stringify(models, null, 4))
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
     // console.log(services)

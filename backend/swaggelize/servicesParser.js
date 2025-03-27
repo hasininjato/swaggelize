@@ -1,6 +1,7 @@
 const utils = require("./utils");
 const yaml = require('js-yaml');
 const routerParser = require("./routerParser");
+const { response } = require("express");
 
 const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
     const collectionJson = {};
@@ -80,18 +81,74 @@ const generateParameter = (parameterName, model) => {
     }
 }
 
-const generateBody = (servicesCollecionts, schemas) => {
+const generateBody = (serviceCollections, schemas) => {
     const INSERT_METHODS = new Set(["post", "put", "patch"]);
-    const requestBody = {};
-    Object.keys(servicesCollecionts).forEach((route) => {
-        Object.keys(servicesCollecionts[route]).forEach((method) => {
+    const requestBody = {
+        requestBody: {}
+    };
+    const responses = {
+        responses: {
+            200: {}
+        }
+    }
+    Object.keys(serviceCollections).forEach((route) => {
+        Object.keys(serviceCollections[route]).forEach((method) => {
             if (INSERT_METHODS.has(method)) {
-                const input = servicesCollecionts[route][method].input;
+                const input = serviceCollections[route][method].input;
+                input.forEach((i) => {
+                    const { pascalCase, suffix } = transformStr(i);
+                    requestBody["requestBody"] = {
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    "$ref": `#/components/schemas/${pascalCase}`
+                                }
+                            }
+                        }
+                    }
+                    serviceCollections[route][method] = Object.assign(serviceCollections[route][method], requestBody);
+                })
             } else {
-                const output = servicesCollecionts[route][method].output;
+                const output = serviceCollections[route][method].output;
+                output.forEach((o) => {
+                    const { pascalCase, suffix } = transformStr(o);
+                    responses["responses"][200] = {
+                        description: suffix,
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    "$ref": `#/components/schemas/${pascalCase}`
+                                }
+                            }
+                        }
+                    }
+                    serviceCollections[route][method] = Object.assign(serviceCollections[route][method], responses);
+                })
             }
         })
     });
+    // console.log(JSON.stringify(requestBody, null, 4));
+    console.log(JSON.stringify(serviceCollections, null, 4));
+    return serviceCollections;
+}
+
+// const pascalCase = (str) => {
+//     const parts = str.split(':');
+//     const pascalCase = parts
+//         .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+//         .join(''); // Join without separator
+//     return { pascalCase, parts[0].charAt(0).toUpperCase() };
+// }
+
+const transformStr = (input) => {
+    const [prefix, suffix] = input.split(':');
+
+    const pascalPrefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    const pascalCase = suffix
+        ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
+        : pascalPrefix;
+
+    return { pascalCase, suffix };
 }
 
 module.exports = { servicesParser };
