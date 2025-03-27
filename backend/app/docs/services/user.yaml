@@ -18,10 +18,11 @@ User:
       openapi_context:
         summary: Summary
         description: Description
-      normalization_context:
-        groups:
-          - user:list
-          - transaction:list
+      input:
+        - user:list
+        - transaction:list
+      method: 'GET'
+      path: '/users/test'
   itemOperations:
     get:
       openapi_context:

@@ -14,24 +14,34 @@ const servicesParser = (servicePath, routesVariable, routePrefix) => {
         const collectionOperations = parsedYaml[model].collectionOperations;
         routes.forEach((route) => {
             const match = new RegExp(`^${routePrefix}/${model.toLowerCase()}s?$`);
-            console.log(route.path)
             if (match.test(route.path)) {
-                // console.log(route.methods)
+                const routeWithoutPrefix = route.path.replace(routePrefix, "");
+
+                // Initialize the route object if it doesn't exist
+                if (!collectionJson[routeWithoutPrefix]) {
+                    collectionJson[routeWithoutPrefix] = {};
+                }
+
                 route.methods.forEach((method) => {
                     const methodLower = method.toLowerCase();
-                    const collectionOperationsMethod = collectionOperations[methodLower]
-                    collectionJson[methodLower] = {
+                    const collectionOperationsMethod = collectionOperations[methodLower];
+
+                    collectionJson[routeWithoutPrefix][methodLower] = {
                         summary: collectionOperationsMethod.openapi_context.summary,
                         description: collectionOperationsMethod.openapi_context.description,
                     };
+
                     if (["post", "put", "patch"].includes(methodLower)) {
-                        collectionJson[methodLower]["input"] = collectionOperationsMethod.input ?? []
+                        collectionJson[routeWithoutPrefix][methodLower]["input"] =
+                            collectionOperationsMethod.input ?? [];
                     }
-                    collectionJson[methodLower]["output"] = collectionOperationsMethod.output ?? []
-                })
+
+                    collectionJson[routeWithoutPrefix][methodLower]["output"] =
+                        collectionOperationsMethod.output ?? [];
+                });
             }
-            
-        })
+        });
+        console.log(collectionJson)
     })
     return collectionJson;
 }

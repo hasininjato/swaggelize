@@ -42,7 +42,7 @@ const parser = (swaggelizeOptions) => {
         }
     };
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix);
-    console.log(services)
+    // console.log(services)
     return openapi;
 }
 
