@@ -2,7 +2,7 @@ const utils = require("./utils");
 const yaml = require('js-yaml');
 const routerParser = require("./routerParser");
 
-const servicesParser = (servicePath, routesVariable, routePrefix) => {
+const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
     const collectionJson = {};
     const servicesFiles = utils.getFileInDirectory(servicePath);
 
@@ -62,7 +62,8 @@ const servicesParser = (servicePath, routesVariable, routePrefix) => {
             });
         });
     });
-    console.log(JSON.stringify(collectionJson, null, 4));
+    generateBody(collectionJson, schemas);
+    // console.log(JSON.stringify(collectionJson, null, 4));
 
     return collectionJson;
 };
@@ -77,6 +78,20 @@ const generateParameter = (parameterName, model) => {
         required: true,
         description: `${model} ${parameterName}`
     }
+}
+
+const generateBody = (servicesCollecionts, schemas) => {
+    const INSERT_METHODS = new Set(["post", "put", "patch"]);
+    const requestBody = {};
+    Object.keys(servicesCollecionts).forEach((route) => {
+        Object.keys(servicesCollecionts[route]).forEach((method) => {
+            if (INSERT_METHODS.has(method)) {
+                const input = servicesCollecionts[route][method].input;
+            } else {
+                const output = servicesCollecionts[route][method].output;
+            }
+        })
+    });
 }
 
 module.exports = { servicesParser };

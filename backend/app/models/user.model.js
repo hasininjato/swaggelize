@@ -21,6 +21,10 @@ const User = sequelize.define('User', {
             notEmpty: { msg: "Full name cannot be empty" }
         }
     },
+    /**
+     * @swag
+     * methods: item, list, put, post
+     */
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -36,6 +40,10 @@ const User = sequelize.define('User', {
             }
         }
     },
+    /**
+     * @swag
+     * methods: put, post
+     */
     password: {
         type: DataTypes.STRING,
         allowNull: false,

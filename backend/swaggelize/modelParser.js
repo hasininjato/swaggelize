@@ -3,6 +3,33 @@ const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const utils = require("./utils");
 
+// Cache for common checks
+const RELATION_METHODS = new Set(["hasOne", "hasMany", "belongsTo", "belongsToMany"]);
+
+const getValueFromNode = (node) => {
+    if (!node) return null;
+
+    if (t.isIdentifier(node)) return node.name;
+    if (t.isStringLiteral(node)) return node.value;
+    if (t.isBooleanLiteral(node)) return node.value;
+    if (t.isNumericLiteral(node)) return node.value;
+    if (t.isMemberExpression(node)) return `${node.object.name}.${node.property.name}`;
+
+    if (t.isObjectExpression(node)) {
+        return node.properties.reduce((obj, prop) => {
+            const key = prop.key.name || prop.key.value;
+            obj[key] = getValueFromNode(prop.value);
+            return obj;
+        }, {});
+    }
+
+    if (t.isArrayExpression(node)) {
+        return node.elements.map(getValueFromNode);
+    }
+
+    return null;
+};
+
 const modelParser = (code) => {
     const ast = parser.parse(code, {
         sourceType: 'module',
@@ -10,104 +37,81 @@ const modelParser = (code) => {
     });
 
     const swagComments = [];
+    let sequelizeModelName = code.match(/const (\w+)\s*=\s*sequelize\.define/)?.[1] || null;
 
-    // Helper function to convert AST node to plain JavaScript value
-    const getValueFromNode = (node) => {
-        if (t.isIdentifier(node)) {
-            return node.name; // e.g., DataTypes.DECIMAL -> "DECIMAL"
-        } else if (t.isStringLiteral(node)) {
-            return node.value; // e.g., "Amount is required"
-        } else if (t.isBooleanLiteral(node)) {
-            return node.value; // e.g., true or false
-        } else if (t.isNumericLiteral(node)) {
-            return node.value; // e.g., 0.01
-        } else if (t.isObjectExpression(node)) {
-            const obj = {};
-            node.properties.forEach(prop => {
-                obj[prop.key.name || prop.key.value] = getValueFromNode(prop.value);
-            });
-            return obj;
-        } else if (t.isArrayExpression(node)) {
-            return node.elements.map(element => getValueFromNode(element));
-        } else if (t.isMemberExpression(node)) {
-            return `${node.object.name}.${node.property.name}`; // e.g., DataTypes.NOW
-        }
-        return null;
-    };
+    // Fallback AST detection if regex fails
+    if (!sequelizeModelName) {
+        traverse(ast, {
+            AssignmentExpression(path) {
+                if (!sequelizeModelName &&
+                    t.isMemberExpression(path.node.left) &&
+                    path.node.left.property.name === 'define' &&
+                    t.isIdentifier(path.node.left.object) &&
+                    path.node.left.object.name === 'sequelize' &&
+                    t.isIdentifier(path.node.right.id)) {
+                    sequelizeModelName = path.node.right.id.name;
+                }
+            },
+            VariableDeclarator(path) {
+                if (!sequelizeModelName &&
+                    t.isCallExpression(path.node.init) &&
+                    t.isMemberExpression(path.node.init.callee) &&
+                    path.node.init.callee.property.name === 'define' &&
+                    t.isIdentifier(path.node.init.callee.object) &&
+                    path.node.init.callee.object.name === 'sequelize' &&
+                    t.isIdentifier(path.node.id)) {
+                    sequelizeModelName = path.node.id.name;
+                }
+            }
+        });
+    }
 
-    // Traverse the AST to extract @swag comments and their context
     traverse(ast, {
         enter(path) {
-            // Check for leading comments on any node
-            if (path.node.leadingComments) {
-                path.node.leadingComments.forEach(comment => {
-                    if (comment.value.includes('@swag')) {
-                        let context = null;
+            if (!path.node.leadingComments) return;
 
-                        // Check if the comment is associated with a field inside Transaction
-                        if (path.isObjectProperty() && path.parentPath.isObjectExpression()) {
-                            const fieldName = path.node.key.name;
-                            const fieldProperties = path.node.value.properties;
+            for (let i = path.node.leadingComments.length - 1; i >= 0; i--) {
+                const comment = path.node.leadingComments[i];
+                if (!comment.value.includes('@swag')) continue;
 
-                            // Extract field properties as a plain object
-                            const fieldObject = {};
-                            fieldProperties.forEach(prop => {
-                                const key = prop.key.name || prop.key.value;
-                                const value = getValueFromNode(prop.value);
-                                fieldObject[key] = value;
-                            });
+                let context = null;
 
-                            context = {
-                                field: fieldName,
-                                type: 'field',
-                                object: fieldObject,
-                            };
-                        }
-                        // Check if the comment is associated with a relation (hasMany or belongsTo)
-                        else if (path.isExpressionStatement()) {
-                            const expression = path.node.expression;
+                if (path.isObjectProperty() && path.parentPath.isObjectExpression()) {
+                    context = {
+                        field: path.node.key.name,
+                        type: 'field',
+                        object: getValueFromNode(path.node.value),
+                    };
+                }
+                else if (path.isExpressionStatement() &&
+                    t.isCallExpression(path.node.expression)) {
+                    const { callee } = path.node.expression;
 
-                            if (t.isCallExpression(expression)) {
-                                const callee = expression.callee;
-
-                                const relations = ["hasOne", "hasMany", "belongsTo", "belongsToMany"];
-                                if (
-                                    t.isMemberExpression(callee) &&
-                                    relations.includes(callee.property.name)
-                                ) {
-                                    const args = expression.arguments;
-                                    context = {
-                                        type: 'relation',
-                                        relation: callee.property.name, // e.g., "hasMany" or "belongsTo"
-                                        args: args.map(arg => getValueFromNode(arg)),
-                                    };
-                                }
-                            }
-                        }
-                        const { methods, description } = utils.getMethodsAndDescriptionFromComment(comment.value.trim());
-                        // console.log(methods, description)
-
-                        if (context) {
-                            swagComments.push({
-                                ...context,
-                                comment: {
-                                    methods: methods,
-                                    description: description
-                                },
-                            });
-                        }
+                    if (t.isMemberExpression(callee) &&
+                        RELATION_METHODS.has(callee.property.name)) {
+                        context = {
+                            type: 'relation',
+                            relation: callee.property.name,
+                            args: path.node.expression.arguments.map(getValueFromNode),
+                        };
                     }
-                });
+                }
+
+                if (context) {
+                    const { methods, description } = utils.getMethodsAndDescriptionFromComment(comment.value.trim());
+                    swagComments.push({
+                        ...context,
+                        comment: { methods, description },
+                    });
+                }
             }
         }
     });
 
-    const sequelizeModelName = code.match(/const (\w+)\s*=\s*sequelize\.define/);
-
     return {
-        sequelizeModel: sequelizeModelName[1],
-        value: swagComments
+        sequelizeModel: sequelizeModelName,
+        value: swagComments,
     };
-}
+};
 
 module.exports = { modelParser };

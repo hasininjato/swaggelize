@@ -14,15 +14,6 @@ User:
         - user:post
       output:
         - user:item
-    customGestList:
-      openapi_context:
-        summary: Summary
-        description: Description
-      input:
-        - user:list
-        - transaction:list
-      method: "GET"
-      path: "/users/test"
   itemOperations:
     get:
       openapi_context:

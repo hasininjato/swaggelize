@@ -26,13 +26,16 @@ const parser = (swaggelizeOptions) => {
             }
         }
     };
+    let models = [];
     files.forEach((file) => {
         const code = utils.readFileContent(`${modelsPath}/${file}`);
         const model = modelParser.modelParser(code);
         const schema = componentsCreator.createSchemas(model);
+        // console.log(JSON.stringify(model, null, 4))
         schemas = {
             schemas: schema
         }
+        models.push(model);
     })
     const openapi = {
         ...openapiInformation(swaggerDefinition),
@@ -41,7 +44,9 @@ const parser = (swaggelizeOptions) => {
             schemas: schemas
         }
     };
-    const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix);
+    console.log(JSON.stringify(schemas, null, 4))
+    // console.log(JSON.stringify(models, null, 4))
+    const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
     // console.log(services)
     return openapi;
 }

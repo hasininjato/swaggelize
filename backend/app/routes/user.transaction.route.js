@@ -267,8 +267,6 @@ router.get('/:id/transactions', verifyToken, async (req, res) => {
  *     summary: Récupérer un utilisateur par son id
  *     description: Récupérer un utilisateur par son id
  *     tags: ['Utilisateur']
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -279,10 +277,17 @@ router.get('/:id/transactions', verifyToken, async (req, res) => {
  *     responses:
  *       '200':
  *         description: Utilisateur
- *         contents:
+ *         content:
  *           applciation/json:
  *             schema:
- *               $ref: '#components/schemas/UserGet'
+ *               allOf:
+ *                 - $ref: '#components/schemas/UserGet'
+ *                 - type: object
+ *                   properties:
+ *                     Transactions:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#components/schemas/Transaction'
  *       '404':
  *         description: User not found
  *       '500':
