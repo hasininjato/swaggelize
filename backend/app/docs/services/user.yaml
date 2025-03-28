@@ -21,7 +21,6 @@ User:
         description: Description
       output:
         - user:item
-        - transaction:list
     put:
       openapi_context:
         summary: Summary

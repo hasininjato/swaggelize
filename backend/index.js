@@ -16,8 +16,7 @@ const Transaction = require('./app/models/transaction.model');
 const userRoutes = require('./app/routes/user.transaction.route');
 const authRoutes = require('./app/routes/auth.route');
 
-
-const swaggelize = require("./swaggelize/index");
+const swaggelize = require("../swaggelize/src/index");
 
 const app = express()
 
@@ -89,7 +88,7 @@ const swaggelizeOptions = {
             title: 'Sample test API',
             description: 'Liste des API endpoints pour le test provenant de L3M holding',
             contact: {
-                name: 'Hasininjato Rojovaao'
+                name: 'Hasininjato Rojovao'
             },
         },
         servers: [
@@ -113,8 +112,6 @@ const openapiDoc = swaggelize.parser(swaggelizeOptions);
 
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
 
-// console.log(JSON.stringify(swaggerDocs, null, 4))
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc))
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.listen(port, () => {

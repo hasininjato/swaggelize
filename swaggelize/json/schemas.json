@@ -1,0 +1,74 @@
+{
+    "schemas": {
+        "UserItem": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        },
+        "UserList": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        },
+        "UserPut": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "password": {
+                    "type": "string",
+                    "description": ""
+                }
+            },
+            "required": [
+                "fullname",
+                "email",
+                "password"
+            ]
+        },
+        "UserPost": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "password": {
+                    "type": "string",
+                    "description": ""
+                }
+            },
+            "required": [
+                "fullname",
+                "email",
+                "password"
+            ]
+        }
+    }
+}
