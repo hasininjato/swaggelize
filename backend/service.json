@@ -1,0 +1,121 @@
+{
+    "/users": {
+        "post": {
+            "summary": "Summary",
+            "description": "Description",
+            "output": [
+                "user:item"
+            ],
+            "input": [
+                "user:post"
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UserPost"
+                        }
+                    }
+                }
+            }
+        },
+        "get": {
+            "summary": "Summary",
+            "description": "Description",
+            "output": [
+                "user:list"
+            ],
+            "responses": {
+                "200": {
+                    "description": "item",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserItem"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/users/{id}": {
+        "get": {
+            "summary": "Summary",
+            "description": "Description",
+            "output": [
+                "user:item",
+                "transaction:list"
+            ],
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "User id"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "item",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserItem"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "put": {
+            "summary": "Summary",
+            "description": "Description",
+            "output": [
+                "user:item"
+            ],
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "User id"
+                }
+            ],
+            "input": [
+                "user:put"
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UserPut"
+                        }
+                    }
+                }
+            }
+        },
+        "delete": {
+            "summary": "Summary",
+            "description": "Description",
+            "output": [],
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "User id"
+                }
+            ]
+        }
+    }
+}

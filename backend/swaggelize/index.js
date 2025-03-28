@@ -47,7 +47,7 @@ const parser = (swaggelizeOptions) => {
     // console.log(JSON.stringify(schemas, null, 4))
     // console.log(JSON.stringify(models, null, 4))
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
-    // console.log(services)
+    // console.log(JSON.stringify(models, null, 4))
     return openapi;
 }
 

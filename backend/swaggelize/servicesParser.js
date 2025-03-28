@@ -1,7 +1,7 @@
 const utils = require("./utils");
 const yaml = require('js-yaml');
 const routerParser = require("./routerParser");
-const { response } = require("express");
+const fs = require("fs");
 
 const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
     const collectionJson = {};
@@ -96,7 +96,7 @@ const generateBody = (serviceCollections, schemas) => {
             if (INSERT_METHODS.has(method)) {
                 const input = serviceCollections[route][method].input;
                 input.forEach((i) => {
-                    const { pascalCase, suffix } = transformStr(i);
+                    const { pascalCase, suffix, prefix } = transformStr(i);
                     requestBody["requestBody"] = {
                         content: {
                             "application/json": {
@@ -111,13 +111,15 @@ const generateBody = (serviceCollections, schemas) => {
             } else {
                 const output = serviceCollections[route][method].output;
                 output.forEach((o) => {
-                    const { pascalCase, suffix } = transformStr(o);
-                    responses["responses"][200] = {
-                        description: suffix,
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    "$ref": `#/components/schemas/${pascalCase}`
+                    const { pascalCase, suffix, prefix } = transformStr(o);
+                    if (route.includes(prefix)) {
+                        responses["responses"][200] = {
+                            description: suffix,
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        "$ref": `#/components/schemas/${pascalCase}`
+                                    }
                                 }
                             }
                         }
@@ -127,18 +129,10 @@ const generateBody = (serviceCollections, schemas) => {
             }
         })
     });
-    // console.log(JSON.stringify(requestBody, null, 4));
-    console.log(JSON.stringify(serviceCollections, null, 4));
+    // console.log(JSON.stringify(schemas, null, 4));
+    // fs.writeFileSync("service.json", JSON.stringify(serviceCollections, null, 4), "utf-8");
     return serviceCollections;
 }
-
-// const pascalCase = (str) => {
-//     const parts = str.split(':');
-//     const pascalCase = parts
-//         .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-//         .join(''); // Join without separator
-//     return { pascalCase, parts[0].charAt(0).toUpperCase() };
-// }
 
 const transformStr = (input) => {
     const [prefix, suffix] = input.split(':');
@@ -148,7 +142,7 @@ const transformStr = (input) => {
         ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
         : pascalPrefix;
 
-    return { pascalCase, suffix };
+    return { pascalCase, suffix, prefix };
 }
 
 module.exports = { servicesParser };
