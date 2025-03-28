@@ -2,6 +2,26 @@ const utils = require("./utils");
 const yaml = require('js-yaml');
 const listEndpoints = require('express-list-endpoints');
 
+// Pre-compiled regex patterns
+const COLLECTION_ROUTE_PATTERN_CACHE = new Map();
+const ITEM_ROUTE_PATTERN_CACHE = new Map();
+const PATH_PARAM_REGEX = /{([^}]+)}/g;
+const INSERT_METHODS = new Set(["post", "put", "patch"]);
+const METHOD_RESPONSE_CODES = {
+    post: 201,
+    get: 200,
+    put: 200,
+    patch: 200,
+    delete: 204
+};
+
+// Standard responses definition
+const STANDARD_RESPONSES = {
+    400: { description: "Bad request" },
+    404: { description: "Not found" },
+    500: { description: "Internal server error" }
+};
+
 const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
     const collectionJson = {};
     const servicesFiles = utils.getFileInDirectory(servicePath);
@@ -14,8 +34,15 @@ const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
         const modelLower = model.toLowerCase();
         const { collectionOperations, itemOperations } = parsedYaml[model];
 
-        const collectionRoutePattern = new RegExp(`^${routePrefix}/${modelLower}s?$`);
-        const itemRoutePattern = new RegExp(`^${routePrefix}/${modelLower}s?/:([^/]+)$`);
+        // Cache regex patterns
+        const collectionRoutePattern = getCachedPattern(
+            COLLECTION_ROUTE_PATTERN_CACHE,
+            `^${routePrefix}/${modelLower}s?$`
+        );
+        const itemRoutePattern = getCachedPattern(
+            ITEM_ROUTE_PATTERN_CACHE,
+            `^${routePrefix}/${modelLower}s?/:([^/]+)$`
+        );
 
         routes.forEach((route) => {
             let routeWithoutPrefix, operations, isCollectionRoute, paramName;
@@ -37,189 +64,136 @@ const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
                 collectionJson[routeWithoutPrefix] = {};
             }
 
-            route.methods.forEach((method) => {
-                const methodLower = method.toLowerCase();
-                const operationMethod = operations[methodLower];
-                if (!operationMethod) return;
-
-                const operationData = {
-                    summary: operationMethod.openapi_context.summary,
-                    description: operationMethod.openapi_context.description,
-                    output: operationMethod.output ?? []
-                };
-
-                // Add parameters for item operations
-                if (!isCollectionRoute) {
-                    operationData.parameters = [generateParameter(paramName, model)];
-                }
-
-                if ((isCollectionRoute && methodLower === "post") ||
-                    ["put", "patch"].includes(methodLower)) {
-                    operationData.input = operationMethod.input ?? [];
-                }
-
-                collectionJson[routeWithoutPrefix][methodLower] = operationData;
-            });
+            processRouteMethods(
+                route.methods,
+                operations,
+                collectionJson[routeWithoutPrefix],
+                isCollectionRoute,
+                paramName,
+                model
+            );
         });
     });
-    generateBody(collectionJson);
-    generateResponse(collectionJson);
 
+    enhanceCollectionsWithBodyAndResponses(collectionJson);
     return collectionJson;
 };
 
-const generateParameter = (parameterName, model) => {
-    return {
-        in: "path",
-        name: parameterName,
-        schema: {
-            type: "string"
-        },
-        required: true,
-        description: `${model} ${parameterName}`
+function getCachedPattern(cache, pattern) {
+    if (!cache.has(pattern)) {
+        cache.set(pattern, new RegExp(pattern));
     }
+    return cache.get(pattern);
 }
 
-/**
- * generate request body for post, put, patch methods
- * @param {json} serviceCollections 
- * @returns {json} serviceCollections
- */
-const generateBody = (serviceCollections) => {
-    const INSERT_METHODS = new Set(["post", "put", "patch"]);
-    const requestBody = {
-        requestBody: {}
-    };
-    Object.keys(serviceCollections).forEach((route) => {
-        Object.keys(serviceCollections[route]).forEach((method) => {
-            if (INSERT_METHODS.has(method)) {
-                const input = serviceCollections[route][method].input;
-                input.forEach((i) => {
-                    const { pascalCase, suffix, prefix } = transformStr(i);
-                    requestBody["requestBody"] = {
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    "$ref": `#/components/schemas/${pascalCase}`
-                                }
-                            }
-                        }
-                    }
-                    serviceCollections[route][method] = Object.assign(serviceCollections[route][method], requestBody);
-                })
-            }
-        })
+function processRouteMethods(methods, operations, routeEntry, isCollectionRoute, paramName, model) {
+    methods.forEach((method) => {
+        const methodLower = method.toLowerCase();
+        const operationMethod = operations[methodLower];
+        if (!operationMethod) return;
+
+        const operationData = {
+            summary: operationMethod.openapi_context?.summary,
+            description: operationMethod.openapi_context?.description,
+            output: operationMethod.output || []
+        };
+
+        if (!isCollectionRoute) {
+            operationData.parameters = [generateParameter(paramName, model)];
+        }
+
+        if ((isCollectionRoute && methodLower === "post") || INSERT_METHODS.has(methodLower)) {
+            operationData.input = operationMethod.input || [];
+        }
+
+        routeEntry[methodLower] = operationData;
     });
-    return serviceCollections;
 }
 
-/**
- * generate resopnses body
- * @param {json} serviceCollections 
- * @returns {json} serviceCollections
- */
-const generateResponse = (serviceCollections) => {
-    const responses = {
-        responses: {}
-    };
-    const internalServerError = {
-        "500": {
-            "description": "Internal server error"
-        }
-    };
-    const notFound = {
-        "404": {
-            "description": "Not found"
-        }
-    };
-    const badRequest = {
-        "400": {
-            "description": "Bad request"
-        }
-    };
-    Object.keys(serviceCollections).forEach((route) => {
-        Object.keys(serviceCollections[route]).forEach((method) => {
-            const output = serviceCollections[route][method].output || [];
-            if (output.length === 0) {
-                responses["responses"] = {
-                    "204": {
-                        description: "Deleted"
-                    }
-                }
-            } else {
-                output.forEach((o) => {
-                    const { pascalCase, suffix, prefix } = transformStr(o);
-                    // if method is post, return 201, otherwise return 200 if method is not delete
-                    if (method === "post") {
-                        responses["responses"] = {
-                            "201": {
-                                description: `Created ${prefix}`,
-                                content: {
-                                    "application/json": {
-                                        schema: {
-                                            "$ref": `#/components/schemas/${pascalCase}`
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        responses["responses"] = {
-                            "200": {
-                                description: `${prefix.charAt(0).toUpperCase() + prefix.slice(1)} ${suffix}`,
-                                content: {
-                                    "application/json": {
-                                        schema: {
-                                            "$ref": `#/components/schemas/${pascalCase}`
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (["post", "put", "patch"].includes(method)) {
-                        responses["responses"] = {
-                            ...responses["responses"],
-                            ...badRequest
-                        }
-                    }
-                    // regex to check if route has {str} in it
-                    const regex = new RegExp("{([^}]+)}", "g");
-                    const match = route.match(regex);
-                    if (match) {
-                        responses["responses"] = {
-                            ...responses["responses"],
-                            ...notFound
-                        }
-                    }
-                })
+const generateParameter = (parameterName, model) => ({
+    in: "path",
+    name: parameterName,
+    schema: { type: "string" },
+    required: true,
+    description: `${model} ${parameterName}`
+});
+
+const enhanceCollectionsWithBodyAndResponses = (collections) => {
+    Object.entries(collections).forEach(([route, methods]) => {
+        Object.entries(methods).forEach(([method, operation]) => {
+            // Add request body if needed
+            if (INSERT_METHODS.has(method) && operation.input?.length) {
+                operation.requestBody = createRequestBody(operation.input[0]);
             }
-            responses["responses"] = {
-                ...responses["responses"],
-                ...internalServerError
-            };
-            serviceCollections[route][method] = {
-                ...serviceCollections[route][method],
-                ...responses
-            };
-        })
+
+            // Add responses
+            operation.responses = createResponses(
+                method,
+                operation.output,
+                route.match(PATH_PARAM_REGEX) !== null,
+                INSERT_METHODS.has(method)
+            );
+        });
     });
-    return serviceCollections;
+};
+
+function createRequestBody(input) {
+    const { pascalCase } = transformStr(input);
+    return {
+        content: {
+            "application/json": {
+                schema: { $ref: `#/components/schemas/${pascalCase}` }
+            }
+        }
+    };
+}
+
+function createResponses(method, output, hasPathParams, isModifyingMethod) {
+    const responses = { ...STANDARD_RESPONSES };
+    const statusCode = METHOD_RESPONSE_CODES[method] || 200;
+
+    if (statusCode === 204) {
+        responses[204] = { description: "Deleted" };
+        return responses;
+    }
+
+    if (!output?.length) return responses;
+
+    const { pascalCase, prefix } = transformStr(output[0]);
+    const description = method === "post"
+        ? `Created ${prefix}`
+        : `${prefix.charAt(0).toUpperCase() + prefix.slice(1)} ${output[0].split(':')[1] || ''}`;
+
+    responses[statusCode] = {
+        description,
+        content: {
+            "application/json": {
+                schema: { $ref: `#/components/schemas/${pascalCase}` }
+            }
+        }
+    };
+
+    if (hasPathParams) {
+        responses[404] = STANDARD_RESPONSES[404];
+    }
+
+    if (isModifyingMethod) {
+        responses[400] = STANDARD_RESPONSES[400];
+    }
+
+    return responses;
 }
 
 const transformStr = (input) => {
     const [prefix, suffix] = input.split(':');
-
     const pascalPrefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
     const pascalCase = suffix
         ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
         : pascalPrefix;
 
     return { pascalCase, suffix, prefix };
-}
+};
 
-const getEndPointsApi = (app) => {
-    return listEndpoints(app);
-}
+const getEndPointsApi = (app) => listEndpoints(app);
 
 module.exports = { servicesParser };
