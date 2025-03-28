@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 const express = require('express');
 const sequelize = require('./app/config/db.conf');
 const cors = require('cors');
@@ -111,8 +112,9 @@ const swaggelizeOptions = {
 const openapiDoc = swaggelize.parser(swaggelizeOptions);
 
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+// fs.writeFileSync("openapi.json", JSON.stringify(openapiDoc, null, 4));
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc))
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

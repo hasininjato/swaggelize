@@ -1,56 +1,67 @@
-/**
- * create components from Sequelize models
- */
-const fs = require('fs');
-const { type } = require('os');
-const path = require('path');
 const utils = require('./utils');
 
+// Constants for schema types and methods
+const SCHEMA_TYPES = {
+    OBJECT: 'object',
+    ARRAY: 'array',
+    NUMBER: 'number',
+    STRING: 'string'
+};
+
+const METHODS = {
+    LIST: 'list',
+    PUT: 'put',
+    POST: 'post'
+};
+
 const createSchemas = (code) => {
-    let component = {};
-    let required = [];
-    code.value.forEach(elt => {
-        if (elt.type == "field") {
-            elt.comment.methods.forEach((method) => {
-                let componentName = `${code.sequelizeModel}`;
-                componentName += utils.capitalizeFirstLetter(method);
-                if (!component[componentName]) {
-                    component[componentName] = {
-                        type: "object",
+    const components = {};
+    const requiredFields = new Set();
+
+    code.value.forEach(element => {
+        if (element.type !== "field") return;
+
+        element.comment.methods.forEach(method => {
+            const componentName = `${code.sequelizeModel}${utils.capitalizeFirstLetter(method)}`;
+            const fieldName = element.field;
+            const fieldType = element.object?.type === "decimal" ? SCHEMA_TYPES.NUMBER : SCHEMA_TYPES.STRING;
+            const fieldDescription = element.comment.description;
+
+            // Initialize component if it doesn't exist
+            if (!components[componentName]) {
+                components[componentName] = method === METHODS.LIST
+                    ? {
+                        type: SCHEMA_TYPES.ARRAY,
+                        items: {
+                            type: SCHEMA_TYPES.OBJECT,
+                            properties: {}
+                        }
+                    }
+                    : {
+                        type: SCHEMA_TYPES.OBJECT,
                         properties: {}
                     };
-                }
-                const fieldName = elt.field;
-                if (method == "put" || method == "post") {
-                    if (!required.includes(fieldName)) {
-                        required.push(fieldName);
-                    }
-                    component[componentName]["required"] = required;
-                }
-                component[componentName].properties[fieldName] = {
-                    type: type == "decimal" ? "number" : "string",
-                    description: elt.comment.description
-                };
-            })
-        }
-    });
-    return component;
-}
-
-const securitySchemes = () => {
-    return {
-        "securitySchemes": {
-            "BearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
-            },
-            "basicAuth": {
-                "type": "http",
-                "scheme": "basic"
             }
-        }
-    }
-}
 
-module.exports = { createSchemas, securitySchemes }
+            // Handle field properties
+            const targetProperties = method === METHODS.LIST
+                ? components[componentName].items.properties
+                : components[componentName].properties;
+
+            targetProperties[fieldName] = {
+                type: fieldType,
+                description: fieldDescription
+            };
+
+            // Add to required fields for PUT/POST methods
+            if ([METHODS.PUT, METHODS.POST].includes(method)) {
+                requiredFields.add(fieldName);
+                components[componentName].required = Array.from(requiredFields);
+            }
+        });
+    });
+
+    return components;
+};
+
+module.exports = { createSchemas };

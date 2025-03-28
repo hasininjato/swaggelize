@@ -38,9 +38,14 @@ const parser = (swaggelizeOptions) => {
     })
     const openapi = {
         ...openapiInformation(swaggerDefinition),
+        components: {
+            ...securitySchemes,
+            ...schemas
+        }
     };
 
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
+    openapi["paths"] = {...services};
 
     fs.writeFileSync("../swaggelize/json/models.json", JSON.stringify(models, null, 4));
     fs.writeFileSync("../swaggelize/json/schemas.json", JSON.stringify(schemas, null, 4));
