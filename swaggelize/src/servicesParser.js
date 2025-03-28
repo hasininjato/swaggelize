@@ -127,6 +127,16 @@ const generateResponse = (serviceCollections) => {
             "description": "Internal server error"
         }
     };
+    const notFound = {
+        "404": {
+            "description": "Not found"
+        }
+    };
+    const badRequest = {
+        "400": {
+            "description": "Bad request"
+        }
+    };
     Object.keys(serviceCollections).forEach((route) => {
         Object.keys(serviceCollections[route]).forEach((method) => {
             const output = serviceCollections[route][method].output || [];
@@ -165,6 +175,21 @@ const generateResponse = (serviceCollections) => {
                                     }
                                 }
                             }
+                        }
+                    }
+                    if (["post", "put", "patch"].includes(method)) {
+                        responses["responses"] = {
+                            ...responses["responses"],
+                            ...badRequest
+                        }
+                    }
+                    // regex to check if route has {str} in it
+                    const regex = new RegExp("{([^}]+)}", "g");
+                    const match = route.match(regex);
+                    if (match) {
+                        responses["responses"] = {
+                            ...responses["responses"],
+                            ...notFound
                         }
                     }
                 })
