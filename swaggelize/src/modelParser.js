@@ -5,7 +5,7 @@ const utils = require("./utils");
 
 // Cache for common checks and values
 const RELATION_METHODS = new Set(["hasOne", "hasMany", "belongsTo", "belongsToMany"]);
-const SEQUELIZE_DEFINE_PATTERN = /const (\w+)\s*=\s*sequelize\.define/;
+const SEQUELIZE_DEFINE_PATTERN = /(?:const\s+(\w+)\s*=\s*)?sequelize\.define\(\s*['"](\w+)['"]/;
 const SWAG_TAG = '@swag';
 
 // Predefined node handlers for value extraction
@@ -36,7 +36,7 @@ const modelParser = (code) => {
     });
 
     const swagComments = [];
-    let sequelizeModelName = code.match(SEQUELIZE_DEFINE_PATTERN)?.[1] || null;
+    let sequelizeModelName = code.match(SEQUELIZE_DEFINE_PATTERN)?.[2] || null;
 
     // Fallback AST detection if regex fails
     if (!sequelizeModelName) {
