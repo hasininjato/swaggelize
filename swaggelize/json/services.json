@@ -191,10 +191,22 @@
             }
         }
     },
-    "/validate/token": {
-        "put": {
-            "summary": "Validate token sent in parameter",
-            "description": "Validate token sent in parameter",
+    "/users/{id}/transactions": {
+        "post": {
+            "summary": "Create a transaction of the user sent in param",
+            "description": "Create a transaction of the user sent in param",
+            "input": [
+                "transaction:post"
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/TransactionPost"
+                        }
+                    }
+                }
+            },
             "responses": {
                 "400": {
                     "description": "Bad request"
@@ -212,6 +224,18 @@
         "post": {
             "summary": "Login an user",
             "description": "Login an user",
+            "input": [
+                "user:item"
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UserItem"
+                        }
+                    }
+                }
+            },
             "responses": {
                 "400": {
                     "description": "Bad request"
@@ -225,10 +249,13 @@
             }
         }
     },
-    "/test/all": {
+    "/validate/token": {
         "get": {
-            "summary": "Test all get",
-            "description": "Test all get",
+            "summary": "Validate token sent in parameter",
+            "description": "Validate token sent in parameter",
+            "input": [
+                "user:item"
+            ],
             "responses": {
                 "400": {
                     "description": "Bad request"

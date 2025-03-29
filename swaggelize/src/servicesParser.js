@@ -138,6 +138,7 @@ function enhanceCollectionsWithBodyAndResponses (collections) {
     Object.entries(collections).forEach(([route, methods]) => {
         Object.entries(methods).forEach(([method, operation]) => {
             // Add request body if needed
+            // console.log(route, method, operation);
             if (INSERT_METHODS.has(method) && operation.input?.length) {
                 operation.requestBody = createRequestBody(operation.input[0]);
             }
@@ -211,24 +212,22 @@ function transformStr (input) {
 }
 
 function getEndPointsApi (app) {
+    console.log(listEndpoints(app))
     return listEndpoints(app)
 }
 
 function parseCustomRoutes(customItemOperations, customCollectionOperations, collectionJson) {
-    Object.entries(customItemOperations).forEach(([name, objectValue]) => {
-        collectionJson[objectValue.path] = {};
-        collectionJson[objectValue.path][objectValue.method.toLowerCase()] = {
-            summary: objectValue.openapi_context.summary,
-            description: objectValue.openapi_context.description,
+    const processOperation = (operation) => {
+        collectionJson[operation.path] = collectionJson[operation.path] || {};
+        collectionJson[operation.path][operation.method.toLowerCase()] = {
+            summary: operation.openapi_context.summary,
+            description: operation.openapi_context.description,
+            ...(operation.input?.length && { input: operation.input })
         };
-    });
-    Object.entries(customCollectionOperations).forEach(([name, objectValue]) => {
-        collectionJson[objectValue.path] = {};
-        collectionJson[objectValue.path][objectValue.method.toLowerCase()] = {
-            summary: objectValue.openapi_context.summary,
-            description: objectValue.openapi_context.description,
-        };
-    });
+    };
+
+    Object.values(customItemOperations).forEach(processOperation);
+    Object.values(customCollectionOperations).forEach(processOperation);
 }
 
 module.exports = { servicesParser };

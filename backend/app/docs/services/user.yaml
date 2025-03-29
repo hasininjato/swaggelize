@@ -24,14 +24,14 @@ User:
         - user:item
       output:
         - user:list
-    test_all:
-      path: "/test/all"
+    validate_token:
+      path: "/validate/token"
       method: "GET"
       openapi_context:
-        summary: "Test all get"
-        description: "Test all get"
-      output:
-        - user:list
+        summary: "Validate token sent in parameter"
+        description: "Validate token sent in parameter"
+      input:
+        - user:item
   itemOperations:
     get:
       openapi_context:
@@ -51,11 +51,13 @@ User:
       openapi_context:
         summary: Summary
         description: Description
-    validate_token:
-      path: "/validate/token"
-      method: "PUT"
+    create_transaction:
+      method: "POST"
+      path: "/users/{id}/transactions"
       openapi_context:
-        summary: "Validate token sent in parameter"
-        description: "Validate token sent in parameter"
+        summary: Create a transaction of the user sent in param
+        description: Create a transaction of the user sent in param
       input:
-        - user:item
+        - transaction:post
+      output:
+        - transaction:item
