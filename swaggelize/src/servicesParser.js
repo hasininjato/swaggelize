@@ -212,7 +212,7 @@ function transformStr (input) {
 }
 
 function getEndPointsApi (app) {
-    console.log(listEndpoints(app))
+    // console.log(listEndpoints(app))
     return listEndpoints(app)
 }
 

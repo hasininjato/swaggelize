@@ -20,7 +20,6 @@ const createSchemas = (code) => {
 
     code.value.forEach(element => {
         if (element.type !== "field") return;
-        console.log(element);
 
         element.comment.methods.forEach(method => {
             const componentName = `${code.sequelizeModel}${utils.capitalizeFirstLetter(method)}`;

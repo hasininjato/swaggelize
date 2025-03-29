@@ -1,5 +1,137 @@
 {
     "schemas": {
+        "instrumentList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "type of the instrument"
+                    },
+                    "purchaseDate": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "instrumentItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": ""
+                },
+                "type": {
+                    "type": "string",
+                    "description": "type of the instrument"
+                },
+                "purchaseDate": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        },
+        "instrumentPut": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "type of the instrument"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "instrumentPost": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "type of the instrument"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "TransactionItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "description": "Amount of the transaction"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the transaction"
+                },
+                "date": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        },
+        "TransactionList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "TransactionPut": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "description": "Amount of the transaction"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the transaction"
+                }
+            },
+            "required": [
+                "amount",
+                "description"
+            ]
+        },
+        "TransactionPost": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "description": "Amount of the transaction"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the transaction"
+                }
+            },
+            "required": [
+                "amount",
+                "description"
+            ]
+        },
         "UserItem": {
             "type": "object",
             "properties": {
