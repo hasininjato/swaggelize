@@ -2,18 +2,36 @@ User:
   collectionOperations:
     get:
       openapi_context:
-        summary: Summary
-        description: Description
+        summary: List of all users
+        description: List of all users
       output:
         - user:list
     post:
       openapi_context:
-        summary: Summary
-        description: Description
+        summary: Create a user
+        description: Create a user
       input:
         - user:post
       output:
         - user:item
+    login:
+      path: "/auth/login"
+      method: "POST"
+      openapi_context:
+        summary: Login an user
+        description: Login an user
+      input:
+        - user:item
+      output:
+        - user:list
+    test_all:
+      path: "/test/all"
+      method: "GET"
+      openapi_context:
+        summary: "Test all get"
+        description: "Test all get"
+      output:
+        - user:list
   itemOperations:
     get:
       openapi_context:
@@ -33,3 +51,11 @@ User:
       openapi_context:
         summary: Summary
         description: Description
+    validate_token:
+      path: "/validate/token"
+      method: "PUT"
+      openapi_context:
+        summary: "Validate token sent in parameter"
+        description: "Validate token sent in parameter"
+      input:
+        - user:item

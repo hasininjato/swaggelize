@@ -22,9 +22,11 @@ const STANDARD_RESPONSES = {
     500: { description: "Internal server error" }
 };
 
-const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
+function servicesParser(servicePath, routesVariable, routePrefix, schemas) {
     const collectionJson = {};
     const servicesFiles = utils.getFileInDirectory(servicePath);
+    const customRoutesCollection = {};
+    const customRoutesItems = {};
 
     servicesFiles.forEach((file) => {
         const contentYaml = utils.readFileContent(`${servicePath}/${file}`);
@@ -44,14 +46,25 @@ const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
             `^${routePrefix}/${modelLower}s?/:([^/]+)$`
         );
 
+        const allowedMethodOperation = ['post', 'get'];
+        const allowedMethodItem = ['put', 'get', 'patch', 'delete'];
+        Object.keys(collectionOperations).filter(key => !allowedMethodOperation.includes(key)).forEach(operation => {
+            customRoutesCollection[operation] = collectionOperations[operation] || [];
+        });
+        Object.keys(itemOperations).filter(key => !allowedMethodItem.includes(key)).forEach(operation => {
+            customRoutesItems[operation] = itemOperations[operation] || [];
+        });
+
         routes.forEach((route) => {
             let routeWithoutPrefix, operations, isCollectionRoute, paramName;
 
             if (collectionRoutePattern.test(route.path)) {
+                // get basic collections operations (get all and post)
                 routeWithoutPrefix = route.path.replace(routePrefix, "");
                 operations = collectionOperations;
                 isCollectionRoute = true;
             } else if (itemRoutePattern.test(route.path)) {
+                // get basic item operations (get by id, delete, put and patch)
                 paramName = route.path.split(":")[1];
                 routeWithoutPrefix = route.path.replace(routePrefix, "").replace(`:${paramName}`, `{${paramName}}`);
                 operations = itemOperations;
@@ -74,10 +87,11 @@ const servicesParser = (servicePath, routesVariable, routePrefix, schemas) => {
             );
         });
     });
+    parseCustomRoutes(customRoutesItems, customRoutesCollection, collectionJson);
 
     enhanceCollectionsWithBodyAndResponses(collectionJson);
     return collectionJson;
-};
+}
 
 function getCachedPattern(cache, pattern) {
     if (!cache.has(pattern)) {
@@ -110,15 +124,17 @@ function processRouteMethods(methods, operations, routeEntry, isCollectionRoute,
     });
 }
 
-const generateParameter = (parameterName, model) => ({
-    in: "path",
-    name: parameterName,
-    schema: { type: "string" },
-    required: true,
-    description: `${model} ${parameterName}`
-});
+function generateParameter(parameterName, model) {
+    return {
+        in: "path",
+        name: parameterName,
+        schema: { type: "string" },
+        required: true,
+        description: `${model} ${parameterName}`
+    };
+}
 
-const enhanceCollectionsWithBodyAndResponses = (collections) => {
+function enhanceCollectionsWithBodyAndResponses (collections) {
     Object.entries(collections).forEach(([route, methods]) => {
         Object.entries(methods).forEach(([method, operation]) => {
             // Add request body if needed
@@ -135,7 +151,7 @@ const enhanceCollectionsWithBodyAndResponses = (collections) => {
             );
         });
     });
-};
+}
 
 function createRequestBody(input) {
     const { pascalCase } = transformStr(input);
@@ -184,7 +200,7 @@ function createResponses(method, output, hasPathParams, isModifyingMethod) {
     return responses;
 }
 
-const transformStr = (input) => {
+function transformStr (input) {
     const [prefix, suffix] = input.split(':');
     const pascalPrefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
     const pascalCase = suffix
@@ -192,8 +208,27 @@ const transformStr = (input) => {
         : pascalPrefix;
 
     return { pascalCase, suffix, prefix };
-};
+}
 
-const getEndPointsApi = (app) => listEndpoints(app);
+function getEndPointsApi (app) {
+    return listEndpoints(app)
+}
+
+function parseCustomRoutes(customItemOperations, customCollectionOperations, collectionJson) {
+    Object.entries(customItemOperations).forEach(([name, objectValue]) => {
+        collectionJson[objectValue.path] = {};
+        collectionJson[objectValue.path][objectValue.method.toLowerCase()] = {
+            summary: objectValue.openapi_context.summary,
+            description: objectValue.openapi_context.description,
+        };
+    });
+    Object.entries(customCollectionOperations).forEach(([name, objectValue]) => {
+        collectionJson[objectValue.path] = {};
+        collectionJson[objectValue.path][objectValue.method.toLowerCase()] = {
+            summary: objectValue.openapi_context.summary,
+            description: objectValue.openapi_context.description,
+        };
+    });
+}
 
 module.exports = { servicesParser };

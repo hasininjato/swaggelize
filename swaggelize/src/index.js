@@ -47,7 +47,6 @@ const parser = (swaggelizeOptions) => {
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
     openapi["paths"] = {...services};
 
-    console.log(models);
     fs.writeFileSync("../swaggelize/json/models.json", JSON.stringify(models, null, 4));
     fs.writeFileSync("../swaggelize/json/schemas.json", JSON.stringify(schemas, null, 4));
     fs.writeFileSync("../swaggelize/json/services.json", JSON.stringify(services, null, 4));

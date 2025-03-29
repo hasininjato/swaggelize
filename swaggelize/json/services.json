@@ -1,8 +1,8 @@
 {
     "/users": {
         "post": {
-            "summary": "Summary",
-            "description": "Description",
+            "summary": "Create a user",
+            "description": "Create a user",
             "output": [
                 "user:item"
             ],
@@ -41,8 +41,8 @@
             }
         },
         "get": {
-            "summary": "Summary",
-            "description": "Description",
+            "summary": "List of all users",
+            "description": "List of all users",
             "output": [
                 "user:list"
             ],
@@ -179,6 +179,57 @@
                 "204": {
                     "description": "Deleted"
                 },
+                "400": {
+                    "description": "Bad request"
+                },
+                "404": {
+                    "description": "Not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    },
+    "/validate/token": {
+        "put": {
+            "summary": "Validate token sent in parameter",
+            "description": "Validate token sent in parameter",
+            "responses": {
+                "400": {
+                    "description": "Bad request"
+                },
+                "404": {
+                    "description": "Not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    },
+    "/auth/login": {
+        "post": {
+            "summary": "Login an user",
+            "description": "Login an user",
+            "responses": {
+                "400": {
+                    "description": "Bad request"
+                },
+                "404": {
+                    "description": "Not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    },
+    "/test/all": {
+        "get": {
+            "summary": "Test all get",
+            "description": "Test all get",
+            "responses": {
                 "400": {
                     "description": "Bad request"
                 },
