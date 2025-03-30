@@ -2,6 +2,9 @@
     "/users": {
         "post": {
             "summary": "Create a user",
+            "tags": [
+                "User"
+            ],
             "description": "Create a user",
             "output": [
                 "user:item"
@@ -42,6 +45,9 @@
         },
         "get": {
             "summary": "List of all users",
+            "tags": [
+                "User"
+            ],
             "description": "List of all users",
             "output": [
                 "user:list"
@@ -72,6 +78,9 @@
     "/users/{id}": {
         "get": {
             "summary": "Summary",
+            "tags": [
+                "User"
+            ],
             "description": "Description",
             "output": [
                 "user:item"
@@ -111,6 +120,9 @@
         },
         "put": {
             "summary": "Summary",
+            "tags": [
+                "User"
+            ],
             "description": "Description",
             "output": [
                 "user:item"
@@ -162,6 +174,9 @@
         },
         "delete": {
             "summary": "Summary",
+            "tags": [
+                "User"
+            ],
             "description": "Description",
             "output": [],
             "parameters": [
@@ -194,6 +209,9 @@
     "/users/{id}/transactions": {
         "post": {
             "summary": "Create a transaction of the user sent in param",
+            "tags": [
+                "Transaction"
+            ],
             "description": "Create a transaction of the user sent in param",
             "input": [
                 "transaction:post"
@@ -223,6 +241,9 @@
     "/auth/login": {
         "post": {
             "summary": "Login an user",
+            "tags": [
+                "Authentication"
+            ],
             "description": "Login an user",
             "input": [
                 "user:item"
@@ -252,6 +273,9 @@
     "/validate/token": {
         "get": {
             "summary": "Validate token sent in parameter",
+            "tags": [
+                "Token"
+            ],
             "description": "Validate token sent in parameter",
             "input": [
                 "user:item"

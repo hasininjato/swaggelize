@@ -10,6 +10,7 @@ const parseCustomRoutes = (customItemOperations, customCollectionOperations, col
         collectionJson[operation.path] = collectionJson[operation.path] || {};
         collectionJson[operation.path][operation.method.toLowerCase()] = {
             summary: operation.openapi_context.summary,
+            tags: [operation.tags],
             description: operation.openapi_context.description,
             ...(operation.input?.length && {input: operation.input})
         };
@@ -37,6 +38,7 @@ const processRouteMethods = (methods, operations, routeEntry, isCollectionRoute,
 
         const operationData = {
             summary: operationMethod.openapi_context?.summary,
+            tags: [model],
             description: operationMethod.openapi_context?.description,
             output: operationMethod.output || []
         };

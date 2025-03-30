@@ -15,6 +15,7 @@ User:
       output:
         - user:item
     login:
+      tags: "Authentication"
       path: "/auth/login"
       method: "POST"
       openapi_context:
@@ -25,6 +26,7 @@ User:
       output:
         - user:list
     validate_token:
+      tags: "Token"
       path: "/validate/token"
       method: "GET"
       openapi_context:
@@ -52,6 +54,7 @@ User:
         summary: Summary
         description: Description
     create_transaction:
+      tags: "Transaction"
       method: "POST"
       path: "/users/{id}/transactions"
       openapi_context:
