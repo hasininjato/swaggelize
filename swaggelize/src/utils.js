@@ -32,7 +32,7 @@ const getMethodsAndDescriptionFromComment = (comment) => {
         .find(line => line.toLowerCase().includes('methods'));  // Find the line with 'methods'
 
     let methodsArray = [];
-    if (methodsLine != undefined) {
+    if (methodsLine !== undefined) {
         methodsArray = methodsLine
             .replace('methods:', '')  // Remove the 'methods:' prefix
             .trim()  // Trim spaces
@@ -46,7 +46,7 @@ const getMethodsAndDescriptionFromComment = (comment) => {
         .find(line => line.toLowerCase().includes('description'));  // Find the line with 'description'
 
     let description = "";
-    if (descriptionLine != undefined) {
+    if (descriptionLine !== undefined) {
         description = descriptionLine
             .replace('description:', '')  // Remove the 'description:' prefix
             .trim();  // Trim spaces
@@ -63,9 +63,20 @@ const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+const transformStr = (input) => {
+    const [prefix, suffix] = input.split(':');
+    const pascalPrefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    const pascalCase = suffix
+        ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
+        : pascalPrefix;
+
+    return {pascalCase, suffix, prefix};
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
     getMethodsAndDescriptionFromComment,
-    capitalizeFirstLetter
+    capitalizeFirstLetter,
+    transformStr
 }
