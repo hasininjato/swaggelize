@@ -5,8 +5,27 @@ const getEndPointsApi = (app) => {
     return listEndpoints(app)
 }
 
+const getVariablesFromPath = (path) => {
+    const matches = [...path.matchAll(/\{([^}]+)}/g)];
+    return matches.map(match => match[1]);
+}
+
+const isEmptyObject = (obj) => {
+    return obj != null && typeof obj === 'object' && !Array.isArray(obj) && Object.keys(obj).length === 0;
+}
+
 const parseCustomRoutes = (customItemOperations, customCollectionOperations, collectionJson) => {
     const processOperation = (operation) => {
+        const path = operation.path;
+        const variables = getVariablesFromPath(path);
+        let parameters = {};
+        variables.forEach((variable) => {
+            parameters = {
+                ...parameters,
+                ...generateParameter(variable, "")
+            }
+        })
+        // console.log(parameters);
         collectionJson[operation.path] = collectionJson[operation.path] || {};
         collectionJson[operation.path][operation.method.toLowerCase()] = {
             summary: operation.openapi_context.summary,
@@ -14,6 +33,9 @@ const parseCustomRoutes = (customItemOperations, customCollectionOperations, col
             description: operation.openapi_context.description,
             ...(operation.input?.length && {input: operation.input})
         };
+        if (!isEmptyObject(parameters)) {
+            collectionJson[operation.path][operation.method.toLowerCase()]["parameters"] = [parameters];
+        }
     };
 
     Object.values(customItemOperations).forEach(processOperation);

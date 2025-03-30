@@ -41,10 +41,10 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Sample test API',
-            description: 'Liste des API endpoints pour le test provenant de L3M holding',
+            title: 'Swaggelize API',
+            description: 'API automatic generator using Swagger API and Swaggelize',
             contact: {
-                name: 'Hasininjato Rojovaao'
+                name: 'Hasininjato Rojovao'
             },
         },
         components: {
@@ -86,8 +86,8 @@ const swaggelizeOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Sample test API',
-            description: 'Liste des API endpoints pour le test provenant de L3M holding',
+            title: 'Swaggelize API',
+            description: 'API automatic generator using Swagger API and Swaggelize',
             contact: {
                 name: 'Hasininjato Rojovao'
             },

@@ -216,6 +216,17 @@
             "input": [
                 "transaction:post"
             ],
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": " id"
+                }
+            ],
             "requestBody": {
                 "content": {
                     "application/json": {
