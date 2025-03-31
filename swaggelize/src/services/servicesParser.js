@@ -1,15 +1,15 @@
-const {getFileInDirectory, readFileContent} = require("./utils");
+const {getFileInDirectory, readFileContent} = require("../utils");
 const yaml = require('js-yaml');
 const {
     getEndPointsApi,
     parseCustomRoutes,
     processRouteMethods
-} = require('./services/routesParser');
+} = require('./routesParser');
 const {
     COLLECTION_ROUTE_PATTERN_CACHE,
     ITEM_ROUTE_PATTERN_CACHE
-} = require('./services/constants');
-const {enhanceCollectionsWithBodyAndResponses} = require("./services/responseBodyCreator");
+} = require('./constants');
+const {enhanceCollectionsWithBodyAndResponses} = require("./responseBodyCreator");
 
 function servicesParser(servicePath, routesVariable, routePrefix, schemas) {
     const collectionJson = {};
