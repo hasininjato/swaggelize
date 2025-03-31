@@ -77,11 +77,11 @@
     },
     "/users/{id}": {
         "get": {
-            "summary": "Summary",
+            "summary": "Get user by id",
             "tags": [
                 "User"
             ],
-            "description": "Description",
+            "description": "Get user by id",
             "output": [
                 "user:item"
             ],
@@ -119,11 +119,11 @@
             }
         },
         "put": {
-            "summary": "Summary",
+            "summary": "Update an user by id",
             "tags": [
                 "User"
             ],
-            "description": "Description",
+            "description": "Update an user by id",
             "output": [
                 "user:item"
             ],
@@ -173,11 +173,11 @@
             }
         },
         "delete": {
-            "summary": "Summary",
+            "summary": "Delete an user by id",
             "tags": [
                 "User"
             ],
-            "description": "Description",
+            "description": "Delete an user by id",
             "output": [],
             "parameters": [
                 {
@@ -213,6 +213,9 @@
                 "Transaction"
             ],
             "description": "Create a transaction of the user sent in param",
+            "output": [
+                "transaction:item"
+            ],
             "input": [
                 "transaction:post"
             ],
@@ -237,6 +240,16 @@
                 }
             },
             "responses": {
+                "201": {
+                    "description": "Created transaction",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionItem"
+                            }
+                        }
+                    }
+                },
                 "400": {
                     "description": "Bad request"
                 },
@@ -254,6 +267,9 @@
                 "Transaction"
             ],
             "description": "List of all transactions of an user by id",
+            "output": [
+                "transaction:list"
+            ],
             "parameters": [
                 {
                     "in": "path",
@@ -266,6 +282,16 @@
                 }
             ],
             "responses": {
+                "200": {
+                    "description": "Transaction list",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionList"
+                            }
+                        }
+                    }
+                },
                 "400": {
                     "description": "Bad request"
                 },
@@ -285,6 +311,9 @@
                 "Authentication"
             ],
             "description": "Login an user",
+            "output": [
+                "user:list"
+            ],
             "input": [
                 "user:item"
             ],
@@ -298,6 +327,16 @@
                 }
             },
             "responses": {
+                "201": {
+                    "description": "Created user",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserList"
+                            }
+                        }
+                    }
+                },
                 "400": {
                     "description": "Bad request"
                 },
@@ -317,6 +356,7 @@
                 "Token"
             ],
             "description": "Validate token sent in parameter",
+            "output": [],
             "input": [
                 "user:item"
             ],

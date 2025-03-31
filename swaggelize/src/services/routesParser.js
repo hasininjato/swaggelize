@@ -24,17 +24,22 @@ const parseCustomRoutes = (customItemOperations, customCollectionOperations, col
                 ...parameters,
                 ...generateParameter(variable, "")
             }
-        })
-        // console.log(parameters);
+        });
         collectionJson[operation.path] = collectionJson[operation.path] || {};
         collectionJson[operation.path][operation.method.toLowerCase()] = {
             summary: operation.openapi_context.summary,
             tags: [operation.tags],
             description: operation.openapi_context.description,
+            output: operation.output || [],
             ...(operation.input?.length && {input: operation.input})
         };
         if (!isEmptyObject(parameters)) {
             collectionJson[operation.path][operation.method.toLowerCase()]["parameters"] = [parameters];
+        }
+        const methodLower = operation.method.toLowerCase();
+
+        if ((methodLower === "post") || INSERT_METHODS.has(methodLower)) {
+            collectionJson[operation.path][operation.method.toLowerCase()]["input"] = operation.input || [];
         }
     };
 
@@ -72,7 +77,6 @@ const processRouteMethods = (methods, operations, routeEntry, isCollectionRoute,
         if ((isCollectionRoute && methodLower === "post") || INSERT_METHODS.has(methodLower)) {
             operationData.input = operationMethod.input || [];
         }
-        console.log(operationData);
 
         routeEntry[methodLower] = operationData;
     });
