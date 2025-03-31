@@ -6,12 +6,6 @@
                 "User"
             ],
             "description": "Create a user",
-            "output": [
-                "user:item"
-            ],
-            "input": [
-                "user:post"
-            ],
             "requestBody": {
                 "content": {
                     "application/json": {
@@ -49,9 +43,6 @@
                 "User"
             ],
             "description": "List of all users",
-            "output": [
-                "user:list"
-            ],
             "responses": {
                 "200": {
                     "description": "User list",
@@ -82,9 +73,6 @@
                 "User"
             ],
             "description": "Get user by id",
-            "output": [
-                "user:item"
-            ],
             "parameters": [
                 {
                     "in": "path",
@@ -124,9 +112,6 @@
                 "User"
             ],
             "description": "Update an user by id",
-            "output": [
-                "user:item"
-            ],
             "parameters": [
                 {
                     "in": "path",
@@ -137,9 +122,6 @@
                     "required": true,
                     "description": "User id"
                 }
-            ],
-            "input": [
-                "user:put"
             ],
             "requestBody": {
                 "content": {
@@ -178,7 +160,6 @@
                 "User"
             ],
             "description": "Delete an user by id",
-            "output": [],
             "parameters": [
                 {
                     "in": "path",
@@ -213,12 +194,6 @@
                 "Transaction"
             ],
             "description": "Create a transaction of the user sent in param",
-            "output": [
-                "transaction:item"
-            ],
-            "input": [
-                "transaction:post"
-            ],
             "parameters": [
                 {
                     "in": "path",
@@ -267,9 +242,6 @@
                 "Transaction"
             ],
             "description": "List of all transactions of an user by id",
-            "output": [
-                "transaction:list"
-            ],
             "parameters": [
                 {
                     "in": "path",
@@ -311,12 +283,6 @@
                 "Authentication"
             ],
             "description": "Login an user",
-            "output": [
-                "user:list"
-            ],
-            "input": [
-                "user:item"
-            ],
             "requestBody": {
                 "content": {
                     "application/json": {
@@ -356,10 +322,6 @@
                 "Token"
             ],
             "description": "Validate token sent in parameter",
-            "output": [],
-            "input": [
-                "user:item"
-            ],
             "responses": {
                 "400": {
                     "description": "Bad request"

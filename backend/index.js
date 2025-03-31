@@ -91,6 +91,7 @@ const swaggelizeOptions = {
             contact: {
                 name: 'Hasininjato Rojovao'
             },
+            version: '1.0.0'
         },
         servers: [
             {

@@ -1,11 +1,12 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Sample test API",
-        "description": "Liste des API endpoints pour le test provenant de L3M holding",
+        "title": "Swaggelize API",
+        "description": "API automatic generator using Swagger API and Swaggelize",
         "contact": {
             "name": "Hasininjato Rojovao"
-        }
+        },
+        "version": "1.0.0"
     },
     "servers": [
         {
@@ -28,6 +29,138 @@
             }
         },
         "schemas": {
+            "instrumentList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "type": {
+                            "type": "string",
+                            "description": "type of the instrument"
+                        },
+                        "purchaseDate": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            },
+            "instrumentItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "type of the instrument"
+                    },
+                    "purchaseDate": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
+            },
+            "instrumentPut": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "type of the instrument"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "instrumentPost": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "type of the instrument"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "TransactionItem": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
+            },
+            "TransactionList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "amount": {
+                            "type": "string",
+                            "description": "Amount of the transaction"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the transaction"
+                        },
+                        "date": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            },
+            "TransactionPut": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
+            "TransactionPost": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
             "UserItem": {
                 "type": "object",
                 "properties": {
@@ -42,15 +175,18 @@
                 }
             },
             "UserList": {
-                "type": "object",
-                "properties": {
-                    "fullname": {
-                        "type": "string",
-                        "description": ""
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": ""
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        }
                     }
                 }
             },
@@ -103,14 +239,11 @@
     "paths": {
         "/users": {
             "post": {
-                "summary": "Summary",
-                "description": "Description",
-                "output": [
-                    "user:item"
+                "summary": "Create a user",
+                "tags": [
+                    "User"
                 ],
-                "input": [
-                    "user:post"
-                ],
+                "description": "Create a user",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -143,11 +276,11 @@
                 }
             },
             "get": {
-                "summary": "Summary",
-                "description": "Description",
-                "output": [
-                    "user:list"
+                "summary": "List of all users",
+                "tags": [
+                    "User"
                 ],
+                "description": "List of all users",
                 "responses": {
                     "200": {
                         "description": "User list",
@@ -173,11 +306,11 @@
         },
         "/users/{id}": {
             "get": {
-                "summary": "Summary",
-                "description": "Description",
-                "output": [
-                    "user:item"
+                "summary": "Get user by id",
+                "tags": [
+                    "User"
                 ],
+                "description": "Get user by id",
                 "parameters": [
                     {
                         "in": "path",
@@ -212,11 +345,11 @@
                 }
             },
             "put": {
-                "summary": "Summary",
-                "description": "Description",
-                "output": [
-                    "user:item"
+                "summary": "Update an user by id",
+                "tags": [
+                    "User"
                 ],
+                "description": "Update an user by id",
                 "parameters": [
                     {
                         "in": "path",
@@ -227,9 +360,6 @@
                         "required": true,
                         "description": "User id"
                     }
-                ],
-                "input": [
-                    "user:put"
                 ],
                 "requestBody": {
                     "content": {
@@ -263,9 +393,11 @@
                 }
             },
             "delete": {
-                "summary": "Summary",
-                "description": "Description",
-                "output": [],
+                "summary": "Delete an user by id",
+                "tags": [
+                    "User"
+                ],
+                "description": "Delete an user by id",
                 "parameters": [
                     {
                         "in": "path",
@@ -281,6 +413,154 @@
                     "204": {
                         "description": "Deleted"
                     },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/{id}/transactions": {
+            "post": {
+                "summary": "Create a transaction of the user sent in param",
+                "tags": [
+                    "Transaction"
+                ],
+                "description": "Create a transaction of the user sent in param",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": " id"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List of all transactions of an user by id",
+                "tags": [
+                    "Transaction"
+                ],
+                "description": "List of all transactions of an user by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": " id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "summary": "Login an user",
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Login an user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserItem"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/validate/token": {
+            "get": {
+                "summary": "Validate token sent in parameter",
+                "tags": [
+                    "Token"
+                ],
+                "description": "Validate token sent in parameter",
+                "responses": {
                     "400": {
                         "description": "Bad request"
                     },

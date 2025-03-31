@@ -38,7 +38,7 @@ const parseCustomRoutes = (customItemOperations, customCollectionOperations, col
         }
         const methodLower = operation.method.toLowerCase();
 
-        if ((methodLower === "post") || INSERT_METHODS.has(methodLower)) {
+        if (INSERT_METHODS.has(methodLower)) {
             collectionJson[operation.path][operation.method.toLowerCase()]["input"] = operation.input || [];
         }
     };

@@ -58,7 +58,8 @@ const openapiInformation = (swaggerDefinition) => {
     return {
         openapi: swaggerDefinition.openapi,
         info: swaggerDefinition.info,
-        servers: swaggerDefinition.servers
+        servers: swaggerDefinition.servers,
+        version: swaggerDefinition.version
     }
 }
 
