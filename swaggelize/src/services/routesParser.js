@@ -72,6 +72,7 @@ const processRouteMethods = (methods, operations, routeEntry, isCollectionRoute,
         if ((isCollectionRoute && methodLower === "post") || INSERT_METHODS.has(methodLower)) {
             operationData.input = operationMethod.input || [];
         }
+        console.log(operationData);
 
         routeEntry[methodLower] = operationData;
     });

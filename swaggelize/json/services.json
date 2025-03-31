@@ -247,6 +247,35 @@
                     "description": "Internal server error"
                 }
             }
+        },
+        "get": {
+            "summary": "List of all transactions of an user by id",
+            "tags": [
+                "Transaction"
+            ],
+            "description": "List of all transactions of an user by id",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": " id"
+                }
+            ],
+            "responses": {
+                "400": {
+                    "description": "Bad request"
+                },
+                "404": {
+                    "description": "Not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
         }
     },
     "/auth/login": {
