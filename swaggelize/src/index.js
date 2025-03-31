@@ -31,7 +31,7 @@ const parser = (swaggelizeOptions) => {
         const code = utils.readFileContent(`${modelsPath}/${file}`);
         const model = modelParser.modelParser(code); // generate the model
         const schema = componentsCreator.createSchemas(model);
-        // schemas.push(schema);
+        models.push(model);
         schemas.schemas = {
             ...schemas.schemas,
             ...schema
