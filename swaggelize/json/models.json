@@ -133,28 +133,12 @@
                     ],
                     "description": ""
                 }
-            },
-            {
-                "type": "relation",
-                "relation": "hasMany",
-                "source": "User",
-                "target": "Transaction",
-                "args": [
-                    "Transaction",
-                    {
-                        "foreignKey": "userId"
-                    }
-                ],
-                "comment": {
-                    "methods": [],
-                    "description": ""
-                }
             }
         ],
         "relations": [
             {
                 "type": "relation",
-                "relation": "hasMany",
+                "relation": "hasOne",
                 "source": "User",
                 "target": "Transaction",
                 "args": [

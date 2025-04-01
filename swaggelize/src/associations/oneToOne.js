@@ -1,17 +1,13 @@
-const createAssociationOneToOne = (model, service) => {
-    const { associations } = model;
-    console.log(associations)
-    if (associations) {
-        for (const key in associations) {
-            if (associations[key].join === 'OneToOne') {
-                const { relation } = associations[key];
-                model.belongsTo(service[relation], {
-                    foreignKey: key,
-                    as: relation
-                });
-            }
-        }
-    }
+const createAssociationOneToOne = (models, service) => {
+    models.forEach(model => {
+        // one to one relationship: hasOne and belongsTo associations are used together
+        const relations = model.relations;
+        let relationType = "";
+        Object.entries(relations).forEach(([key, relation]) => {
+            
+        });
+    });
+    console.log(service)
 }
 
 module.exports = { createAssociationOneToOne };

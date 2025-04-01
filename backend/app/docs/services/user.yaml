@@ -75,4 +75,5 @@ User:
         summary: "List of all transactions of an user by id"
         description: "List of all transactions of an user by id"
       output:
+        - "user:item"
         - "transaction:list"

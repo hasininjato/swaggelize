@@ -3,6 +3,7 @@ const modelParser = require("./modelParser");
 const fs = require("fs");
 const componentsCreator = require("./componentCreator");
 const servicesParser = require("./services/servicesParser");
+const { createAssociationOneToOne } = require("./associations/oneToOne");
 
 const parser = (swaggelizeOptions) => {
     const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
@@ -46,7 +47,9 @@ const parser = (swaggelizeOptions) => {
     };
 
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
-    openapi["paths"] = {...services};
+    openapi["paths"] = { ...services };
+    createAssociationOneToOne(models, services);
+    removeKeys(openapi, ["input", "output"]);
 
     fs.writeFileSync("../swaggelize/json/models.json", JSON.stringify(models, null, 4));
     fs.writeFileSync("../swaggelize/json/schemas.json", JSON.stringify(schemas, null, 4));
@@ -60,6 +63,19 @@ const openapiInformation = (swaggerDefinition) => {
         info: swaggerDefinition.info,
         servers: swaggerDefinition.servers,
         version: swaggerDefinition.version
+    }
+}
+
+// remove input & output keys because useless for openapi specification
+const removeKeys = (obj, keysToRemove) => {
+    if (typeof obj !== "object" || obj === null) return;
+
+    for (const key of Object.keys(obj)) {
+        if (keysToRemove.includes(key)) {
+            delete obj[key];
+        } else {
+            removeKeys(obj[key], keysToRemove);
+        }
     }
 }
 

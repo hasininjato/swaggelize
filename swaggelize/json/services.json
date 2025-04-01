@@ -255,11 +255,11 @@
             ],
             "responses": {
                 "200": {
-                    "description": "Transaction list",
+                    "description": "User item",
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TransactionList"
+                                "$ref": "#/components/schemas/UserItem"
                             }
                         }
                     }

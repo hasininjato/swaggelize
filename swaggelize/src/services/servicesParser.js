@@ -79,7 +79,6 @@ function servicesParser(servicePath, routesVariable, routePrefix, schemas) {
     parseCustomRoutes(customRoutesItems, customRoutesCollection, collectionJson);
 
     enhanceCollectionsWithBodyAndResponses(collectionJson);
-    removeKeys(collectionJson, ["input", "output"]);
     return collectionJson;
 }
 
@@ -88,19 +87,6 @@ function getCachedPattern(cache, pattern) {
         cache.set(pattern, new RegExp(pattern));
     }
     return cache.get(pattern);
-}
-
-// remove input & output keys because useless for openapi specification
-function removeKeys(obj, keysToRemove) {
-    if (typeof obj !== "object" || obj === null) return;
-
-    for (const key of Object.keys(obj)) {
-        if (keysToRemove.includes(key)) {
-            delete obj[key];
-        } else {
-            removeKeys(obj[key], keysToRemove);
-        }
-    }
 }
 
 module.exports = {servicesParser};
