@@ -51,7 +51,8 @@
                     "description": ""
                 }
             }
-        ]
+        ],
+        "relations": []
     },
     {
         "sequelizeModel": "Transaction",
@@ -136,6 +137,8 @@
             {
                 "type": "relation",
                 "relation": "hasMany",
+                "source": "User",
+                "target": "Transaction",
                 "args": [
                     "Transaction",
                     {
@@ -146,6 +149,32 @@
                     "methods": [],
                     "description": ""
                 }
+            }
+        ],
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "hasMany",
+                "source": "User",
+                "target": "Transaction",
+                "args": [
+                    "Transaction",
+                    {
+                        "foreignKey": "userId"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsTo",
+                "source": "Transaction",
+                "target": "User",
+                "args": [
+                    "User",
+                    {
+                        "foreignKey": "userId"
+                    }
+                ]
             }
         ]
     },
@@ -233,6 +262,7 @@
                     "description": ""
                 }
             }
-        ]
+        ],
+        "relations": []
     }
 ]

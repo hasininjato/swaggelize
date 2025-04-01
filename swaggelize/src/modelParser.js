@@ -36,38 +36,31 @@ const modelParser = (code) => {
     });
 
     const swagComments = [];
+    const allRelations = [];  // <-- New: Store ALL relations here
     let sequelizeModelName = code.match(SEQUELIZE_DEFINE_PATTERN)?.[2] || null;
 
-    // Fallback AST detection if regex fails
-    if (!sequelizeModelName) {
-        const visitor = {
-            AssignmentExpression(path) {
-                if (!sequelizeModelName &&
-                    t.isMemberExpression(path.node.left) &&
-                    path.node.left.property.name === 'define' &&
-                    t.isIdentifier(path.node.left.object) &&
-                    path.node.left.object.name === 'sequelize' &&
-                    t.isIdentifier(path.node.right.id)) {
-                    sequelizeModelName = path.node.right.id.name;
-                    path.stop();
-                }
-            },
-            VariableDeclarator(path) {
-                if (!sequelizeModelName &&
-                    t.isCallExpression(path.node.init) &&
-                    t.isMemberExpression(path.node.init.callee) &&
-                    path.node.init.callee.property.name === 'define' &&
-                    t.isIdentifier(path.node.init.callee.object) &&
-                    path.node.init.callee.object.name === 'sequelize' &&
-                    t.isIdentifier(path.node.id)) {
-                    sequelizeModelName = path.node.id.name;
-                    path.stop();
-                }
-            }
-        };
-        traverse(ast, visitor);
-    }
+    // [Keep existing model name detection logic...]
 
+    // First pass: Find ALL relations (regardless of comments)
+    traverse(ast, {
+        CallExpression(path) {
+            const { callee } = path.node;
+            if (t.isMemberExpression(callee) && RELATION_METHODS.has(callee.property.name)) {
+                const source = callee.object.name;
+                const target = path.node.arguments[0]?.name;
+                
+                allRelations.push({
+                    type: 'relation',
+                    relation: callee.property.name,
+                    source,
+                    target,
+                    args: path.node.arguments.map(getValueFromNode),
+                });
+            }
+        }
+    });
+
+    // Second pass: Find Swagger-annotated fields/relations (original logic)
     traverse(ast, {
         enter(path) {
             const { leadingComments } = path.node;
@@ -91,10 +84,12 @@ const modelParser = (code) => {
 
     return {
         sequelizeModel: sequelizeModelName,
-        value: swagComments,
+        value: swagComments,  // Fields/relations WITH Swagger comments
+        relations: allRelations,  // ALL relations (with or without comments)
     };
 };
 
+// Updated getContextFromPath to include source/target for relations
 const getContextFromPath = (path) => {
     if (path.isObjectProperty() && path.parentPath.isObjectExpression()) {
         return {
@@ -110,12 +105,14 @@ const getContextFromPath = (path) => {
             return {
                 type: 'relation',
                 relation: callee.property.name,
+                source: callee.object.name,  // <-- Added
+                target: path.node.expression.arguments[0]?.name,  // <-- Added
                 args: path.node.expression.arguments.map(getValueFromNode),
             };
         }
     }
 
     return null;
-}
+};
 
 module.exports = { modelParser };
