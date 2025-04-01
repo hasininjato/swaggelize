@@ -115,10 +115,9 @@ const openapiDoc = swaggelize.parser(swaggelizeOptions);
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
 // fs.writeFileSync("swagger.json", JSON.stringify(openapiDoc, null, 4));
 const openapiJson = JSON.parse(fs.readFileSync("./swagger.json", "utf8"));
-console.log(openapiDoc, openapiJson)
 // app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiJson));
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiJson));
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc));
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

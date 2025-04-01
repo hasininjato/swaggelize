@@ -171,6 +171,13 @@
                     "email": {
                         "type": "string",
                         "description": ""
+                    },
+                    "transactions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransactionItem",
+                            "x-stop-recursion": true
+                        }
                     }
                 }
             },
@@ -497,7 +504,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TransactionList"
+                                    "$ref": "#/components/schemas/UserItem"
                                 }
                             }
                         }
