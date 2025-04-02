@@ -1,6 +1,6 @@
 {
     "schemas": {
-        "instrumentList": {
+        "InstrumentList": {
             "type": "array",
             "items": {
                 "type": "object",
@@ -20,7 +20,7 @@
                 }
             }
         },
-        "instrumentItem": {
+        "InstrumentItem": {
             "type": "object",
             "properties": {
                 "id": {
@@ -37,7 +37,7 @@
                 }
             }
         },
-        "instrumentPut": {
+        "InstrumentPut": {
             "type": "object",
             "properties": {
                 "type": {
@@ -49,7 +49,7 @@
                 "type"
             ]
         },
-        "instrumentPost": {
+        "InstrumentPost": {
             "type": "object",
             "properties": {
                 "type": {

@@ -1,6 +1,6 @@
 [
     {
-        "sequelizeModel": "instrument",
+        "sequelizeModel": "Instrument",
         "value": [
             {
                 "field": "id",
@@ -52,7 +52,26 @@
                 }
             }
         ],
-        "relations": []
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "hasMany",
+                "source": "User",
+                "target": "Instrument",
+                "args": [
+                    "Instrument"
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsTo",
+                "source": "Instrument",
+                "target": "User",
+                "args": [
+                    "User"
+                ]
+            }
+        ]
     },
     {
         "sequelizeModel": "Transaction",

@@ -48,7 +48,7 @@ const parser = (swaggelizeOptions) => {
 
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
     openapi["paths"] = { ...services };
-    createAssociationOneToOne(models, services);
+    // createAssociationOneToOne(models, schemas, services);
     removeKeys(openapi, ["input", "output"]);
 
     fs.writeFileSync("../swaggelize/json/models.json", JSON.stringify(models, null, 4));
