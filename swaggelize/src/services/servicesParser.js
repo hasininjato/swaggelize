@@ -10,12 +10,50 @@ const {
     ITEM_ROUTE_PATTERN_CACHE
 } = require('./constants');
 const {enhanceCollectionsWithBodyAndResponses} = require("./responseBodyCreator");
+const fs = require("node:fs");
 
-function servicesParser(servicePath, routesVariable, routePrefix, schemas) {
+function servicesParser(servicePath, routesVariable, routePrefix, schemas, models) {
     const collectionJson = {};
     const servicesFiles = getFileInDirectory(servicePath);
     const customRoutesCollection = {};
     const customRoutesItems = {};
+
+    let relationsComponents = {};
+
+    models.forEach(model => {
+        const relations = model.relations;
+        relations.forEach(relation => {
+            if (relation.relation === "hasOne") {
+                const source = relation.source;
+                const target = relation.target;
+                const sourceComponentName = `${source}Item`;
+                const targetComponentName = `${target}Item`;
+                const schemaComponentName = `${source}${target}`;
+                const foreignKey = target.toLowerCase() + 'Id';
+                relationsComponents[schemaComponentName] = {
+                    ...schemas.schemas[sourceComponentName]
+                }
+                relationsComponents[schemaComponentName].properties[foreignKey] = {
+                    ...schemas.schemas[targetComponentName]
+                }
+            } else if (relation.relation === "hasMany") {
+                const source = relation.source;
+                const target = relation.target;
+                const sourceComponentName = `${source}Item`;
+                const targetComponentName = `${target}List`;
+                const schemaComponentName = `${source}${target}`;
+                const foreignKey = target.toLowerCase() + 'Id';
+                relationsComponents[schemaComponentName] = {
+                    ...schemas.schemas[sourceComponentName]
+                }
+                relationsComponents[schemaComponentName].properties[foreignKey] = {
+                    ...schemas.schemas[targetComponentName]
+                }
+            }
+        });
+    });
+    console.log(JSON.stringify(relationsComponents, null, 4));
+    // fs.writeFileSync("relations.json", JSON.stringify(relationsComponents, null, 4));
 
     servicesFiles.forEach((file) => {
         const contentYaml = readFileContent(`${servicePath}/${file}`);

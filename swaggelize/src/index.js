@@ -46,7 +46,7 @@ const parser = (swaggelizeOptions) => {
         }
     };
 
-    const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas);
+    const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas, models);
     openapi["paths"] = { ...services };
     // createAssociationOneToOne(models, schemas, services);
     removeKeys(openapi, ["input", "output"]);

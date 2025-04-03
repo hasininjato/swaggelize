@@ -154,6 +154,50 @@
                 "email": {
                     "type": "string",
                     "description": ""
+                },
+                "instrumentId": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "type": {
+                                "type": "string",
+                                "description": "type of the instrument"
+                            },
+                            "purchaseDate": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        }
+                    }
+                },
+                "transactionId": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Id of the transaction"
+                            },
+                            "amount": {
+                                "type": "string",
+                                "description": "Amount of the transaction"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the transaction"
+                            },
+                            "date": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        }
+                    }
                 }
             }
         },

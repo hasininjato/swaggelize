@@ -174,7 +174,7 @@
         "relations": [
             {
                 "type": "relation",
-                "relation": "hasOne",
+                "relation": "hasMany",
                 "source": "User",
                 "target": "Transaction",
                 "args": [
