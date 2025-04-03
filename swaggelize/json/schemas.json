@@ -64,6 +64,10 @@
         "TransactionItem": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the transaction"
+                },
                 "amount": {
                     "type": "string",
                     "description": "Amount of the transaction"
@@ -83,6 +87,10 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id of the transaction"
+                    },
                     "amount": {
                         "type": "string",
                         "description": "Amount of the transaction"
@@ -135,6 +143,10 @@
         "UserItem": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
                 "fullname": {
                     "type": "string",
                     "description": ""
@@ -150,6 +162,10 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id of the user"
+                    },
                     "fullname": {
                         "type": "string",
                         "description": ""

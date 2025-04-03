@@ -48,13 +48,17 @@ const createRequestBody = (input) => {
     };
 }
 
-const enhanceCollectionsWithBodyAndResponses = (collections) => {
+const enhanceCollectionsWithBodyAndResponses = (collections, schemas) => {
     Object.entries(collections).forEach(([route, methods]) => {
         Object.entries(methods).forEach(([method, operation]) => {
             // Add request body if needed
             if (INSERT_METHODS.has(method) && operation.input?.length) {
                 operation.requestBody = createRequestBody(operation.input[0]);
             }
+            operation?.output?.forEach(method => {
+                const {pascalCase, suffix, prefix} = transformStr(method);
+                // console.log(schemas.schemas[pascalCase]);
+            })
 
             // Add responses
             operation.responses = createResponses(

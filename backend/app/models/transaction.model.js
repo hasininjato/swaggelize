@@ -3,6 +3,11 @@ const sequelize = require('../config/db.conf');
 const User = require('./user.model');
 
 const Transaction = sequelize.define('Transaction', {
+    /**
+     * @swag
+     * methods: item, list
+     * description: Id of the transaction
+     */
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

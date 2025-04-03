@@ -77,8 +77,7 @@ function servicesParser(servicePath, routesVariable, routePrefix, schemas) {
         });
     });
     parseCustomRoutes(customRoutesItems, customRoutesCollection, collectionJson);
-
-    enhanceCollectionsWithBodyAndResponses(collectionJson);
+    enhanceCollectionsWithBodyAndResponses(collectionJson, schemas);
     return collectionJson;
 }
 

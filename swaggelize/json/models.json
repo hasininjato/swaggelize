@@ -77,6 +77,23 @@
         "sequelizeModel": "Transaction",
         "value": [
             {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.INTEGER",
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list"
+                    ],
+                    "description": "Id of the transaction"
+                }
+            },
+            {
                 "field": "amount",
                 "type": "field",
                 "object": {
@@ -184,6 +201,23 @@
     {
         "sequelizeModel": "User",
         "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.INTEGER",
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list"
+                    ],
+                    "description": "Id of the user"
+                }
+            },
             {
                 "field": "fullname",
                 "type": "field",

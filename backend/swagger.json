@@ -29,7 +29,7 @@
             }
         },
         "schemas": {
-            "instrumentList": {
+            "InstrumentList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -49,7 +49,7 @@
                     }
                 }
             },
-            "instrumentItem": {
+            "InstrumentItem": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -66,7 +66,7 @@
                     }
                 }
             },
-            "instrumentPut": {
+            "InstrumentPut": {
                 "type": "object",
                 "properties": {
                     "type": {
@@ -78,7 +78,7 @@
                     "type"
                 ]
             },
-            "instrumentPost": {
+            "InstrumentPost": {
                 "type": "object",
                 "properties": {
                     "type": {
@@ -93,6 +93,10 @@
             "TransactionItem": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id of the transaction"
+                    },
                     "amount": {
                         "type": "string",
                         "description": "Amount of the transaction"
@@ -112,6 +116,10 @@
                 "items": {
                     "type": "object",
                     "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the transaction"
+                        },
                         "amount": {
                             "type": "string",
                             "description": "Amount of the transaction"
@@ -171,13 +179,6 @@
                     "email": {
                         "type": "string",
                         "description": ""
-                    },
-                    "transactions": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TransactionItem",
-                            "x-stop-recursion": true
-                        }
                     }
                 }
             },
@@ -500,7 +501,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Transaction list",
+                        "description": "User item",
                         "content": {
                             "application/json": {
                                 "schema": {
