@@ -1,4 +1,4 @@
-const {getFileInDirectory, readFileContent} = require("../utils");
+const { getFileInDirectory, readFileContent } = require("../utils");
 const yaml = require('js-yaml');
 const {
     getEndPointsApi,
@@ -9,7 +9,7 @@ const {
     COLLECTION_ROUTE_PATTERN_CACHE,
     ITEM_ROUTE_PATTERN_CACHE
 } = require('./constants');
-const {enhanceCollectionsWithBodyAndResponses} = require("./responseBodyCreator");
+const { enhanceCollectionsWithBodyAndResponses } = require("./responseBodyCreator");
 const fs = require("node:fs");
 
 function servicesParser(servicePath, routesVariable, routePrefix, schemas, models) {
@@ -19,6 +19,7 @@ function servicesParser(servicePath, routesVariable, routePrefix, schemas, model
     const customRoutesItems = {};
 
     let relationsComponents = {};
+    let test = 1;
 
     models.forEach(model => {
         const relations = model.relations;
@@ -49,10 +50,44 @@ function servicesParser(servicePath, routesVariable, routePrefix, schemas, model
                 relationsComponents[schemaComponentName].properties[foreignKey] = {
                     ...schemas.schemas[targetComponentName]
                 }
+            } else if (relation.relation === "belongsToMany") {
+                const source = relation.source;
+                const target = relation.target;
+                const sourceComponentNameItem = `${source}Item`;
+                const targetComponentNameItem = `${target}List`;
+                const foreignKeyTarget = target.toLowerCase() + 'Id';
+                // update item schema of source and target component
+                relationsComponents[sourceComponentNameItem] = {
+                    ...schemas.schemas[sourceComponentNameItem]
+                }
+                // we add the targetComponentName to the sourceComponentName
+                relationsComponents[sourceComponentNameItem].properties[foreignKeyTarget] = {
+                    ...schemas.schemas[targetComponentNameItem]
+                }
+                // update list schema of source and target component
+                const sourceComponentNameList = `${source}List`;
+                const targetComponentNameList = `${target}List`;
+                relationsComponents[sourceComponentNameList] = {
+                    ...schemas.schemas[sourceComponentNameList]
+                }
+                relationsComponents[targetComponentNameList] = {
+                    ...schemas.schemas[targetComponentNameList]
+                }
+                // remove circular structure to json
+                if (test == 1) {
+                    test++;
+                    // First create copies of the schemas to avoid circular references
+                    const userListCopy = JSON.parse(JSON.stringify(schemas.schemas[sourceComponentNameList]));
+                    const instrumentListCopy = JSON.parse(JSON.stringify(schemas.schemas[targetComponentNameList]));
+
+                    // Then add the references
+                    const foreignKeySource = source.toLowerCase() + 'Id';
+                    relationsComponents[sourceComponentNameList].items.properties[foreignKeyTarget] = instrumentListCopy;
+                    relationsComponents[targetComponentNameList].items.properties[foreignKeySource] = userListCopy;
+                }
             }
         });
     });
-    console.log(JSON.stringify(relationsComponents, null, 4));
     // fs.writeFileSync("relations.json", JSON.stringify(relationsComponents, null, 4));
 
     servicesFiles.forEach((file) => {
@@ -61,7 +96,7 @@ function servicesParser(servicePath, routesVariable, routePrefix, schemas, model
         const routes = getEndPointsApi(routesVariable);
         const [model] = Object.keys(parsedYaml);
         const modelLower = model.toLowerCase();
-        const {collectionOperations, itemOperations} = parsedYaml[model];
+        const { collectionOperations, itemOperations } = parsedYaml[model];
 
         // Cache regex patterns
         const collectionRoutePattern = getCachedPattern(
@@ -126,4 +161,4 @@ function getCachedPattern(cache, pattern) {
     return cache.get(pattern);
 }
 
-module.exports = {servicesParser};
+module.exports = { servicesParser };

@@ -32,7 +32,7 @@ const Instrument = sequelize.define('Instrument', {
     }
 });
 
-User.hasMany(Instrument);
-Instrument.belongsTo(User);
+User.belongsToMany(Instrument, { through: 'InstrumentUsers' });
+Instrument.belongsToMany(User, { through: 'InstrumentUsers' });
 
 module.exports = Instrument;

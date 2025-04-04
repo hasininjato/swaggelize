@@ -55,20 +55,26 @@
         "relations": [
             {
                 "type": "relation",
-                "relation": "hasMany",
+                "relation": "belongsToMany",
                 "source": "User",
                 "target": "Instrument",
                 "args": [
-                    "Instrument"
+                    "Instrument",
+                    {
+                        "through": "InstrumentUsers"
+                    }
                 ]
             },
             {
                 "type": "relation",
-                "relation": "belongsTo",
+                "relation": "belongsToMany",
                 "source": "Instrument",
                 "target": "User",
                 "args": [
-                    "User"
+                    "User",
+                    {
+                        "through": "InstrumentUsers"
+                    }
                 ]
             }
         ]

@@ -16,6 +16,26 @@
                     "purchaseDate": {
                         "type": "string",
                         "description": ""
+                    },
+                    "userId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id of the user"
+                                },
+                                "fullname": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": ""
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -34,6 +54,46 @@
                 "purchaseDate": {
                     "type": "string",
                     "description": ""
+                },
+                "userId": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Id of the user"
+                            },
+                            "fullname": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "email": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "instrumentId": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": ""
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "type of the instrument"
+                                        },
+                                        "purchaseDate": {
+                                            "type": "string",
+                                            "description": ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -171,6 +231,26 @@
                             "purchaseDate": {
                                 "type": "string",
                                 "description": ""
+                            },
+                            "userId": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "Id of the user"
+                                        },
+                                        "fullname": {
+                                            "type": "string",
+                                            "description": ""
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "description": ""
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -217,6 +297,26 @@
                     "email": {
                         "type": "string",
                         "description": ""
+                    },
+                    "instrumentId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "type of the instrument"
+                                },
+                                "purchaseDate": {
+                                    "type": "string",
+                                    "description": ""
+                                }
+                            }
+                        }
                     }
                 }
             }
