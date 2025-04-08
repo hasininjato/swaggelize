@@ -50,6 +50,32 @@
                     ],
                     "description": ""
                 }
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "User",
+                "target": "Instrument",
+                "args": [
+                    "Instrument",
+                    {
+                        "through": "InstrumentUsers",
+                        "as": "Instruments"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Instrument",
+                "target": "User",
+                "args": [
+                    "User",
+                    {
+                        "through": "InstrumentUsers",
+                        "as": "Users"
+                    }
+                ]
             }
         ],
         "relations": [
@@ -109,6 +135,19 @@
                     ],
                     "description": "Post content"
                 }
+            },
+            {
+                "type": "relation",
+                "relation": "hasMany",
+                "source": "User",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "onDelete": "CASCADE",
+                        "as": "Posts"
+                    }
+                ]
             }
         ],
         "relations": [
@@ -190,6 +229,32 @@
                     ],
                     "description": "Tag name"
                 }
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Post",
+                "target": "Tag",
+                "args": [
+                    "Tag",
+                    {
+                        "through": "PostTag",
+                        "as": "Tags"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Tag",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "through": "PostTag",
+                        "as": "Posts"
+                    }
+                ]
             }
         ],
         "relations": [
@@ -315,6 +380,19 @@
                     ],
                     "description": ""
                 }
+            },
+            {
+                "type": "relation",
+                "relation": "hasMany",
+                "source": "User",
+                "target": "Transaction",
+                "args": [
+                    "Transaction",
+                    {
+                        "foreignKey": "userId",
+                        "as": "Transactions"
+                    }
+                ]
             }
         ],
         "relations": [

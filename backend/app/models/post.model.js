@@ -17,6 +17,10 @@ const Post = sequelize.define('Post', {
     content: DataTypes.TEXT,
 });
 
+/**
+ * @swag
+ * relations: Posts
+ */
 User.hasMany(Post, { onDelete: 'CASCADE' });
 Post.belongsTo(User);
 

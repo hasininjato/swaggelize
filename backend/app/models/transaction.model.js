@@ -60,6 +60,10 @@ const Transaction = sequelize.define('Transaction', {
     timestamps: true
 });
 
+/**
+ * @swag
+ * relations: Transactions
+ */
 User.hasMany(Transaction, { foreignKey: 'userId' });
 Transaction.belongsTo(User, { foreignKey: 'userId' });
 

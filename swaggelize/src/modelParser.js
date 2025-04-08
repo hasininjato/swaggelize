@@ -48,7 +48,7 @@ const modelParser = (code) => {
             if (t.isMemberExpression(callee) && RELATION_METHODS.has(callee.property.name)) {
                 const source = callee.object.name;
                 const target = path.node.arguments[0]?.name;
-                
+
                 allRelations.push({
                     type: 'relation',
                     relation: callee.property.name,
@@ -73,9 +73,13 @@ const modelParser = (code) => {
                 const context = getContextFromPath(path);
                 if (context) {
                     const { methods, description } = utils.getMethodsAndDescriptionFromComment(comment.value.trim());
+
+                    // Only include the comment if it has meaningful data
+                    const hasValidComment = (methods && methods.length > 0) || (description && description.trim() !== '');
+
                     swagComments.push({
                         ...context,
-                        comment: { methods, description },
+                        ...(hasValidComment ? { comment: { methods, description } } : {})
                     });
                 }
             }
@@ -102,13 +106,46 @@ const getContextFromPath = (path) => {
     if (path.isExpressionStatement() && t.isCallExpression(path.node.expression)) {
         const { callee } = path.node.expression;
         if (t.isMemberExpression(callee) && RELATION_METHODS.has(callee.property.name)) {
-            return {
+            const leadingComments = path.node.leadingComments;
+            let relationAlias = null;
+            let commentData = null;
+
+            if (leadingComments) {
+                for (let i = leadingComments.length - 1; i >= 0; i--) {
+                    const comment = leadingComments[i].value;
+                    if (comment.includes(SWAG_TAG)) {
+                        const parsed = utils.getMethodsAndDescriptionFromComment(comment.trim());
+                        const relationsMatch = /relations:\s*(\w+)/.exec(comment);
+                        if (relationsMatch) {
+                            relationAlias = relationsMatch[1];
+                        }
+
+                        commentData = parsed;
+                        break;
+                    }
+                }
+            }
+
+            const baseArgs = path.node.expression.arguments.map(getValueFromNode).map((arg, idx) => {
+                if (idx === 1 && typeof arg === 'object' && relationAlias) {
+                    return { ...arg, as: relationAlias };
+                }
+                return arg;
+            });
+
+            const base = {
                 type: 'relation',
                 relation: callee.property.name,
-                source: callee.object.name,  // <-- Added
-                target: path.node.expression.arguments[0]?.name,  // <-- Added
-                args: path.node.expression.arguments.map(getValueFromNode),
+                source: callee.object.name,
+                target: path.node.expression.arguments[0]?.name,
+                args: baseArgs
             };
+
+            if (commentData && (commentData.methods.length > 0 || commentData.description)) {
+                base.comment = commentData;
+            }
+
+            return base;
         }
     }
 
