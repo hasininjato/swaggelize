@@ -45,6 +45,26 @@
                         "purchaseDate": {
                             "type": "string",
                             "description": ""
+                        },
+                        "userId": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Id of the user"
+                                    },
+                                    "fullname": {
+                                        "type": "string",
+                                        "description": ""
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": ""
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -63,6 +83,46 @@
                     "purchaseDate": {
                         "type": "string",
                         "description": ""
+                    },
+                    "userId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id of the user"
+                                },
+                                "fullname": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "instrumentId": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": ""
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "type of the instrument"
+                                            },
+                                            "purchaseDate": {
+                                                "type": "string",
+                                                "description": ""
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -88,6 +148,187 @@
                 },
                 "required": [
                     "type"
+                ]
+            },
+            "PostList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "Post title"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Post content"
+                        }
+                    }
+                }
+            },
+            "PostItem": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    },
+                    "tagId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Tag name"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "PostPut": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    }
+                },
+                "required": [
+                    "title",
+                    "content"
+                ]
+            },
+            "PostPost": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    }
+                },
+                "required": [
+                    "title",
+                    "content"
+                ]
+            },
+            "ProfileList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "bio": {
+                            "type": "string",
+                            "description": "Profile ID"
+                        }
+                    }
+                }
+            },
+            "ProfileItem": {
+                "type": "object",
+                "properties": {
+                    "bio": {
+                        "type": "string",
+                        "description": "Profile ID"
+                    }
+                }
+            },
+            "ProfilePut": {
+                "type": "object",
+                "properties": {
+                    "bio": {
+                        "type": "string",
+                        "description": "Profile ID"
+                    }
+                },
+                "required": [
+                    "bio"
+                ]
+            },
+            "ProfilePost": {
+                "type": "object",
+                "properties": {
+                    "bio": {
+                        "type": "string",
+                        "description": "Profile ID"
+                    }
+                },
+                "required": [
+                    "bio"
+                ]
+            },
+            "TagList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Tag name"
+                        }
+                    }
+                }
+            },
+            "TagItem": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    },
+                    "postId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "description": "Post title"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "Post content"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TagPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "TagPost": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                },
+                "required": [
+                    "name"
                 ]
             },
             "TransactionItem": {
@@ -172,6 +413,10 @@
             "UserItem": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id of the user"
+                    },
                     "fullname": {
                         "type": "string",
                         "description": ""
@@ -179,6 +424,95 @@
                     "email": {
                         "type": "string",
                         "description": ""
+                    },
+                    "instrumentId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "type of the instrument"
+                                },
+                                "purchaseDate": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "userId": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Id of the user"
+                                            },
+                                            "fullname": {
+                                                "type": "string",
+                                                "description": ""
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "description": ""
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "postId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "description": "Post title"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "Post content"
+                                }
+                            }
+                        }
+                    },
+                    "profileId": {
+                        "type": "object",
+                        "properties": {
+                            "bio": {
+                                "type": "string",
+                                "description": "Profile ID"
+                            }
+                        }
+                    },
+                    "transactionId": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id of the transaction"
+                                },
+                                "amount": {
+                                    "type": "string",
+                                    "description": "Amount of the transaction"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description of the transaction"
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "description": ""
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -187,6 +521,10 @@
                 "items": {
                     "type": "object",
                     "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the user"
+                        },
                         "fullname": {
                             "type": "string",
                             "description": ""
@@ -194,6 +532,26 @@
                         "email": {
                             "type": "string",
                             "description": ""
+                        },
+                        "instrumentId": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": ""
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "type of the instrument"
+                                    },
+                                    "purchaseDate": {
+                                        "type": "string",
+                                        "description": ""
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -245,6 +603,570 @@
         }
     },
     "paths": {
+        "/posts": {
+            "post": {
+                "summary": "Create a post",
+                "tags": [
+                    "Post"
+                ],
+                "description": "Create a post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created post",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List of all posts",
+                "tags": [
+                    "Post"
+                ],
+                "description": "List of all posts",
+                "responses": {
+                    "200": {
+                        "description": "Post list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/posts/{id}": {
+            "get": {
+                "summary": "Get post by id",
+                "tags": [
+                    "Post"
+                ],
+                "description": "Get post by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Post id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a post by id",
+                "tags": [
+                    "Post"
+                ],
+                "description": "Update a post by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Post id"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Post item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a post by id",
+                "tags": [
+                    "Post"
+                ],
+                "description": "Delete a post by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Post id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/profiles": {
+            "post": {
+                "summary": "Create a profile",
+                "tags": [
+                    "Profile"
+                ],
+                "description": "Create a profile",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfilePost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List of all profiles",
+                "tags": [
+                    "Profile"
+                ],
+                "description": "List of all profiles",
+                "responses": {
+                    "200": {
+                        "description": "Profile list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/profiles/{id}": {
+            "get": {
+                "summary": "Get profile by id",
+                "tags": [
+                    "Profile"
+                ],
+                "description": "Get profile by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Profile id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a profile by id",
+                "tags": [
+                    "Profile"
+                ],
+                "description": "Update a profile by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Profile id"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfilePut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a profile by id",
+                "tags": [
+                    "Profile"
+                ],
+                "description": "Delete a profile by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Profile id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/tags": {
+            "post": {
+                "summary": "Create a tag",
+                "tags": [
+                    "Tag"
+                ],
+                "description": "Create a tag",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TagPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created tag",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List of all tags",
+                "tags": [
+                    "Tag"
+                ],
+                "description": "List of all tags",
+                "responses": {
+                    "200": {
+                        "description": "Tag list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/tags/{id}": {
+            "get": {
+                "summary": "Get tag by id",
+                "tags": [
+                    "Tag"
+                ],
+                "description": "Get tag by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Tag id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tag item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a tag by id",
+                "tags": [
+                    "Tag"
+                ],
+                "description": "Update a tag by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Tag id"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TagPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tag item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a tag by id",
+                "tags": [
+                    "Tag"
+                ],
+                "description": "Delete a tag by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Tag id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "summary": "Create a user",

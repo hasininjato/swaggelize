@@ -1,5 +1,10 @@
 [
     {
+        "sequelizeModel": null,
+        "value": [],
+        "relations": []
+    },
+    {
         "sequelizeModel": "Instrument",
         "value": [
             {

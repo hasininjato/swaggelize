@@ -13,10 +13,6 @@ const swaggerUi = require('swagger-ui-express')
 const User = require('./app/models/user.model');
 const Transaction = require('./app/models/transaction.model');
 
-// routes
-const userRoutes = require('./app/routes/user.transaction.route');
-const authRoutes = require('./app/routes/auth.route');
-
 const swaggelize = require("../swaggelize/src/index");
 
 const app = express()
@@ -79,8 +75,11 @@ const syncDb = async () => {
 
 // syncDb()
 
-app.use('/api/users', userRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/users', require('./app/routes/user.transaction.route'));
+app.use('/api/auth', require('./app/routes/auth.route'));
+app.use('/api/profiles', require('./app/routes/profile.route'));
+app.use('/api/tags', require('./app/routes/tag.route'));
+app.use('/api/posts', require('./app/routes/post.route'));
 
 const swaggelizeOptions = {
     swaggerDefinition: {
