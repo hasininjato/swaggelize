@@ -50,7 +50,9 @@
                     ],
                     "description": ""
                 }
-            },
+            }
+        ],
+        "relations": [
             {
                 "type": "relation",
                 "relation": "belongsToMany",
@@ -74,32 +76,6 @@
                     {
                         "through": "InstrumentUsers",
                         "as": "Users"
-                    }
-                ]
-            }
-        ],
-        "relations": [
-            {
-                "type": "relation",
-                "relation": "belongsToMany",
-                "source": "User",
-                "target": "Instrument",
-                "args": [
-                    "Instrument",
-                    {
-                        "through": "InstrumentUsers"
-                    }
-                ]
-            },
-            {
-                "type": "relation",
-                "relation": "belongsToMany",
-                "source": "Instrument",
-                "target": "User",
-                "args": [
-                    "User",
-                    {
-                        "through": "InstrumentUsers"
                     }
                 ]
             }
@@ -135,19 +111,6 @@
                     ],
                     "description": "Post content"
                 }
-            },
-            {
-                "type": "relation",
-                "relation": "hasMany",
-                "source": "User",
-                "target": "Post",
-                "args": [
-                    "Post",
-                    {
-                        "onDelete": "CASCADE",
-                        "as": "Posts"
-                    }
-                ]
             }
         ],
         "relations": [
@@ -159,17 +122,9 @@
                 "args": [
                     "Post",
                     {
-                        "onDelete": "CASCADE"
+                        "onDelete": "CASCADE",
+                        "as": "Posts"
                     }
-                ]
-            },
-            {
-                "type": "relation",
-                "relation": "belongsTo",
-                "source": "Post",
-                "target": "User",
-                "args": [
-                    "User"
                 ]
             }
         ]
@@ -201,15 +156,6 @@
                 "args": [
                     "Profile"
                 ]
-            },
-            {
-                "type": "relation",
-                "relation": "belongsTo",
-                "source": "Profile",
-                "target": "User",
-                "args": [
-                    "User"
-                ]
             }
         ]
     },
@@ -229,7 +175,9 @@
                     ],
                     "description": "Tag name"
                 }
-            },
+            }
+        ],
+        "relations": [
             {
                 "type": "relation",
                 "relation": "belongsToMany",
@@ -238,7 +186,7 @@
                 "args": [
                     "Tag",
                     {
-                        "through": "PostTag",
+                        "through": "PostTags",
                         "as": "Tags"
                     }
                 ]
@@ -251,34 +199,8 @@
                 "args": [
                     "Post",
                     {
-                        "through": "PostTag",
+                        "through": "PostTags",
                         "as": "Posts"
-                    }
-                ]
-            }
-        ],
-        "relations": [
-            {
-                "type": "relation",
-                "relation": "belongsToMany",
-                "source": "Post",
-                "target": "Tag",
-                "args": [
-                    "Tag",
-                    {
-                        "through": "PostTag"
-                    }
-                ]
-            },
-            {
-                "type": "relation",
-                "relation": "belongsToMany",
-                "source": "Tag",
-                "target": "Post",
-                "args": [
-                    "Post",
-                    {
-                        "through": "PostTag"
                     }
                 ]
             }
@@ -380,19 +302,6 @@
                     ],
                     "description": ""
                 }
-            },
-            {
-                "type": "relation",
-                "relation": "hasMany",
-                "source": "User",
-                "target": "Transaction",
-                "args": [
-                    "Transaction",
-                    {
-                        "foreignKey": "userId",
-                        "as": "Transactions"
-                    }
-                ]
             }
         ],
         "relations": [
@@ -404,19 +313,8 @@
                 "args": [
                     "Transaction",
                     {
-                        "foreignKey": "userId"
-                    }
-                ]
-            },
-            {
-                "type": "relation",
-                "relation": "belongsTo",
-                "source": "Transaction",
-                "target": "User",
-                "args": [
-                    "User",
-                    {
-                        "foreignKey": "userId"
+                        "foreignKey": "userId",
+                        "as": "Transactions"
                     }
                 ]
             }

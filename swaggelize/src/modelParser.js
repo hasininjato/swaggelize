@@ -35,13 +35,11 @@ const modelParser = (code) => {
         plugins: ['jsx'],
     });
 
-    const swagComments = [];
-    const allRelations = [];  // <-- New: Store ALL relations here
+    const allRelations = [];  // <-- Store relations here
+    const allFields = [];  // <-- Store fields here
     let sequelizeModelName = code.match(SEQUELIZE_DEFINE_PATTERN)?.[2] || null;
 
-    // [Keep existing model name detection logic...]
-
-    // First pass: Find ALL relations (regardless of comments)
+    // First pass: Find relations (regardless of comments)
     traverse(ast, {
         CallExpression(path) {
             const { callee } = path.node;
@@ -49,13 +47,18 @@ const modelParser = (code) => {
                 const source = callee.object.name;
                 const target = path.node.arguments[0]?.name;
 
-                allRelations.push({
-                    type: 'relation',
-                    relation: callee.property.name,
-                    source,
-                    target,
-                    args: path.node.arguments.map(getValueFromNode),
-                });
+                if (callee.property.name === "hasOne") {
+                    const relationData = {
+                        type: 'relation',
+                        relation: callee.property.name,
+                        source,
+                        target,
+                        args: path.node.arguments.map(getValueFromNode),
+                    };
+    
+                    // Add the relation to allRelations
+                    allRelations.push(relationData);
+                }
             }
         }
     });
@@ -77,19 +80,42 @@ const modelParser = (code) => {
                     // Only include the comment if it has meaningful data
                     const hasValidComment = (methods && methods.length > 0) || (description && description.trim() !== '');
 
-                    swagComments.push({
+                    // Store the field data with Swagger comment
+                    const fieldData = {
                         ...context,
                         ...(hasValidComment ? { comment: { methods, description } } : {})
-                    });
+                    };
+
+                    // If the context is a relation, add to allRelations
+                    if (context.type === 'relation') {
+                        allRelations.push(fieldData);
+                    } else {
+                        allFields.push(fieldData);
+                    }
                 }
             }
         }
     });
 
+    // Remove duplicate relations (same source, target, and through)
+    const uniqueRelations = [];
+    const seenRelations = new Set();
+
+    allRelations.forEach(relation => {
+        const relationKey = `${relation.source}:${relation.target}:${JSON.stringify(relation.args)}`;
+        if (!seenRelations.has(relationKey)) {
+            uniqueRelations.push(relation);
+            seenRelations.add(relationKey);
+        }
+    });
+
+    // Remove all relations that are already present in value
+    const finalFields = allFields.filter(field => field.type !== 'relation');
+
     return {
         sequelizeModel: sequelizeModelName,
-        value: swagComments,  // Fields/relations WITH Swagger comments
-        relations: allRelations,  // ALL relations (with or without comments)
+        value: finalFields,  // Only fields (no relations)
+        relations: uniqueRelations,  // Only unique relations
     };
 };
 

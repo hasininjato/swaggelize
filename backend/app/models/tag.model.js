@@ -11,15 +11,32 @@ const Tag = sequelize.define('Tag', {
     name: DataTypes.STRING,
 });
 
+const PostTags = sequelize.define('PostTags', {
+    postId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Post,
+            key: 'id',
+        },
+    },
+    tagId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Tag,
+            key: 'id',
+        },
+    },
+});
+
 /**
  * @swag
  * relations: Tags
  */
-Post.belongsToMany(Tag, { through: "PostTag" });
+Post.belongsToMany(Tag, { through: PostTags });
 /**
  * @swag
  * relations: Posts
  */
-Tag.belongsToMany(Post, { through: "PostTag" });
+Tag.belongsToMany(Post, { through: PostTags });
 
 module.exports = Tag;
