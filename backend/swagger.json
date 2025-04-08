@@ -45,26 +45,6 @@
                         "purchaseDate": {
                             "type": "string",
                             "description": ""
-                        },
-                        "userId": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string",
-                                        "description": "Id of the user"
-                                    },
-                                    "fullname": {
-                                        "type": "string",
-                                        "description": ""
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "description": ""
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -83,46 +63,6 @@
                     "purchaseDate": {
                         "type": "string",
                         "description": ""
-                    },
-                    "userId": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id of the user"
-                                },
-                                "fullname": {
-                                    "type": "string",
-                                    "description": ""
-                                },
-                                "email": {
-                                    "type": "string",
-                                    "description": ""
-                                },
-                                "instrumentId": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "type": "string",
-                                                "description": ""
-                                            },
-                                            "type": {
-                                                "type": "string",
-                                                "description": "type of the instrument"
-                                            },
-                                            "purchaseDate": {
-                                                "type": "string",
-                                                "description": ""
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             },
@@ -176,18 +116,6 @@
                     "content": {
                         "type": "string",
                         "description": "Post content"
-                    },
-                    "tagId": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "Tag name"
-                                }
-                            }
-                        }
                     }
                 }
             },
@@ -288,22 +216,6 @@
                     "name": {
                         "type": "string",
                         "description": "Tag name"
-                    },
-                    "postId": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "title": {
-                                    "type": "string",
-                                    "description": "Post title"
-                                },
-                                "content": {
-                                    "type": "string",
-                                    "description": "Post content"
-                                }
-                            }
-                        }
                     }
                 }
             },
@@ -424,95 +336,6 @@
                     "email": {
                         "type": "string",
                         "description": ""
-                    },
-                    "instrumentId": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": ""
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "type of the instrument"
-                                },
-                                "purchaseDate": {
-                                    "type": "string",
-                                    "description": ""
-                                },
-                                "userId": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "type": "string",
-                                                "description": "Id of the user"
-                                            },
-                                            "fullname": {
-                                                "type": "string",
-                                                "description": ""
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "description": ""
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "postId": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "title": {
-                                    "type": "string",
-                                    "description": "Post title"
-                                },
-                                "content": {
-                                    "type": "string",
-                                    "description": "Post content"
-                                }
-                            }
-                        }
-                    },
-                    "profileId": {
-                        "type": "object",
-                        "properties": {
-                            "bio": {
-                                "type": "string",
-                                "description": "Profile ID"
-                            }
-                        }
-                    },
-                    "transactionId": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "Id of the transaction"
-                                },
-                                "amount": {
-                                    "type": "string",
-                                    "description": "Amount of the transaction"
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Description of the transaction"
-                                },
-                                "date": {
-                                    "type": "string",
-                                    "description": ""
-                                }
-                            }
-                        }
                     }
                 }
             },
@@ -532,26 +355,6 @@
                         "email": {
                             "type": "string",
                             "description": ""
-                        },
-                        "instrumentId": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string",
-                                        "description": ""
-                                    },
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type of the instrument"
-                                    },
-                                    "purchaseDate": {
-                                        "type": "string",
-                                        "description": ""
-                                    }
-                                }
-                            }
                         }
                     }
                 }

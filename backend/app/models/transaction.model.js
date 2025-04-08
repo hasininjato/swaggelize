@@ -60,7 +60,7 @@ const Transaction = sequelize.define('Transaction', {
     timestamps: true
 });
 
-User.hasMany(Transaction, { foreignKey: 'userId' }); // foreign key
+User.hasMany(Transaction, { foreignKey: 'userId' });
 Transaction.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Transaction;
