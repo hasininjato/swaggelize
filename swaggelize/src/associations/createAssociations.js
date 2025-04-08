@@ -29,7 +29,8 @@ const createAssociation = (schemas, models) => {
                     target,
                     types: new Set(),
                     relations: {
-                        associationField: null
+                        associationField: null,
+                        foreignKey: rel.args[0]?.foreignKey || `${target.toLowerCase()}Id`,
                     }
                 };
 
@@ -38,7 +39,9 @@ const createAssociation = (schemas, models) => {
                     source: target,
                     target: source,
                     types: new Set(),
-                    relations: {}
+                    relations: {
+                        foreignKey: rel.args[0]?.foreignKey || `${target.toLowerCase()}Id`,
+                    }
                 };
 
                 // Extract through table and aliases
@@ -69,6 +72,7 @@ const createAssociation = (schemas, models) => {
                 types: new Set(),
                 relations: {
                     associationField: null,
+                    foreignKey: rel.args[0]?.foreignKey || `${target.toLowerCase()}Id`,
                 }
             };
 
