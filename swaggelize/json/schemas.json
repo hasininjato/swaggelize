@@ -121,6 +121,187 @@
                 "type"
             ]
         },
+        "PostList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    }
+                }
+            }
+        },
+        "PostItem": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                },
+                "tagId": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Tag name"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "PostPut": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                }
+            },
+            "required": [
+                "title",
+                "content"
+            ]
+        },
+        "PostPost": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                }
+            },
+            "required": [
+                "title",
+                "content"
+            ]
+        },
+        "ProfileList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "bio": {
+                        "type": "string",
+                        "description": "Profile ID"
+                    }
+                }
+            }
+        },
+        "ProfileItem": {
+            "type": "object",
+            "properties": {
+                "bio": {
+                    "type": "string",
+                    "description": "Profile ID"
+                }
+            }
+        },
+        "ProfilePut": {
+            "type": "object",
+            "properties": {
+                "bio": {
+                    "type": "string",
+                    "description": "Profile ID"
+                }
+            },
+            "required": [
+                "bio"
+            ]
+        },
+        "ProfilePost": {
+            "type": "object",
+            "properties": {
+                "bio": {
+                    "type": "string",
+                    "description": "Profile ID"
+                }
+            },
+            "required": [
+                "bio"
+            ]
+        },
+        "TagList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                }
+            }
+        },
+        "TagItem": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Tag name"
+                },
+                "postId": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Post title"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Post content"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "TagPut": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Tag name"
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "TagPost": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Tag name"
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
         "TransactionItem": {
             "type": "object",
             "properties": {
@@ -252,6 +433,31 @@
                                     }
                                 }
                             }
+                        }
+                    }
+                },
+                "postId": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Post title"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Post content"
+                            }
+                        }
+                    }
+                },
+                "profileId": {
+                    "type": "object",
+                    "properties": {
+                        "bio": {
+                            "type": "string",
+                            "description": "Profile ID"
                         }
                     }
                 },

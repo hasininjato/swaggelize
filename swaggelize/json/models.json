@@ -80,6 +80,146 @@
         ]
     },
     {
+        "sequelizeModel": "Post",
+        "value": [
+            {
+                "field": "title",
+                "type": "field",
+                "object": "DataTypes.STRING",
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Post title"
+                }
+            },
+            {
+                "field": "content",
+                "type": "field",
+                "object": "DataTypes.TEXT",
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Post content"
+                }
+            }
+        ],
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "hasMany",
+                "source": "User",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "onDelete": "CASCADE"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsTo",
+                "source": "Post",
+                "target": "User",
+                "args": [
+                    "User"
+                ]
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Profile",
+        "value": [
+            {
+                "field": "bio",
+                "type": "field",
+                "object": "DataTypes.TEXT",
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Profile ID"
+                }
+            }
+        ],
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "hasOne",
+                "source": "User",
+                "target": "Profile",
+                "args": [
+                    "Profile"
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsTo",
+                "source": "Profile",
+                "target": "User",
+                "args": [
+                    "User"
+                ]
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Tag",
+        "value": [
+            {
+                "field": "name",
+                "type": "field",
+                "object": "DataTypes.STRING",
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Tag name"
+                }
+            }
+        ],
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Post",
+                "target": "Tag",
+                "args": [
+                    "Tag",
+                    {
+                        "through": "PostTag"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Tag",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "through": "PostTag"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "sequelizeModel": "Transaction",
         "value": [
             {
