@@ -130,6 +130,79 @@
         ]
     },
     {
+        "sequelizeModel": "PostTags",
+        "value": [
+            {
+                "field": "postId",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.INTEGER",
+                    "references": {
+                        "model": "Post",
+                        "key": "id"
+                    }
+                },
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Tag name"
+                }
+            },
+            {
+                "field": "tagId",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.INTEGER",
+                    "references": {
+                        "model": "Tag",
+                        "key": "id"
+                    }
+                },
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Tag name"
+                }
+            }
+        ],
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Post",
+                "target": "Tag",
+                "args": [
+                    "Tag",
+                    {
+                        "through": "PostTags",
+                        "as": "Tags"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Tag",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "through": "PostTags",
+                        "as": "Posts"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "sequelizeModel": "Profile",
         "value": [
             {
@@ -177,34 +250,7 @@
                 }
             }
         ],
-        "relations": [
-            {
-                "type": "relation",
-                "relation": "belongsToMany",
-                "source": "Post",
-                "target": "Tag",
-                "args": [
-                    "Tag",
-                    {
-                        "through": "PostTags",
-                        "as": "Tags"
-                    }
-                ]
-            },
-            {
-                "type": "relation",
-                "relation": "belongsToMany",
-                "source": "Tag",
-                "target": "Post",
-                "args": [
-                    "Post",
-                    {
-                        "through": "PostTags",
-                        "as": "Posts"
-                    }
-                ]
-            }
-        ]
+        "relations": []
     },
     {
         "sequelizeModel": "Transaction",

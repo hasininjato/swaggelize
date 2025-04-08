@@ -124,6 +124,69 @@
                 "content"
             ]
         },
+        "PostTagsList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": "string",
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                }
+            }
+        },
+        "PostTagsItem": {
+            "type": "object",
+            "properties": {
+                "postId": {
+                    "type": "string",
+                    "description": "Tag name"
+                },
+                "tagId": {
+                    "type": "string",
+                    "description": "Tag name"
+                }
+            }
+        },
+        "PostTagsPut": {
+            "type": "object",
+            "properties": {
+                "postId": {
+                    "type": "string",
+                    "description": "Tag name"
+                },
+                "tagId": {
+                    "type": "string",
+                    "description": "Tag name"
+                }
+            },
+            "required": [
+                "postId",
+                "tagId"
+            ]
+        },
+        "PostTagsPost": {
+            "type": "object",
+            "properties": {
+                "postId": {
+                    "type": "string",
+                    "description": "Tag name"
+                },
+                "tagId": {
+                    "type": "string",
+                    "description": "Tag name"
+                }
+            },
+            "required": [
+                "postId",
+                "tagId"
+            ]
+        },
         "ProfileList": {
             "type": "array",
             "items": {
