@@ -111,7 +111,7 @@ const swaggelizeOptions = {
 
 const openapiDoc = swaggelize.parser(swaggelizeOptions);
 
-const swaggerDocs = swaggerjsdoc(swaggerOptions)
+// const swaggerDocs = swaggerjsdoc(swaggerOptions)
 // fs.writeFileSync("swagger.json", JSON.stringify(openapiDoc, null, 4));
 const openapiJson = JSON.parse(fs.readFileSync("./swagger.json", "utf8"));
 // app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))

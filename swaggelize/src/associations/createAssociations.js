@@ -1,4 +1,4 @@
-const createAssociation = (schemas, models) => {
+const createAssociation = (models) => {
     const relationMap = new Map();
 
     models.forEach((model) => {
@@ -108,4 +108,36 @@ const createAssociation = (schemas, models) => {
     return finalRelations;
 };
 
-module.exports = { createAssociation };
+const parseAssociation = (schemas, models) => {
+    const associations = createAssociation(models);
+    let componentSchema = {};
+    associations.forEach((association) => {
+        const { source, target, type, relations } = association;
+        if (type == "one-to-one") {
+            componentSchema[`${source}${target}`] = {
+                type: "object",
+                properties: {
+                    ...schemas.schemas[`${source}Item`].properties,
+                    [`${target.toLowerCase()}Id`]: {  // profile
+                        type: "object",
+                        properties: schemas.schemas[`${target}Item`].properties
+                    }
+                }
+            };
+
+            componentSchema[`${target}${source}`] = {
+                type: "object",
+                properties: {
+                    ...schemas.schemas[`${target}Item`].properties,
+                    [relations.foreignKey]: {
+                        type: "object",
+                        properties: schemas.schemas[`${source}Item`].properties
+                    }
+                }
+            };
+        }
+    })
+    console.log("componentSchema", JSON.stringify(componentSchema, null, 4));
+}
+
+module.exports = { parseAssociation };

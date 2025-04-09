@@ -3,8 +3,7 @@ const modelParser = require("./modelParser");
 const fs = require("fs");
 const componentsCreator = require("./componentCreator");
 const servicesParser = require("./services/servicesParser");
-const { createAssociationOneToOne } = require("./associations/oneToOne");
-const { createAssociation } = require("./associations/createAssociations");
+const { parseAssociation } = require("./associations/createAssociations");
 
 const parser = (swaggelizeOptions) => {
     const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
@@ -49,8 +48,8 @@ const parser = (swaggelizeOptions) => {
 
     const services = servicesParser.servicesParser(servicesPath, routesVariable, routePrefix, schemas, models);
     openapi["paths"] = { ...services };
-    const associations = createAssociation(schemas, models);
-    console.log("associations", associations);
+    const associations = parseAssociation(schemas, models);
+    // console.log("associations", associations);
     removeKeys(openapi, ["input", "output"]);
 
     fs.writeFileSync("../swaggelize/json/models.json", JSON.stringify(models, null, 4));
