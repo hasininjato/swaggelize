@@ -114,7 +114,8 @@ const parseAssociation = (schemas, models) => {
     associations.forEach((association) => {
         const { source, target, type, relations } = association;
         if (type == "one-to-one") {
-            componentSchema[`${source}${target}`] = {
+            // component schema item
+            componentSchema[`${source}${target}Item`] = {
                 type: "object",
                 properties: {
                     ...schemas.schemas[`${source}Item`].properties,
@@ -124,14 +125,36 @@ const parseAssociation = (schemas, models) => {
                     }
                 }
             };
-
-            componentSchema[`${target}${source}`] = {
+            componentSchema[`${target}${source}Item`] = {
+                // for the target
                 type: "object",
                 properties: {
                     ...schemas.schemas[`${target}Item`].properties,
                     [relations.foreignKey]: {
                         type: "object",
                         properties: schemas.schemas[`${source}Item`].properties
+                    }
+                }
+            };
+
+            // component schema post
+            componentSchema[`${source}${target}Post`] = {
+                type: "object",
+                properties: {
+                    ...schemas.schemas[`${source}Post`].properties,
+                    [`${target.toLowerCase()}Id`]: {  // profile
+                        type: "object",
+                        properties: schemas.schemas[`${target}Post`].properties
+                    }
+                }
+            };
+            componentSchema[`${target}${source}Post`] = {
+                type: "object",
+                properties: {
+                    ...schemas.schemas[`${source}Post`].properties,
+                    [relations.foreignKey]: {  // profile
+                        type: "object",
+                        properties: schemas.schemas[`${source}Post`].properties
                     }
                 }
             };

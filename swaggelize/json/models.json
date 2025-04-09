@@ -14,7 +14,9 @@
                 "comment": {
                     "methods": [
                         "list",
-                        "item"
+                        "item",
+                        "put",
+                        "post"
                     ],
                     "description": ""
                 }
@@ -206,6 +208,25 @@
         "sequelizeModel": "Profile",
         "value": [
             {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "type": "DataTypes.INTEGER"
+                },
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Profile ID"
+                }
+            },
+            {
                 "field": "bio",
                 "type": "field",
                 "object": "DataTypes.TEXT",
@@ -216,7 +237,7 @@
                         "put",
                         "post"
                     ],
-                    "description": "Profile ID"
+                    "description": "Profile bio"
                 }
             }
         ],
@@ -383,7 +404,9 @@
                 "comment": {
                     "methods": [
                         "item",
-                        "list"
+                        "list",
+                        "post",
+                        "put"
                     ],
                     "description": "Id of the user"
                 }

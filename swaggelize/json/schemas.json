@@ -40,24 +40,34 @@
         "InstrumentPut": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": ""
+                },
                 "type": {
                     "type": "string",
                     "description": "type of the instrument"
                 }
             },
             "required": [
+                "id",
                 "type"
             ]
         },
         "InstrumentPost": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": ""
+                },
                 "type": {
                     "type": "string",
                     "description": "type of the instrument"
                 }
             },
             "required": [
+                "id",
                 "type"
             ]
         },
@@ -192,9 +202,13 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "bio": {
+                    "id": {
                         "type": "string",
                         "description": "Profile ID"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "description": "Profile bio"
                     }
                 }
             }
@@ -202,33 +216,47 @@
         "ProfileItem": {
             "type": "object",
             "properties": {
-                "bio": {
+                "id": {
                     "type": "string",
                     "description": "Profile ID"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "Profile bio"
                 }
             }
         },
         "ProfilePut": {
             "type": "object",
             "properties": {
-                "bio": {
+                "id": {
                     "type": "string",
                     "description": "Profile ID"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "Profile bio"
                 }
             },
             "required": [
+                "id",
                 "bio"
             ]
         },
         "ProfilePost": {
             "type": "object",
             "properties": {
-                "bio": {
+                "id": {
                     "type": "string",
                     "description": "Profile ID"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "Profile bio"
                 }
             },
             "required": [
+                "id",
                 "bio"
             ]
         },
@@ -393,9 +421,13 @@
                 }
             }
         },
-        "UserPut": {
+        "UserPost": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
                 "fullname": {
                     "type": "string",
                     "description": ""
@@ -410,14 +442,19 @@
                 }
             },
             "required": [
+                "id",
                 "fullname",
                 "email",
                 "password"
             ]
         },
-        "UserPost": {
+        "UserPut": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
                 "fullname": {
                     "type": "string",
                     "description": ""
@@ -432,6 +469,7 @@
                 }
             },
             "required": [
+                "id",
                 "fullname",
                 "email",
                 "password"
