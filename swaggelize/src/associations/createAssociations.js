@@ -115,52 +115,48 @@ const parseAssociation = (schemas, models) => {
         const { source, target, type, relations } = association;
         if (type == "one-to-one") {
             // component schema item
-            componentSchema[`${source}${target}Item`] = {
-                type: "object",
-                properties: {
-                    ...schemas.schemas[`${source}Item`].properties,
-                    [`${target.toLowerCase()}Id`]: {  // profile
-                        type: "object",
-                        properties: schemas.schemas[`${target}Item`].properties
-                    }
-                }
-            };
-            componentSchema[`${target}${source}Item`] = {
-                // for the target
-                type: "object",
-                properties: {
-                    ...schemas.schemas[`${target}Item`].properties,
-                    [relations.foreignKey]: {
-                        type: "object",
-                        properties: schemas.schemas[`${source}Item`].properties
-                    }
-                }
-            };
+            schemas.schemas[`${source}${target}Item`] = createBody("Item", source, target, schemas, `${target.toLowerCase()}Id`);
+            schemas.schemas[`${target}${source}Item`] = createBody("Item", target, source, schemas, relations.foreignKey);
 
             // component schema post
-            componentSchema[`${source}${target}Post`] = {
-                type: "object",
-                properties: {
-                    ...schemas.schemas[`${source}Post`].properties,
-                    [`${target.toLowerCase()}Id`]: {  // profile
-                        type: "object",
-                        properties: schemas.schemas[`${target}Post`].properties
-                    }
-                }
-            };
-            componentSchema[`${target}${source}Post`] = {
-                type: "object",
-                properties: {
-                    ...schemas.schemas[`${source}Post`].properties,
-                    [relations.foreignKey]: {  // profile
-                        type: "object",
-                        properties: schemas.schemas[`${source}Post`].properties
-                    }
-                }
-            };
+            schemas.schemas[`${source}${target}Post`] = createBody("Post", source, target, schemas, `${target.toLowerCase()}Id`);
+            schemas.schemas[`${target}${source}Post`] = createBody("Post", target, source, schemas, relations.foreignKey);
+
+            // component schema put
+            schemas.schemas[`${source}${target}Put`] = createBody("Put", source, target, schemas, `${target.toLowerCase()}Id`);
+            schemas.schemas[`${target}${source}Put`] = createBody("Put", target, source, schemas, relations.foreignKey);
+
+            // component schema list
+            schemas.schemas[`${source}${target}List`] = createBody("List", source, target, schemas, `${target.toLowerCase()}Id`);
+            schemas.schemas[`${target}${source}List`] = createBody("List", target, source, schemas, relations.foreignKey);
+
         }
     })
-    console.log("componentSchema", JSON.stringify(componentSchema, null, 4));
+    // console.log("componentSchema", JSON.stringify(schemas, null, 4));
+}
+
+function createBody(method, source, target, schemas, relation) {
+    if (method == "List") {
+        return {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    ...schemas.schemas[`${source}${target}Item`].properties
+                }
+            }
+        };
+    }
+    return {
+        type: "object",
+        properties: {
+            ...schemas.schemas[`${source}${method}`].properties,
+            [relation]: {
+                type: "object",
+                properties: schemas.schemas[`${target}${method}`].properties
+            }
+        }
+    };
 }
 
 module.exports = { parseAssociation };

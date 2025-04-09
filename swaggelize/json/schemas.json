@@ -474,6 +474,268 @@
                 "email",
                 "password"
             ]
+        },
+        "UserProfileItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "profileId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Profile ID"
+                        },
+                        "bio": {
+                            "type": "string",
+                            "description": "Profile bio"
+                        }
+                    }
+                }
+            }
+        },
+        "ProfileUserItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Profile ID"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "Profile bio"
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "UserProfilePost": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "password": {
+                    "type": "string",
+                    "description": ""
+                },
+                "profileId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Profile ID"
+                        },
+                        "bio": {
+                            "type": "string",
+                            "description": "Profile bio"
+                        }
+                    }
+                }
+            }
+        },
+        "ProfileUserPost": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Profile ID"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "Profile bio"
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "UserProfilePut": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "password": {
+                    "type": "string",
+                    "description": ""
+                },
+                "profileId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Profile ID"
+                        },
+                        "bio": {
+                            "type": "string",
+                            "description": "Profile bio"
+                        }
+                    }
+                }
+            }
+        },
+        "ProfileUserPut": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Profile ID"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "Profile bio"
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "UserProfileList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "profileId": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Profile ID"
+                            },
+                            "bio": {
+                                "type": "string",
+                                "description": "Profile bio"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ProfileUserList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Profile ID"
+                    },
+                    "bio": {
+                        "type": "string",
+                        "description": "Profile bio"
+                    },
+                    "userId": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Id of the user"
+                            },
+                            "fullname": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "email": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
