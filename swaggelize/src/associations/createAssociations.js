@@ -110,7 +110,6 @@ const createAssociation = (models) => {
 
 const parseAssociation = (schemas, models) => {
     const associations = createAssociation(models);
-    let componentSchema = {};
     associations.forEach((association) => {
         const { source, target, type, relations } = association;
         if (type == "one-to-one") {
@@ -129,13 +128,61 @@ const parseAssociation = (schemas, models) => {
             // component schema list
             schemas.schemas[`${source}${target}List`] = createBody("List", source, target, schemas, `${target.toLowerCase()}Id`);
             schemas.schemas[`${target}${source}List`] = createBody("List", target, source, schemas, relations.foreignKey);
+        } else if (type == "one-to-many") {
+            schemas.schemas[`${source}${target}sItem`] = createBody("Item", source, target, schemas, relations.associationField, "one-to-many");
+            schemas.schemas[`${target}s${source}Item`] = createBody("Item", target, source, schemas, relations.foreignKey);
 
+            schemas.schemas[`${source}${target}sList`] = createBody("List", source, target, schemas, relations.associationField, "one-to-many");
+            schemas.schemas[`${target}s${source}List`] = createBody("List", target, source, schemas, relations.foreignKey, "one-to-many", "target");
         }
     })
-    // console.log("componentSchema", JSON.stringify(schemas, null, 4));
 }
 
-function createBody(method, source, target, schemas, relation) {
+function createBody(method, source, target, schemas, relation, type = null, from = null) {
+    if (type === "one-to-many") {
+        if (method == "List") {
+            if (from == "target") {
+                return {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        ...{
+                            ...schemas.schemas[`${target}List`].items.properties,
+                            [relation]: {
+                                type: "object",
+                                properties: {
+                                    ...schemas.schemas[`${source}Item`].properties
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+            return {
+                type: "array",
+                items: {
+                    type: "object",
+                    ...{
+                        ...schemas.schemas[`${target}List`].items.properties,
+                        [relation]: {
+                            type: "array",
+                            items: schemas.schemas[`${target}List`].items.properties
+                        }
+                    }
+                }
+            };
+        }
+        return {
+            type: "object",
+            properties: {
+                ...schemas.schemas[`${target}List`].items.properties,
+                [relation]: {
+                    type: "array",
+                    items: schemas.schemas[`${target}List`].items.properties
+                }
+            }
+        };
+    }
     if (method == "List") {
         return {
             type: "array",

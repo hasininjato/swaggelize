@@ -475,6 +475,120 @@
                 "password"
             ]
         },
+        "UserPostsItem": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                },
+                "Posts": {
+                    "type": "array",
+                    "items": {
+                        "title": {
+                            "type": "string",
+                            "description": "Post title"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Post content"
+                        }
+                    }
+                }
+            }
+        },
+        "PostsUserItem": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "UserPostsList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                },
+                "Posts": {
+                    "type": "array",
+                    "items": {
+                        "title": {
+                            "type": "string",
+                            "description": "Post title"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Post content"
+                        }
+                    }
+                }
+            }
+        },
+        "PostsUserList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "Post title"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Post content"
+                        }
+                    }
+                }
+            }
+        },
         "UserProfileItem": {
             "type": "object",
             "properties": {
@@ -732,6 +846,168 @@
                                 "type": "string",
                                 "description": ""
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "UserTransactionsItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the transaction"
+                },
+                "amount": {
+                    "type": "string",
+                    "description": "Amount of the transaction"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the transaction"
+                },
+                "date": {
+                    "type": "string",
+                    "description": ""
+                },
+                "Transactions": {
+                    "type": "array",
+                    "items": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the transaction"
+                        },
+                        "amount": {
+                            "type": "string",
+                            "description": "Amount of the transaction"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the transaction"
+                        },
+                        "date": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "TransactionsUserItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the transaction"
+                },
+                "amount": {
+                    "type": "string",
+                    "description": "Amount of the transaction"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the transaction"
+                },
+                "date": {
+                    "type": "string",
+                    "description": ""
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "UserTransactionsList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "id": {
+                    "type": "string",
+                    "description": "Id of the transaction"
+                },
+                "amount": {
+                    "type": "string",
+                    "description": "Amount of the transaction"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the transaction"
+                },
+                "date": {
+                    "type": "string",
+                    "description": ""
+                },
+                "Transactions": {
+                    "type": "array",
+                    "items": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the transaction"
+                        },
+                        "amount": {
+                            "type": "string",
+                            "description": "Amount of the transaction"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the transaction"
+                        },
+                        "date": {
+                            "type": "string",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "TransactionsUserList": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "userId": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Id of the transaction"
+                        },
+                        "amount": {
+                            "type": "string",
+                            "description": "Amount of the transaction"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the transaction"
+                        },
+                        "date": {
+                            "type": "string",
+                            "description": ""
                         }
                     }
                 }
