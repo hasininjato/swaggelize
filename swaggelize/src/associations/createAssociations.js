@@ -134,6 +134,8 @@ const parseAssociation = (schemas, models) => {
 
             schemas.schemas[`${source}${target}sList`] = createBody("List", source, target, schemas, relations.associationField, "one-to-many");
             schemas.schemas[`${target}s${source}List`] = createBody("List", target, source, schemas, relations.foreignKey, "one-to-many", "target");
+        } else {
+            console.log(source)
         }
     })
 }
@@ -166,7 +168,12 @@ function createBody(method, source, target, schemas, relation, type = null, from
                         ...schemas.schemas[`${target}List`].items.properties,
                         [relation]: {
                             type: "array",
-                            items: schemas.schemas[`${target}List`].items.properties
+                            items: {
+                                type: "object",
+                                properties: {
+                                    ...schemas.schemas[`${target}List`].items.properties
+                                }
+                            }
                         }
                     }
                 }
@@ -178,7 +185,12 @@ function createBody(method, source, target, schemas, relation, type = null, from
                 ...schemas.schemas[`${target}List`].items.properties,
                 [relation]: {
                     type: "array",
-                    items: schemas.schemas[`${target}List`].items.properties
+                    items: {
+                        type: "object",
+                        properties: {
+                            ...schemas.schemas[`${target}List`].items.properties
+                        }
+                    }
                 }
             }
         };

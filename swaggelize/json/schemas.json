@@ -489,13 +489,16 @@
                 "Posts": {
                     "type": "array",
                     "items": {
-                        "title": {
-                            "type": "string",
-                            "description": "Post title"
-                        },
-                        "content": {
-                            "type": "string",
-                            "description": "Post content"
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Post title"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Post content"
+                            }
                         }
                     }
                 }
@@ -546,13 +549,16 @@
                 "Posts": {
                     "type": "array",
                     "items": {
-                        "title": {
-                            "type": "string",
-                            "description": "Post title"
-                        },
-                        "content": {
-                            "type": "string",
-                            "description": "Post content"
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Post title"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Post content"
+                            }
                         }
                     }
                 }
@@ -873,21 +879,24 @@
                 "Transactions": {
                     "type": "array",
                     "items": {
-                        "id": {
-                            "type": "string",
-                            "description": "Id of the transaction"
-                        },
-                        "amount": {
-                            "type": "string",
-                            "description": "Amount of the transaction"
-                        },
-                        "description": {
-                            "type": "string",
-                            "description": "Description of the transaction"
-                        },
-                        "date": {
-                            "type": "string",
-                            "description": ""
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Id of the transaction"
+                            },
+                            "amount": {
+                                "type": "string",
+                                "description": "Amount of the transaction"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the transaction"
+                            },
+                            "date": {
+                                "type": "string",
+                                "description": ""
+                            }
                         }
                     }
                 }
@@ -954,21 +963,24 @@
                 "Transactions": {
                     "type": "array",
                     "items": {
-                        "id": {
-                            "type": "string",
-                            "description": "Id of the transaction"
-                        },
-                        "amount": {
-                            "type": "string",
-                            "description": "Amount of the transaction"
-                        },
-                        "description": {
-                            "type": "string",
-                            "description": "Description of the transaction"
-                        },
-                        "date": {
-                            "type": "string",
-                            "description": ""
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Id of the transaction"
+                            },
+                            "amount": {
+                                "type": "string",
+                                "description": "Amount of the transaction"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the transaction"
+                            },
+                            "date": {
+                                "type": "string",
+                                "description": ""
+                            }
                         }
                     }
                 }
