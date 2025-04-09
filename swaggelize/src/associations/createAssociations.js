@@ -1,13 +1,4 @@
-const { classPrivateMethod } = require("@babel/types");
-
 const createAssociation = (schemas, models) => {
-    const relationTypes = {
-        hasOne: 'hasOne',
-        hasMany: 'hasMany',
-        belongsTo: 'belongsTo',
-        belongsToMany: 'belongsToMany'
-    };
-
     const relationMap = new Map();
 
     models.forEach((model) => {
@@ -30,7 +21,7 @@ const createAssociation = (schemas, models) => {
                     types: new Set(),
                     relations: {
                         associationField: null,
-                        foreignKey: rel.args[0]?.foreignKey || `${target.toLowerCase()}Id`,
+                        foreignKey: null
                     }
                 };
 
@@ -40,7 +31,7 @@ const createAssociation = (schemas, models) => {
                     target: source,
                     types: new Set(),
                     relations: {
-                        foreignKey: rel.args[0]?.foreignKey || `${target.toLowerCase()}Id`,
+                        foreignKey: null
                     }
                 };
 
@@ -72,7 +63,7 @@ const createAssociation = (schemas, models) => {
                 types: new Set(),
                 relations: {
                     associationField: null,
-                    foreignKey: rel.args[0]?.foreignKey || `${target.toLowerCase()}Id`,
+                    foreignKey: rel.args[1]?.foreignKey?.name || rel.args[1]?.foreignKey || `${source.toLowerCase()}Id`,
                 }
             };
 
@@ -83,7 +74,7 @@ const createAssociation = (schemas, models) => {
             }
 
             entry.types.add(relType);
-            if (relType === 'hasMany' || relType === 'hasOne') {
+            if (relType === 'hasMany') {
                 entry.relations.associationField = relationAlias || `${target.toLowerCase()}s`;
             }
 

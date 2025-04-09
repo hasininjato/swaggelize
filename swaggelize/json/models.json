@@ -359,7 +359,9 @@
                 "args": [
                     "Transaction",
                     {
-                        "foreignKey": "userId",
+                        "foreignKey": {
+                            "name": "userId"
+                        },
                         "as": "Transactions"
                     }
                 ]

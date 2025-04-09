@@ -64,7 +64,11 @@ const Transaction = sequelize.define('Transaction', {
  * @swag
  * relations: Transactions
  */
-User.hasMany(Transaction, { foreignKey: 'userId' });
+User.hasMany(Transaction, {
+    foreignKey: {
+        name: 'userId',
+    }
+});
 Transaction.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Transaction;
