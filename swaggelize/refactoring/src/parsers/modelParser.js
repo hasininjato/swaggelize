@@ -93,7 +93,7 @@ function extractRelations(modelDefinition) {
             const memberExpr = callExpr.callee;
             if (!t.isIdentifier(memberExpr.property)) return;
 
-            const relationTypes = ['hasOne', 'hasMany'];
+            const relationTypes = ['hasOne', 'hasMany', 'belongsToMany'];
             if (!relationTypes.includes(memberExpr.property.name)) return;
 
             const source = memberExpr.object.name;

@@ -8,10 +8,12 @@ const {
 const {profile} = require('./data/profile.model');
 const {post} = require('./data/post.model');
 const {user} = require('./data/user.model');
+const {instrument} = require('./data/instrument.model');
 
 const postModel = mainParser(post);
 const profileModel = mainParser(profile);
 const userModel = mainParser(user);
+const instrumentModel = mainParser(instrument);
 describe('model parser module', () => {
     it('extract sequelize model name', () => {
         postModel.forEach((element) => {
@@ -184,4 +186,42 @@ describe('model parser module', () => {
             })
         })
     })
+
+    it('extract model with many to many relation without creating new model through', () => {
+        instrumentModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual({
+                "relations": [
+                    {
+                        "type": "relation",
+                        "relation": "belongsToMany",
+                        "source": "User",
+                        "target": "Instrument",
+                        "args": [
+                            "Instrument",
+                            {
+                                "through": "InstrumentUsers",
+                                "association": "Instruments",
+                                "foreignKey": "instrumentId"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "relation",
+                        "relation": "belongsToMany",
+                        "source": "Instrument",
+                        "target": "User",
+                        "args": [
+                            "User",
+                            {
+                                "through": "InstrumentUsers",
+                                "association": "Users",
+                                "foreignKey": "userId"
+                            }
+                        ]
+                    }
+                ]
+            })
+        })
+    })
+
 });

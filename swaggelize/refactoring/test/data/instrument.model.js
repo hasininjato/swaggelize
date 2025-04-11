@@ -1,13 +1,4 @@
-const {mainParser} = require("./src/parsers/modelParser.js");
-const fs = require("fs");
-const {
-    modelParser,
-    extractFields,
-    extractTimestampFields,
-    extractRelations,
-} = require("./src/parsers/modelParser");
-
-const userModel = `
+const instrument = `
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.conf');
 const User = require('./user.model');
@@ -54,11 +45,6 @@ User.belongsToMany(Instrument, { through: 'InstrumentUsers' });
 Instrument.belongsToMany(User, { through: 'InstrumentUsers' });
 
 module.exports = Instrument;
-`;
+`
 
-const parsedModel = mainParser(userModel);
-parsedModel.forEach((element, index) => {
-    // const modelDefinitions = extractModelDefinitions(element);
-    const modelRelations = extractRelations(element);
-    console.log(JSON.stringify(modelRelations, null, 4));
-});
+module.exports = {instrument};
