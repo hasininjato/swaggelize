@@ -1,75 +1,34 @@
-const { mainParser, extractModelDefinitions } = require("./src/parsers/modelParser.js");
+const {mainParser, extractModelDefinitions} = require("./src/parsers/modelParser.js");
 const fs = require("fs");
+const {extractFields} = require("./src/parsers/modelParser");
+const {moduleExpression} = require("@babel/types");
 
 const userModel = `
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.conf');
-const User = require('./user.model');
 
-const Transaction = sequelize.define('Transaction', {
+const Post = sequelize.define('Post', {
     /**
      * @swag
-     * methods: item, list
-     * description: Id of the transaction
+     * description: Post title
+     * methods: list, item, put, post
      */
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-    },
+    title: DataTypes.STRING,
     /**
      * @swag
-     * methods: item, list, put, post
-     * description: Amount of the transaction
+     * description: Post content
+     * methods: list, item, put, post
      */
-    amount: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        unique: false,
-        validate: {
-            notNull: { msg: "Amount is required" },
-            isDecimal: { msg: "Amount must be a valid decimal number" },
-            notEmpty: { msg: "Amount cannot be empty" },
-            min: {
-                args: [0.01],
-                msg: "Amount must be greater than 0"
-            }
-        }
-    },
-    /**
-     * @swag
-     * methods: item, list, put, post
-     * description: Description of the transaction
-     */
-    description: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: false,
-        validate: {
-            notNull: { msg: "Description is required" },
-            notEmpty: { msg: "Description cannot be empty" }
-        }
-    },
-    /**
-     * @swag
-     * methods: item, list
-     */
-    date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-    },
-}, {
-    timestamps: true
+    content: DataTypes.TEXT,
 });
 
-module.exports = {Transaction, Post};
-
+module.exports = {Post};
 `;
 
 const parsedModel = mainParser(userModel);
-parsedModel.forEach((index, element) => {
-    const modelDefinitions = extractModelDefinitions(element);
-    console.log(modelDefinitions);
+parsedModel.forEach((element, index) => {
+    // const modelDefinitions = extractModelDefinitions(element);
+    // console.log(modelDefinitions);
+    const modelFields = extractFields(element);
+    console.log(modelFields)
 });

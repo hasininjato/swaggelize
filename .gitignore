@@ -27,3 +27,5 @@ logs
 
 # Environment variables
 .env
+
+swaggelize/coverage/

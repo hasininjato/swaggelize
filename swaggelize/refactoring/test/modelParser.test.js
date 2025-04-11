@@ -1,4 +1,4 @@
-const { mainParser, extractModelDefinitions } = require("../src/parsers/modelParser");
+const {mainParser, extractModelDefinitions, extractFields} = require("../src/parsers/modelParser");
 
 const code = `
 const { DataTypes } = require('sequelize');
@@ -21,14 +21,48 @@ const Post = sequelize.define('Post', {
 });
 
 module.exports = {Transaction, Post};
-
 `;
 
 const parsedModel = mainParser(code);
 describe('model parser module', () => {
-    it('extract model definitions', () => {
+    it('extract sequelize model name', () => {
         parsedModel.forEach((element) => {
             expect(extractModelDefinitions(element)).toBe('Post');
         });
     });
+
+    it('extract sequelize model fields', () => {
+        parsedModel.forEach((element) => {
+            expect(extractFields(element)).toStrictEqual([
+                {
+                    "field": "title",
+                    "type": "field",
+                    "object": "DataTypes.STRING",
+                    "comment": {
+                        "methods": [
+                            "list",
+                            "item",
+                            "put",
+                            "post"
+                        ],
+                        "description": "Post title"
+                    }
+                },
+                {
+                    "field": "content",
+                    "type": "field",
+                    "object": "DataTypes.TEXT",
+                    "comment": {
+                        "methods": [
+                            "list",
+                            "item",
+                            "put",
+                            "post"
+                        ],
+                        "description": "Post content"
+                    }
+                }
+            ])
+        })
+    })
 });
