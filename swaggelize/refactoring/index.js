@@ -1,4 +1,4 @@
-const { modelParser, extractModelDefinitions } = require("./src/parsers/modelParser.js");
+const { mainParser, extractModelDefinitions } = require("./src/parsers/modelParser.js");
 const fs = require("fs");
 
 const userModel = `
@@ -64,26 +64,12 @@ const Transaction = sequelize.define('Transaction', {
     timestamps: true
 });
 
-const Post = sequelize.define('Post', {
-    /**
-     * @swag
-     * description: Post title
-     * methods: list, item, put, post
-     */
-    title: DataTypes.STRING,
-    /**
-     * @swag
-     * description: Post content
-     * methods: list, item, put, post
-     */
-    content: DataTypes.TEXT,
-});
-
 module.exports = {Transaction, Post};
 
 `;
-// modelParser(userModel);
-// extractModelDefinitions(userModel)
-modelParser(userModel)
 
-// fs.writeFileSync("./userModel.json", JSON.stringify(modelParser(userModel), null, 4), "utf-8");
+const parsedModel = mainParser(userModel);
+parsedModel.forEach((index, element) => {
+    const modelDefinitions = extractModelDefinitions(element);
+    console.log(modelDefinitions);
+});
