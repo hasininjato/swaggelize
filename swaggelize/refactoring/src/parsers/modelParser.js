@@ -80,6 +80,95 @@ function extractTimestampFields(modelDefinition) {
     ];
 }
 
+function extractRelations(modelDefinition) {
+    const relations = [];
+    const modelName = modelDefinition.name;
+
+    // Get the parent program node to search for relation declarations
+    let programNode;
+    modelDefinition.astPath.findParent((path) => {
+        if (path.isProgram()) {
+            programNode = path.node;
+            return true;
+        }
+        return false;
+    });
+
+    if (!programNode) return {relations};
+
+    // Helper function to process object expressions
+    const processObjectExpression = (objectExpression) => {
+        const result = {};
+        objectExpression.properties.forEach(prop => {
+            const key = t.isIdentifier(prop.key) ? prop.key.name :
+                t.isStringLiteral(prop.key) ? prop.key.value : null;
+
+            if (key) {
+                if (t.isStringLiteral(prop.value)) {
+                    result[key] = prop.value.value;
+                } else if (t.isNumericLiteral(prop.value)) {
+                    result[key] = prop.value.value;
+                } else if (t.isBooleanLiteral(prop.value)) {
+                    result[key] = prop.value.value;
+                } else if (t.isNullLiteral(prop.value)) {
+                    result[key] = null;
+                } else if (t.isObjectExpression(prop.value)) {
+                    result[key] = processObjectExpression(prop.value);
+                } else if (t.isIdentifier(prop.value)) {
+                    result[key] = prop.value.name;
+                }
+            }
+        });
+        return result;
+    };
+
+    // Traverse the program to find relation statements
+    traverse(programNode, {
+        ExpressionStatement(path) {
+            if (t.isCallExpression(path.node.expression)) {
+                const callExpr = path.node.expression;
+
+                if (t.isMemberExpression(callExpr.callee)) {
+                    const memberExpr = callExpr.callee;
+
+                    if (t.isIdentifier(memberExpr.property) &&
+                        (memberExpr.property.name === 'hasOne')) {
+
+                        const source = memberExpr.object.name;
+                        const relationType = memberExpr.property.name;
+                        const target = callExpr.arguments[0]?.name || modelName;
+
+                        // Process all arguments
+                        const args = [];
+
+                        callExpr.arguments.forEach(arg => {
+                            if (t.isIdentifier(arg)) {
+                                args.push(arg.name);
+                            } else if (t.isStringLiteral(arg)) {
+                                args.push(arg.value);
+                            } else if (t.isObjectExpression(arg)) {
+                                args.push(processObjectExpression(arg));
+                            }
+                        });
+
+                        const relation = {
+                            type: "relation",
+                            relation: relationType,
+                            source: source,
+                            target: target,
+                            args: args
+                        };
+
+                        relations.push(relation);
+                    }
+                }
+            }
+        }
+    });
+
+    return {relations};
+}
+
 function mainParser(code) {
     const ast = parser.parse(code, {
         sourceType: 'module',
@@ -129,4 +218,11 @@ function modelParser(code) {
     return models.length === 1 ? models[0] : models;
 }
 
-module.exports = {mainParser, modelParser, extractModelDefinitions, extractFields, extractTimestampFields};
+module.exports = {
+    mainParser,
+    modelParser,
+    extractModelDefinitions,
+    extractFields,
+    extractTimestampFields,
+    extractRelations
+};

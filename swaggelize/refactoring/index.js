@@ -1,37 +1,41 @@
 const {mainParser, extractModelDefinitions} = require("./src/parsers/modelParser.js");
 const fs = require("fs");
-const {modelParser, extractFields, extractTimestampFields} = require("./src/parsers/modelParser");
+const {modelParser, extractFields, extractTimestampFields, extractRelations} = require("./src/parsers/modelParser");
 
 const userModel = `
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.conf');
 const User = require('./user.model');
 
-const Post = sequelize.define('Post', {
+const Profile = sequelize.define('Profile', {
     /**
      * @swag
-     * description: Post title
+     * description: Profile ID
      * methods: list, item, put, post
      */
-    title: DataTypes.STRING,
+    id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+    },
     /**
      * @swag
-     * description: Post content
+     * description: Profile bio
      * methods: list, item, put, post
      */
-    content: DataTypes.TEXT,
-}, {
-    timestamps: true
+    bio: DataTypes.TEXT
 });
 
-module.exports = {Post};
+User.hasOne(Profile, { foreignKey: {name: 'profileId'} });
+Profile.belongsTo(User);
+
+module.exports = Profile;
 `;
 
 const parsedModel = mainParser(userModel);
-// parsedModel.forEach((element, index) => {
-//     // const modelDefinitions = extractModelDefinitions(element);
-//     // console.log(modelDefinitions);
-//     const modelFields = extractTimestampFields(element);
-//     console.log(JSON.stringify(modelFields, null, 4));
-// });
-console.log(JSON.stringify(modelParser(userModel), null, 4));
+parsedModel.forEach((element, index) => {
+    const modelDefinitions = extractModelDefinitions(element);
+    const modelRelations = extractRelations(element);
+    console.log(JSON.stringify(modelRelations, null, 4));
+});
