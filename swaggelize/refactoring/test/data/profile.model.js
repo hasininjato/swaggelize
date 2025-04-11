@@ -17,6 +17,8 @@ const Profile = sequelize.define('Profile', {
      * methods: list, item, put, post
      */
     bio: DataTypes.TEXT
+}, {
+    timestamps: true
 });
 
 User.hasOne(Profile);

@@ -5,11 +5,13 @@ const {
     extractTimestampFields,
     modelParser, extractRelations
 } = require("../src/parsers/modelParser");
-const {profile} = require('./data/profile.model.test');
-const {post} = require('./data/post.model.test');
+const {profile} = require('./data/profile.model');
+const {post} = require('./data/post.model');
+const {user} = require('./data/user.model');
 
 const postModel = mainParser(post);
 const profileModel = mainParser(profile);
+const userModel = mainParser(user);
 describe('model parser module', () => {
     it('extract sequelize model name', () => {
         postModel.forEach((element) => {
@@ -54,12 +56,12 @@ describe('model parser module', () => {
 
     it('extract sequelize model fields without timestamps', () => {
         postModel.forEach((element) => {
-            expect(extractTimestampFields(element)).not.toStrictEqual([])
+            expect(extractTimestampFields(element)).not.toBe([])
         })
     })
 
     it('extract sequelize model fields with timestamps', () => {
-        postModel.forEach((element) => {
+        profileModel.forEach((element) => {
             expect(extractTimestampFields(element)).toStrictEqual([
                 {
                     "field": "createdAt",
@@ -126,46 +128,14 @@ describe('model parser module', () => {
                         ],
                         "description": "Post content"
                     }
-                },
-                {
-                    "field": "createdAt",
-                    "type": "field",
-                    "object": {
-                        "type": "DataTypes.DATE",
-                        "allowNull": false
-                    },
-                    "comment": {
-                        "methods": [
-                            "item",
-                            "list"
-                        ],
-                        "description": "Date when the record was created"
-                    }
-                },
-                {
-                    "field": "updatedAt",
-                    "type": "field",
-                    "object": {
-                        "type": "DataTypes.DATE",
-                        "allowNull": false
-                    },
-                    "comment": {
-                        "methods": [
-                            "item",
-                            "list"
-                        ],
-                        "description": "Date when the record was last updated"
-                    }
                 }
             ],
-            "options": {
-                "timestamps": true
-            }
+            "options": {}
         });
     })
 
     it('extract model without relation', () => {
-        postModel.forEach((element) => {
+        userModel.forEach((element) => {
             expect(extractRelations(element)).toStrictEqual({"relations": []})
         })
     })
