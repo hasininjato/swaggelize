@@ -1,4 +1,4 @@
-const {mainParser, extractModelDefinitions, extractFields} = require("../src/parsers/modelParser");
+const {mainParser, extractModelDefinitions, extractFields, extractTimestampFields} = require("../src/parsers/modelParser");
 
 const code = `
 const { DataTypes } = require('sequelize');
@@ -18,9 +18,11 @@ const Post = sequelize.define('Post', {
      * methods: list, item, put, post
      */
     content: DataTypes.TEXT,
+}, {
+    timestamps: true
 });
 
-module.exports = {Transaction, Post};
+module.exports = {Post};
 `;
 
 const parsedModel = mainParser(code);
@@ -60,6 +62,49 @@ describe('model parser module', () => {
                             "post"
                         ],
                         "description": "Post content"
+                    }
+                }
+            ])
+        })
+    });
+
+    it('extract sequelize model fields without timestamps', () => {
+        parsedModel.forEach((element) => {
+            expect(extractTimestampFields(element)).not.toStrictEqual([])
+        })
+    })
+
+    it('extract sequelize model fields with timestamps', () => {
+        parsedModel.forEach((element) => {
+            expect(extractTimestampFields(element)).toStrictEqual([
+                {
+                    "field": "createdAt",
+                    "type": "field",
+                    "object": {
+                        "type": "DataTypes.DATE",
+                        "allowNull": false
+                    },
+                    "comment": {
+                        "methods": [
+                            "item",
+                            "list"
+                        ],
+                        "description": "Date when the record was created"
+                    }
+                },
+                {
+                    "field": "updatedAt",
+                    "type": "field",
+                    "object": {
+                        "type": "DataTypes.DATE",
+                        "allowNull": false
+                    },
+                    "comment": {
+                        "methods": [
+                            "item",
+                            "list"
+                        ],
+                        "description": "Date when the record was last updated"
                     }
                 }
             ])
