@@ -175,7 +175,8 @@ describe('model parser module', () => {
                             "Post",
                             {
                                 "onDelete": "CASCADE",
-                                "foreignKey": "postId"
+                                "foreignKey": "postId",
+                                "association": "Posts"
                             }
                         ]
                     }

@@ -101,6 +101,22 @@ function extractRelations(modelDefinition) {
             const target = callExpr.arguments[0]?.name || modelName;
 
             const {args, options} = processRelationArguments(callExpr.arguments);
+
+            // Extract swag comment with relations
+            const leadingComments = path.node.leadingComments;
+            if (leadingComments) {
+                const swagComment = leadingComments.find(comment =>
+                    comment.value.includes('@swag') && comment.value.includes('relations:')
+                );
+
+                if (swagComment) {
+                    const relationsMatch = swagComment.value.match(/relations:\s*(.*)/);
+                    if (relationsMatch && relationsMatch[1]) {
+                        options.association = relationsMatch[1].trim();
+                    }
+                }
+            }
+
             const relation = createRelationObject(source, relationType, target, args, options);
 
             relations.push(relation);
