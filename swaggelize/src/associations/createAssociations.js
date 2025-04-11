@@ -7,7 +7,8 @@ const createAssociation = (models) => {
         types: new Set(),
         relations: {
             associationField: isReverse ? null : relArgs.as || `${target.toLowerCase()}s`,
-            foreignKey: relArgs.foreignKey?.name || relArgs.foreignKey || `${source.toLowerCase()}Id`
+            foreignKey: relArgs.foreignKey?.name || relArgs.foreignKey || `${source.toLowerCase()}Id`,
+            through: relArgs.through || null
         }
     });
 
@@ -21,7 +22,7 @@ const createAssociation = (models) => {
             const forwardKey = `${source}|${target}|belongsToMany`;
             const reverseKey = `${target}|${source}|belongsToMany`;
 
-            const forwardEntry = relationMap.get(forwardKey) || createRelationEntry(source, target, relArgs);
+            const forwardEntry = relationMap.get(forwardKey) || createRelationEntry(source, target, relArgs, true);
             const reverseEntry = relationMap.get(reverseKey) || createRelationEntry(target, source, relArgs, true);
 
             forwardEntry.types.add('belongsToMany');
@@ -85,6 +86,16 @@ const parseAssociation = (schemas, models) => {
 
             schemas.schemas[`${source}${target}sPut`] = createBody("Put", source, target, schemas, relation.associationField, "one-to-many");
             schemas.schemas[`${target}s${source}Put`] = createBody("Put", target, source, schemas, relation.foreignKey, "one-to-many", "target");
+        } else {
+            // many to many associations
+            // create schemas for both directions
+            // console.log(source, target, relation.through)
+            // schemas.schemas[`${source}${target}sItem`] = createBody("Item", source, target, schemas, relation.associationField);
+            // console.log(schemas.schemas)
+            schemas.schemas[`${source}${target}Item`] = createBody("Item", source, target, schemas, relation, "many-to-many");
+            // schemas.schemas[`${target}s${source}Item`] = createBody("Item", target, source, schemas, relation.foreignKey);
+            // schemas.schemas[`${source}${target}Item`] = createBody("Item", source, target, schemas, relation.through, "many-to-many", models);
+            return;
         }
     };
 
@@ -93,7 +104,12 @@ const parseAssociation = (schemas, models) => {
     });
 };
 
-const createBody = (method, source, target, schemas, relation, type = null, from = null) => {
+const findModelBySequelizeModel = (sequelizeModel, models) => {
+    const modelMap = new Map(models.map(item => [item.sequelizeModel, item]));
+    return modelMap.get(modelName);
+}
+
+const createBody = (method, source, target, schemas, relation, type = null, from = null, models = null) => {
     const getTargetSchema = () => schemas.schemas[`${target}List`]?.items?.properties || {};
     const getSourceItemSchema = () => schemas.schemas[`${source}Item`]?.properties || {};
 
@@ -110,6 +126,14 @@ const createBody = (method, source, target, schemas, relation, type = null, from
 
         const baseProperties = { ...getTargetSchema(), [relation]: relationSchema };
 
+        return method === "List"
+            ? { type: "array", items: { type: "object", properties: baseProperties } }
+            : { type: "object", properties: baseProperties };
+    } else if (type == "many-to-many") {
+        const baseProperties = { ...getSourceItemSchema(), [relation]: { type: "array", items: { type: "object", properties: getTargetSchema() } } };
+        console.log(relation)
+
+        // return {}
         return method === "List"
             ? { type: "array", items: { type: "object", properties: baseProperties } }
             : { type: "object", properties: baseProperties };

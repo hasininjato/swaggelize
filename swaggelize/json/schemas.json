@@ -475,6 +475,80 @@
                 "password"
             ]
         },
+        "UserInstrumentItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the user"
+                },
+                "fullname": {
+                    "type": "string",
+                    "description": ""
+                },
+                "email": {
+                    "type": "string",
+                    "description": ""
+                },
+                "[object Object]": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "type": {
+                                "type": "string",
+                                "description": "type of the instrument"
+                            },
+                            "purchaseDate": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "InstrumentUserItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": ""
+                },
+                "type": {
+                    "type": "string",
+                    "description": "type of the instrument"
+                },
+                "purchaseDate": {
+                    "type": "string",
+                    "description": ""
+                },
+                "[object Object]": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Id of the user"
+                            },
+                            "fullname": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "email": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "UserPostsItem": {
             "type": "object",
             "properties": {
@@ -712,6 +786,56 @@
                         "content": {
                             "type": "string",
                             "description": "Post content"
+                        }
+                    }
+                }
+            }
+        },
+        "PostTagItem": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Post title"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Post content"
+                },
+                "[object Object]": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Tag name"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "TagPostItem": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Tag name"
+                },
+                "[object Object]": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Post title"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Post content"
+                            }
                         }
                     }
                 }
