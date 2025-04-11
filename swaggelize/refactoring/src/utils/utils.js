@@ -20,7 +20,7 @@ const getFileInDirectory = (directoryPath) => {
     }
 }
 
-const getMethodsAndDescriptionFromComment = (comment) => {
+const getMethodsFromComment = (comment) => {
     // Clean up the comment
     const cleanedComment = comment
         .replace(/^\s*\*\s*/gm, '')  // Remove leading asterisks and spaces
@@ -39,6 +39,15 @@ const getMethodsAndDescriptionFromComment = (comment) => {
             .split(',')  // Split by comma
             .map(method => method.trim());  // Trim spaces around each method
     }
+    return methodsArray;
+}
+
+const getDescriptionFromComment = (comment) => {
+    // Clean up the comment
+    const cleanedComment = comment
+        .replace(/^\s*\*\s*/gm, '')  // Remove leading asterisks and spaces
+        .replace(/@swag/g, '')  // Remove the @swag annotation
+        .trim();  // Trim leading/trailing spaces
 
     // Extract description
     const descriptionLine = cleanedComment
@@ -51,22 +60,7 @@ const getMethodsAndDescriptionFromComment = (comment) => {
             .replace('description:', '')  // Remove the 'description:' prefix
             .trim();  // Trim spaces
     }
-
-    const relationsLine = cleanedComment
-        .split('\n')  // Split by lines
-        .find(line => line.toLowerCase().includes('relations'));  // Find the line with 'description'
-    let relations = "";
-    if (relationsLine !== undefined) {
-        relations = relationsLine
-            .replace('relations:', '')  // Remove the 'description:' prefix
-            .trim();  // Trim spaces
-    }
-
-    return {
-        methods: methodsArray,
-        description: description,
-        relations: relations
-    };
+    return description;
 }
 
 const getRelationsFromComment = (comment) => {
@@ -102,14 +96,15 @@ const transformStr = (input) => {
         ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
         : pascalPrefix;
 
-    return { pascalCase, suffix, prefix };
+    return {pascalCase, suffix, prefix};
 }
 
 module.exports = {
     readFileContent,
     getFileInDirectory,
-    getMethodsAndDescriptionFromComment,
     capitalizeFirstLetter,
     transformStr,
-    getRelationsFromComment
+    getRelationsFromComment,
+    getMethodsFromComment,
+    getDescriptionFromComment
 }

@@ -2,7 +2,7 @@ const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const utils = require("../utils/utils");
-const { SWAG_TAG, getValueFromNode } = require("../utils/constants");
+const {SWAG_TAG, getValueFromNode} = require("../utils/constants");
 
 // Extract all model definitions from code
 function extractModelDefinitions(modelDefinition) {
@@ -26,7 +26,8 @@ function extractFields(modelDefinition) {
         );
 
         if (swagComment) {
-            const { methods, description } = utils.getMethodsAndDescriptionFromComment(swagComment.value.trim());
+            const methods = utils.getMethodsFromComment(swagComment.value.trim());
+            const description = utils.getDescriptionFromComment(swagComment.value.trim());
 
             fields.push({
                 field: fieldName,
@@ -128,4 +129,4 @@ function modelParser(code) {
     return models.length === 1 ? models[0] : models;
 }
 
-module.exports = { mainParser, modelParser, extractModelDefinitions, extractFields, extractTimestampFields };
+module.exports = {mainParser, modelParser, extractModelDefinitions, extractFields, extractTimestampFields};
