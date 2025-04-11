@@ -122,6 +122,11 @@ function extractRelations(modelDefinition) {
         return result;
     };
 
+    // Helper function to generate default foreign key
+    const generateDefaultForeignKey = (targetModelName) => {
+        return targetModelName.toLowerCase() + 'Id';
+    };
+
     // Traverse the program to find relation statements
     traverse(programNode, {
         ExpressionStatement(path) {
@@ -132,7 +137,7 @@ function extractRelations(modelDefinition) {
                     const memberExpr = callExpr.callee;
 
                     if (t.isIdentifier(memberExpr.property) &&
-                        (memberExpr.property.name === 'hasOne')) {
+                        (memberExpr.property.name === 'hasOne' || memberExpr.property.name === 'hasMany')) {
 
                         const source = memberExpr.object.name;
                         const relationType = memberExpr.property.name;
@@ -140,6 +145,8 @@ function extractRelations(modelDefinition) {
 
                         // Process all arguments
                         const args = [];
+                        let options = {};
+                        let hasForeignKey = false;
 
                         callExpr.arguments.forEach(arg => {
                             if (t.isIdentifier(arg)) {
@@ -147,9 +154,39 @@ function extractRelations(modelDefinition) {
                             } else if (t.isStringLiteral(arg)) {
                                 args.push(arg.value);
                             } else if (t.isObjectExpression(arg)) {
-                                args.push(processObjectExpression(arg));
+                                options = processObjectExpression(arg);
+                                args.push(options);
+
+                                // Check if foreignKey exists at any level
+                                const checkForForeignKey = (obj) => {
+                                    if (obj.foreignKey) {
+                                        hasForeignKey = true;
+                                        return;
+                                    }
+                                    Object.values(obj).forEach(val => {
+                                        if (typeof val === 'object' && val !== null) {
+                                            checkForForeignKey(val);
+                                        }
+                                    });
+                                };
+
+                                checkForForeignKey(options);
                             }
                         });
+
+                        // Add default foreignKey if none exists
+                        if (!hasForeignKey) {
+                            const defaultForeignKey = generateDefaultForeignKey(target);
+                            if (!options.foreignKey) {
+                                options.foreignKey = defaultForeignKey;
+                            }
+                            // Replace the options in args
+                            if (args.length > 1 && typeof args[1] === 'object') {
+                                args[1] = options;
+                            } else {
+                                args.push(options);
+                            }
+                        }
 
                         const relation = {
                             type: "relation",

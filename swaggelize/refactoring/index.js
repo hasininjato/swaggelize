@@ -7,30 +7,29 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.conf');
 const User = require('./user.model');
 
-const Profile = sequelize.define('Profile', {
+const Post = sequelize.define('Post', {
     /**
      * @swag
-     * description: Profile ID
+     * description: Post title
      * methods: list, item, put, post
      */
-    id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER
-    },
+    title: DataTypes.STRING,
     /**
      * @swag
-     * description: Profile bio
+     * description: Post content
      * methods: list, item, put, post
      */
-    bio: DataTypes.TEXT
+    content: DataTypes.TEXT,
 });
 
-User.hasOne(Profile, { foreignKey: {name: 'profileId'} });
-Profile.belongsTo(User);
+/**
+ * @swag
+ * relations: Posts
+ */
+User.hasMany(Post, { onDelete: 'CASCADE' });
+Post.belongsTo(User);
 
-module.exports = Profile;
+module.exports = Post;
 `;
 
 const parsedModel = mainParser(userModel);
