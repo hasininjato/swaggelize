@@ -128,4 +128,4 @@ function modelParser(code) {
     return models.length === 1 ? models[0] : models;
 }
 
-module.exports = { modelParser };
+module.exports = { modelParser, extractModelDefinitions, extractFields, extractTimestampFields };

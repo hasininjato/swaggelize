@@ -1,7 +1,6 @@
-const { modelParser, extractModelDefinitions } = require("./src/parsers/modelParser.js");
-const fs = require("fs");
+const { extractModelDefinitions } = require("../src/parsers/modelParser");
 
-const userModel = `
+const code = `
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.conf');
 const User = require('./user.model');
@@ -82,7 +81,9 @@ const Post = sequelize.define('Post', {
 module.exports = {Transaction, Post};
 
 `;
-// modelParser(userModel);
-console.log(extractModelDefinitions(userModel))
 
-// fs.writeFileSync("./userModel.json", JSON.stringify(modelParser(userModel), null, 4), "utf-8");
+describe('model parser module', () => {
+    it('extract model definitions', () => {
+        expect(extractModelDefinitions(code)).to.be.true;
+    });
+});
