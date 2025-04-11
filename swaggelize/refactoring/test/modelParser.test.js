@@ -1,4 +1,10 @@
-const {mainParser, extractModelDefinitions, extractFields, extractTimestampFields} = require("../src/parsers/modelParser");
+const {
+    mainParser,
+    extractModelDefinitions,
+    extractFields,
+    extractTimestampFields,
+    modelParser
+} = require("../src/parsers/modelParser");
 
 const code = `
 const { DataTypes } = require('sequelize');
@@ -109,5 +115,74 @@ describe('model parser module', () => {
                 }
             ])
         })
+    });
+
+    it('extract model parser', () => {
+        expect(modelParser(code)).toStrictEqual({
+            "sequelizeModel": "Post",
+            "value": [
+                {
+                    "field": "title",
+                    "type": "field",
+                    "object": "DataTypes.STRING",
+                    "comment": {
+                        "methods": [
+                            "list",
+                            "item",
+                            "put",
+                            "post"
+                        ],
+                        "description": "Post title"
+                    }
+                },
+                {
+                    "field": "content",
+                    "type": "field",
+                    "object": "DataTypes.TEXT",
+                    "comment": {
+                        "methods": [
+                            "list",
+                            "item",
+                            "put",
+                            "post"
+                        ],
+                        "description": "Post content"
+                    }
+                },
+                {
+                    "field": "createdAt",
+                    "type": "field",
+                    "object": {
+                        "type": "DataTypes.DATE",
+                        "allowNull": false
+                    },
+                    "comment": {
+                        "methods": [
+                            "item",
+                            "list"
+                        ],
+                        "description": "Date when the record was created"
+                    }
+                },
+                {
+                    "field": "updatedAt",
+                    "type": "field",
+                    "object": {
+                        "type": "DataTypes.DATE",
+                        "allowNull": false
+                    },
+                    "comment": {
+                        "methods": [
+                            "item",
+                            "list"
+                        ],
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            ],
+            "options": {
+                "timestamps": true
+            }
+        });
     })
 });
