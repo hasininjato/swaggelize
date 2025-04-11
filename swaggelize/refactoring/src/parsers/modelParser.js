@@ -3,6 +3,7 @@ const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const utils = require("../utils/utils");
 const {SWAG_TAG, getValueFromNode} = require("../utils/constants");
+const {processRelationArguments, createRelationObject, returnRelations} = require("../utils/utils");
 
 // Extract all model definitions from code
 function extractModelDefinitions(modelDefinition) {
@@ -81,125 +82,28 @@ function extractTimestampFields(modelDefinition) {
 }
 
 function extractRelations(modelDefinition) {
-    const relations = [];
-    const modelName = modelDefinition.name;
-
-    // Get the parent program node to search for relation declarations
-    let programNode;
-    modelDefinition.astPath.findParent((path) => {
-        if (path.isProgram()) {
-            programNode = path.node;
-            return true;
-        }
-        return false;
-    });
-
-    if (!programNode) return {relations};
-
-    // Helper function to process object expressions
-    const processObjectExpression = (objectExpression) => {
-        const result = {};
-        objectExpression.properties.forEach(prop => {
-            const key = t.isIdentifier(prop.key) ? prop.key.name :
-                t.isStringLiteral(prop.key) ? prop.key.value : null;
-
-            if (key) {
-                if (t.isStringLiteral(prop.value)) {
-                    result[key] = prop.value.value;
-                } else if (t.isNumericLiteral(prop.value)) {
-                    result[key] = prop.value.value;
-                } else if (t.isBooleanLiteral(prop.value)) {
-                    result[key] = prop.value.value;
-                } else if (t.isNullLiteral(prop.value)) {
-                    result[key] = null;
-                } else if (t.isObjectExpression(prop.value)) {
-                    result[key] = processObjectExpression(prop.value);
-                } else if (t.isIdentifier(prop.value)) {
-                    result[key] = prop.value.name;
-                }
-            }
-        });
-        return result;
-    };
-
-    // Helper function to generate default foreign key
-    const generateDefaultForeignKey = (targetModelName) => {
-        return targetModelName.toLowerCase() + 'Id';
-    };
-
-    // Traverse the program to find relation statements
+    const {relations, programNode, modelName} = returnRelations(modelDefinition);
     traverse(programNode, {
         ExpressionStatement(path) {
-            if (t.isCallExpression(path.node.expression)) {
-                const callExpr = path.node.expression;
+            if (!t.isCallExpression(path.node.expression)) return;
 
-                if (t.isMemberExpression(callExpr.callee)) {
-                    const memberExpr = callExpr.callee;
+            const callExpr = path.node.expression;
+            if (!t.isMemberExpression(callExpr.callee)) return;
 
-                    if (t.isIdentifier(memberExpr.property) &&
-                        (memberExpr.property.name === 'hasOne' || memberExpr.property.name === 'hasMany')) {
+            const memberExpr = callExpr.callee;
+            if (!t.isIdentifier(memberExpr.property)) return;
 
-                        const source = memberExpr.object.name;
-                        const relationType = memberExpr.property.name;
-                        const target = callExpr.arguments[0]?.name || modelName;
+            const relationTypes = ['hasOne', 'hasMany'];
+            if (!relationTypes.includes(memberExpr.property.name)) return;
 
-                        // Process all arguments
-                        const args = [];
-                        let options = {};
-                        let hasForeignKey = false;
+            const source = memberExpr.object.name;
+            const relationType = memberExpr.property.name;
+            const target = callExpr.arguments[0]?.name || modelName;
 
-                        callExpr.arguments.forEach(arg => {
-                            if (t.isIdentifier(arg)) {
-                                args.push(arg.name);
-                            } else if (t.isStringLiteral(arg)) {
-                                args.push(arg.value);
-                            } else if (t.isObjectExpression(arg)) {
-                                options = processObjectExpression(arg);
-                                args.push(options);
+            const {args, options} = processRelationArguments(callExpr.arguments);
+            const relation = createRelationObject(source, relationType, target, args, options);
 
-                                // Check if foreignKey exists at any level
-                                const checkForForeignKey = (obj) => {
-                                    if (obj.foreignKey) {
-                                        hasForeignKey = true;
-                                        return;
-                                    }
-                                    Object.values(obj).forEach(val => {
-                                        if (typeof val === 'object' && val !== null) {
-                                            checkForForeignKey(val);
-                                        }
-                                    });
-                                };
-
-                                checkForForeignKey(options);
-                            }
-                        });
-
-                        // Add default foreignKey if none exists
-                        if (!hasForeignKey) {
-                            const defaultForeignKey = generateDefaultForeignKey(target);
-                            if (!options.foreignKey) {
-                                options.foreignKey = defaultForeignKey;
-                            }
-                            // Replace the options in args
-                            if (args.length > 1 && typeof args[1] === 'object') {
-                                args[1] = options;
-                            } else {
-                                args.push(options);
-                            }
-                        }
-
-                        const relation = {
-                            type: "relation",
-                            relation: relationType,
-                            source: source,
-                            target: target,
-                            args: args
-                        };
-
-                        relations.push(relation);
-                    }
-                }
-            }
+            relations.push(relation);
         }
     });
 

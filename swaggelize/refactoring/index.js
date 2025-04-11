@@ -1,6 +1,11 @@
-const {mainParser, extractModelDefinitions} = require("./src/parsers/modelParser.js");
+const {mainParser} = require("./src/parsers/modelParser.js");
 const fs = require("fs");
-const {modelParser, extractFields, extractTimestampFields, extractRelations} = require("./src/parsers/modelParser");
+const {
+    modelParser,
+    extractFields,
+    extractTimestampFields,
+    extractRelations,
+} = require("./src/parsers/modelParser");
 
 const userModel = `
 const { DataTypes } = require('sequelize');
@@ -34,7 +39,7 @@ module.exports = Post;
 
 const parsedModel = mainParser(userModel);
 parsedModel.forEach((element, index) => {
-    const modelDefinitions = extractModelDefinitions(element);
+    // const modelDefinitions = extractModelDefinitions(element);
     const modelRelations = extractRelations(element);
     console.log(JSON.stringify(modelRelations, null, 4));
 });

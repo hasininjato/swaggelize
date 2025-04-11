@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require("path");
+const t = require('@babel/types');
 
 const readFileContent = (filePath) => {
     try {
@@ -99,6 +100,97 @@ const transformStr = (input) => {
     return {pascalCase, suffix, prefix};
 }
 
+const processValueNode = (node) => {
+    if (t.isStringLiteral(node)) return node.value;
+    if (t.isNumericLiteral(node)) return node.value;
+    if (t.isBooleanLiteral(node)) return node.value;
+    if (t.isNullLiteral(node)) return null;
+    if (t.isIdentifier(node)) return node.name;
+    return undefined;
+};
+
+const processObjectExpression = (objectExpression) => {
+    return objectExpression.properties.reduce((result, prop) => {
+        const key = t.isIdentifier(prop.key) ? prop.key.name :
+            t.isStringLiteral(prop.key) ? prop.key.value : null;
+
+        if (!key) return result;
+
+        if (t.isObjectExpression(prop.value)) {
+            result[key] = processObjectExpression(prop.value);
+        } else {
+            const value = processValueNode(prop.value);
+            if (value !== undefined) result[key] = value;
+        }
+
+        return result;
+    }, {});
+};
+
+const generateDefaultForeignKey = (targetModelName) => {
+    return `${targetModelName.toLowerCase()}Id`;
+};
+
+const hasForeignKey = (options) => {
+    if (!options) return false;
+    if (options.foreignKey) return true;
+
+    return Object.values(options).some(
+        val => typeof val === 'object' && val !== null && hasForeignKey(val)
+    );
+};
+
+const processRelationArguments = (argsNodes) => {
+    const args = [];
+    let options = {};
+
+    argsNodes.forEach(arg => {
+        if (t.isIdentifier(arg)) {
+            args.push(arg.name);
+        } else if (t.isStringLiteral(arg)) {
+            args.push(arg.value);
+        } else if (t.isObjectExpression(arg)) {
+            options = processObjectExpression(arg);
+            args.push(options);
+        }
+    });
+
+    return {args, options};
+};
+
+const createRelationObject = (source, relationType, target, args, options) => {
+    if (!hasForeignKey(options)) {
+        const defaultForeignKey = generateDefaultForeignKey(target);
+        options = {...options, foreignKey: defaultForeignKey};
+
+        if (args.length > 1 && typeof args[1] === 'object') {
+            args[1] = options;
+        } else {
+            args.push(options);
+        }
+    }
+
+    return {
+        type: "relation",
+        relation: relationType,
+        source,
+        target,
+        args
+    };
+};
+
+const returnRelations = (modelDefinition) => {
+    const relations = [];
+    const modelName = modelDefinition.name;
+
+    const programNode = modelDefinition.astPath.findParent(path =>
+        path.isProgram()
+    )?.node;
+
+    if (!programNode) return {relations, programNode, modelName};
+    return {relations, programNode, modelName};
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -106,5 +198,12 @@ module.exports = {
     transformStr,
     getRelationsFromComment,
     getMethodsFromComment,
-    getDescriptionFromComment
+    getDescriptionFromComment,
+    processValueNode,
+    processObjectExpression,
+    processRelationArguments,
+    createRelationObject,
+    generateDefaultForeignKey,
+    hasForeignKey,
+    returnRelations
 }

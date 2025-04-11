@@ -3,44 +3,22 @@ const {
     extractModelDefinitions,
     extractFields,
     extractTimestampFields,
-    modelParser
+    modelParser, extractRelations
 } = require("../src/parsers/modelParser");
+const {profile} = require('./data/profile.model.test');
+const {post} = require('./data/post.model.test');
 
-const code = `
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db.conf');
-const User = require('./user.model');
-
-const Post = sequelize.define('Post', {
-    /**
-     * @swag
-     * description: Post title
-     * methods: list, item, put, post
-     */
-    title: DataTypes.STRING,
-    /**
-     * @swag
-     * description: Post content
-     * methods: list, item, put, post
-     */
-    content: DataTypes.TEXT,
-}, {
-    timestamps: true
-});
-
-module.exports = {Post};
-`;
-
-const parsedModel = mainParser(code);
+const postModel = mainParser(post);
+const profileModel = mainParser(profile);
 describe('model parser module', () => {
     it('extract sequelize model name', () => {
-        parsedModel.forEach((element) => {
+        postModel.forEach((element) => {
             expect(extractModelDefinitions(element)).toBe('Post');
         });
     });
 
     it('extract sequelize model fields', () => {
-        parsedModel.forEach((element) => {
+        postModel.forEach((element) => {
             expect(extractFields(element)).toStrictEqual([
                 {
                     "field": "title",
@@ -75,13 +53,13 @@ describe('model parser module', () => {
     });
 
     it('extract sequelize model fields without timestamps', () => {
-        parsedModel.forEach((element) => {
+        postModel.forEach((element) => {
             expect(extractTimestampFields(element)).not.toStrictEqual([])
         })
     })
 
     it('extract sequelize model fields with timestamps', () => {
-        parsedModel.forEach((element) => {
+        postModel.forEach((element) => {
             expect(extractTimestampFields(element)).toStrictEqual([
                 {
                     "field": "createdAt",
@@ -118,7 +96,7 @@ describe('model parser module', () => {
     });
 
     it('extract model parser', () => {
-        expect(modelParser(code)).toStrictEqual({
+        expect(modelParser(post)).toStrictEqual({
             "sequelizeModel": "Post",
             "value": [
                 {
@@ -184,5 +162,33 @@ describe('model parser module', () => {
                 "timestamps": true
             }
         });
+    })
+
+    it('extract model without relation', () => {
+        postModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual({"relations": []})
+        })
+    })
+
+    it('extract model with one to one relation', () => {
+        profileModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual({
+                    "relations": [
+                        {
+                            "type": "relation",
+                            "relation": "hasOne",
+                            "source": "User",
+                            "target": "Profile",
+                            "args": [
+                                "Profile",
+                                {
+                                    "foreignKey": "profileId"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            )
+        })
     })
 });
