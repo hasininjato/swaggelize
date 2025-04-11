@@ -191,4 +191,26 @@ describe('model parser module', () => {
             )
         })
     })
+
+    it('extract model with one to many relation', () => {
+        postModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual({
+                "relations": [
+                    {
+                        "type": "relation",
+                        "relation": "hasMany",
+                        "source": "User",
+                        "target": "Post",
+                        "args": [
+                            "Post",
+                            {
+                                "onDelete": "CASCADE",
+                                "foreignKey": "postId"
+                            }
+                        ]
+                    }
+                ]
+            })
+        })
+    })
 });

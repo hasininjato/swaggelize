@@ -16,11 +16,16 @@ const Post = sequelize.define('Post', {
      * methods: list, item, put, post
      */
     content: DataTypes.TEXT,
-}, {
-    timestamps: true
 });
 
-module.exports = {Post};
+/**
+ * @swag
+ * relations: Posts
+ */
+User.hasMany(Post, { onDelete: 'CASCADE' });
+Post.belongsTo(User);
+
+module.exports = Post;
 `;
 
 module.exports = {post};
