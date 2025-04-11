@@ -83,6 +83,7 @@ module.exports = {Transaction, Post};
 
 `;
 // modelParser(userModel);
-console.log(extractModelDefinitions(userModel))
+// extractModelDefinitions(userModel)
+modelParser(userModel)
 
 // fs.writeFileSync("./userModel.json", JSON.stringify(modelParser(userModel), null, 4), "utf-8");

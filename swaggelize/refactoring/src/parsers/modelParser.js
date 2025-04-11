@@ -5,31 +5,8 @@ const utils = require("../utils/utils");
 const { SWAG_TAG, getValueFromNode } = require("../utils/constants");
 
 // Extract all model definitions from code
-function extractModelDefinitions(code) {
-    const ast = parser.parse(code, {
-        sourceType: 'module',
-        plugins: ['jsx'],
-    });
-
-    const modelDefinitions = [];
-
-    traverse(ast, {
-        CallExpression(path) {
-            if (!t.isMemberExpression(path.node.callee)) return;
-            if (path.node.callee.property.name !== 'define') return;
-
-            const modelName = path.node.arguments[0]?.value;
-            if (!modelName) return;
-
-            modelDefinitions.push({
-                node: path.node,
-                name: modelName,
-                astPath: path
-            });
-        }
-    });
-
-    return modelDefinitions;
+function extractModelDefinitions(modelDefinition) {
+    return modelDefinition.node.arguments[0]?.value;
 }
 
 // Extract fields from model definition with @swag annotations
@@ -102,22 +79,45 @@ function extractTimestampFields(modelDefinition) {
     ];
 }
 
-// Main parser function
-function modelParser(code) {
+function mainParser(code) {
     const ast = parser.parse(code, {
         sourceType: 'module',
         plugins: ['jsx'],
     });
 
-    const modelDefinitions = extractModelDefinitions(code);
+    const modelDefinitions = [];
+
+    traverse(ast, {
+        CallExpression(path) {
+            if (!t.isMemberExpression(path.node.callee)) return;
+            if (path.node.callee.property.name !== 'define') return;
+
+            const modelName = path.node.arguments[0]?.value;
+            if (!modelName) return;
+
+            modelDefinitions.push({
+                node: path.node,
+                name: modelName,
+                astPath: path
+            });
+        }
+    });
+
+    return modelDefinitions;
+}
+
+// Main parser function
+function modelParser(code) {
+    const modelDefinitions = mainParser(code);
     const models = [];
 
     modelDefinitions.forEach(modelDef => {
+        const modelName = extractModelDefinitions(modelDef);
         const fields = extractFields(modelDef);
         const timestampFields = extractTimestampFields(modelDef);
 
         models.push({
-            sequelizeModel: modelDef.name,
+            sequelizeModel: modelName,
             value: [...fields, ...timestampFields],
             options: modelDef.node.arguments[2]
                 ? getValueFromNode(modelDef.node.arguments[2])
@@ -128,4 +128,4 @@ function modelParser(code) {
     return models.length === 1 ? models[0] : models;
 }
 
-module.exports = { modelParser, extractModelDefinitions, extractFields, extractTimestampFields };
+module.exports = { mainParser, modelParser, extractModelDefinitions, extractFields, extractTimestampFields };
