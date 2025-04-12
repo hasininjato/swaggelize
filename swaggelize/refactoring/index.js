@@ -1,8 +1,4 @@
-const {mainParser} = require("./src/parsers/modelParser.js");
-const fs = require("fs");
-const {
-    extractThroughRelationWithFields, extractAst, createThroughModelIfString,
-} = require("./src/parsers/modelParser");
+const {modelParser} = require('./src/parsers/newParser');
 
 const userModel = `
 const { DataTypes } = require('sequelize');
@@ -39,6 +35,15 @@ const Instrument = sequelize.define('Instrument', {
     }
 });
 
+const Tag = sequelize.define('Tag', {
+    /**
+     * @swag
+     * description: Tag name
+     * methods: list, item, put, post
+     */
+    name: DataTypes.STRING,
+});
+
 /**
  * @swag
  * relations: Instruments
@@ -53,6 +58,5 @@ Instrument.belongsToMany(User, { through: 'InstrumentUsers' });
 module.exports = Instrument;
 `;
 
-const ast = extractAst(userModel);
-const test = extractThroughRelationWithFields(ast);
-console.log(JSON.stringify(createThroughModelIfString(test), null, 4));
+const model = modelParser(userModel);
+console.log(JSON.stringify(model, null, 4));
