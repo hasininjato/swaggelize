@@ -39,7 +39,7 @@ function extractThroughRelationWithFields(ast) {
                     }
                 }
 
-                // Extraire l'alias depuis les commentaires
+                // extract alias from comments (relations:)
                 let alias = null;
                 if (node.leadingComments) {
                     for (const comment of node.leadingComments) {
@@ -190,6 +190,7 @@ function extractRelations(modelDefinition) {
     return {relations};
 }
 
+// ast extractor
 function extractAst(code) {
     return parser.parse(code, {
         sourceType: 'module',

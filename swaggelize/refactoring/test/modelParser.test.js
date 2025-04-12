@@ -2,17 +2,21 @@ const {
     mainParser,
     extractFields,
     extractTimestampFields,
-    modelParser, extractRelations, extractModelName
+    modelParser, extractRelations, extractModelName, extractThroughRelationWithFields, extractAst
 } = require("../src/parsers/modelParser");
 const {profile} = require('./data/profile.model');
 const {post} = require('./data/post.model');
 const {user} = require('./data/user.model');
 const {instrument} = require('./data/instrument.model');
+const {postTag} = require('./data/post.tag.model');
 
 const postModel = mainParser(post);
 const profileModel = mainParser(profile);
 const userModel = mainParser(user);
 const instrumentModel = mainParser(instrument);
+const astInstrumentModel = extractAst(instrument);
+const astPostTag = extractAst(postTag);
+
 describe('model parser module', () => {
     it('extract sequelize model name', () => {
         postModel.forEach((element) => {
@@ -223,4 +227,41 @@ describe('model parser module', () => {
         })
     })
 
+    it('extract through relation with fields through relation is string', () => {
+        expect(extractThroughRelationWithFields(astInstrumentModel)).toStrictEqual([
+                {
+                    "type": "relation",
+                    "relation": "belongsToMany",
+                    "source": "User",
+                    "target": "Instrument",
+                    "through": "InstrumentUsers",
+                    "args": [
+                        "Instrument",
+                        {
+                            "through": "InstrumentUsers",
+                            "alias": "Instruments"
+                        }
+                    ]
+                },
+                {
+                    "type": "relation",
+                    "relation": "belongsToMany",
+                    "source": "Instrument",
+                    "target": "User",
+                    "through": "InstrumentUsers",
+                    "args": [
+                        "User",
+                        {
+                            "through": "InstrumentUsers",
+                            "alias": "Users"
+                        }
+                    ]
+                }
+            ]
+        )
+    })
+
+    it('extract through relation with fields through relation is object', () => {
+        expect(extractThroughRelationWithFields(astPostTag)).toStrictEqual([])
+    })
 });
