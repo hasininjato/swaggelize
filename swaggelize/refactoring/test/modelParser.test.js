@@ -1,9 +1,8 @@
 const {
     mainParser,
-    extractModelDefinitions,
     extractFields,
     extractTimestampFields,
-    modelParser, extractRelations
+    modelParser, extractRelations, extractModelName
 } = require("../src/parsers/modelParser");
 const {profile} = require('./data/profile.model');
 const {post} = require('./data/post.model');
@@ -17,7 +16,7 @@ const instrumentModel = mainParser(instrument);
 describe('model parser module', () => {
     it('extract sequelize model name', () => {
         postModel.forEach((element) => {
-            expect(extractModelDefinitions(element)).toBe('Post');
+            expect(extractModelName(element)).toBe('Post');
         });
     });
 

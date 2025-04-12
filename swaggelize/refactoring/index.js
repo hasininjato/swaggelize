@@ -4,7 +4,7 @@ const {
     modelParser,
     extractFields,
     extractTimestampFields,
-    extractRelations,
+    extractRelations, extractModelName,
 } = require("./src/parsers/modelParser");
 
 const userModel = `
@@ -58,7 +58,8 @@ module.exports = Instrument;
 
 const parsedModel = mainParser(userModel);
 parsedModel.forEach((element, index) => {
-    // const modelDefinitions = extractModelDefinitions(element);
-    const modelRelations = extractRelations(element);
-    console.log(JSON.stringify(modelRelations, null, 4));
+    const modelName = extractModelName(element);
+    // const modelRelations = extractRelations(element);
+    const modelFields = extractFields(element);
+    console.log(modelName, JSON.stringify(modelFields, null, 4));
 });

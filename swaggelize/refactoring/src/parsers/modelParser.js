@@ -6,7 +6,7 @@ const {SWAG_TAG, getValueFromNode} = require("../utils/constants");
 const {processRelationArguments, createRelationObject, returnRelations} = require("../utils/utils");
 
 // Extract all model definitions from code
-function extractModelDefinitions(modelDefinition) {
+function extractModelName(modelDefinition) {
     return modelDefinition.node.arguments[0]?.value;
 }
 
@@ -159,7 +159,7 @@ function modelParser(code) {
     const models = [];
 
     modelDefinitions.forEach(modelDef => {
-        const modelName = extractModelDefinitions(modelDef);
+        const modelName = extractModelName(modelDef);
         const fields = extractFields(modelDef);
         const timestampFields = extractTimestampFields(modelDef);
 
@@ -178,7 +178,7 @@ function modelParser(code) {
 module.exports = {
     mainParser,
     modelParser,
-    extractModelDefinitions,
+    extractModelName,
     extractFields,
     extractTimestampFields,
     extractRelations
