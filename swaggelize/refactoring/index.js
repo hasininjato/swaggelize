@@ -1,10 +1,7 @@
 const {mainParser} = require("./src/parsers/modelParser.js");
 const fs = require("fs");
 const {
-    modelParser,
-    extractFields,
-    extractTimestampFields,
-    extractRelations, extractModelName,
+    extractThroughRelationWithFields, extractAst,
 } = require("./src/parsers/modelParser");
 
 const userModel = `
@@ -56,10 +53,6 @@ Instrument.belongsToMany(User, { through: 'InstrumentUsers' });
 module.exports = Instrument;
 `;
 
-const parsedModel = mainParser(userModel);
-parsedModel.forEach((element, index) => {
-    const modelName = extractModelName(element);
-    // const modelRelations = extractRelations(element);
-    const modelFields = extractFields(element);
-    console.log(modelName, JSON.stringify(modelFields, null, 4));
-});
+const ast = extractAst(userModel);
+const test = extractThroughRelationWithFields(ast);
+console.log(JSON.stringify(test, null, 4));

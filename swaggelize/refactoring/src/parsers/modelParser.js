@@ -10,6 +10,70 @@ function extractModelName(modelDefinition) {
     return modelDefinition.node.arguments[0]?.value;
 }
 
+function extractThroughRelationWithFields(ast) {
+    const relations = [];
+
+    traverse(ast, {
+        ExpressionStatement(path) {
+            const node = path.node;
+            const expr = node.expression;
+
+            if (
+                t.isCallExpression(expr) &&
+                t.isMemberExpression(expr.callee) &&
+                t.isIdentifier(expr.callee.property, {name: 'belongsToMany'})
+            ) {
+                const source = expr.callee.object.name;
+                const target = expr.arguments[0]?.name;
+                const secondArg = expr.arguments[1];
+
+                let through = null;
+                if (t.isObjectExpression(secondArg)) {
+                    const throughProp = secondArg.properties.find(
+                        (p) =>
+                            t.isIdentifier(p.key, {name: 'through'}) &&
+                            t.isStringLiteral(p.value)
+                    );
+                    if (throughProp) {
+                        through = throughProp.value.value;
+                    }
+                }
+
+                // Extraire l'alias depuis les commentaires
+                let alias = null;
+                if (node.leadingComments) {
+                    for (const comment of node.leadingComments) {
+                        const match = comment.value.match(/relations:\s*(\w+)/);
+                        if (match) {
+                            alias = match[1];
+                            break;
+                        }
+                    }
+                }
+
+                if (source && target && through) {
+                    relations.push({
+                        type: 'relation',
+                        relation: 'belongsToMany',
+                        source,
+                        target,
+                        through,
+                        args: [
+                            target,
+                            {
+                                through,
+                                alias: alias
+                            }
+                        ]
+                    });
+                }
+            }
+        }
+    });
+
+    return relations;
+}
+
 // Extract fields from model definition with @swag annotations
 function extractFields(modelDefinition) {
     const fields = [];
@@ -126,11 +190,15 @@ function extractRelations(modelDefinition) {
     return {relations};
 }
 
-function mainParser(code) {
-    const ast = parser.parse(code, {
+function extractAst(code) {
+    return parser.parse(code, {
         sourceType: 'module',
         plugins: ['jsx'],
     });
+}
+
+function mainParser(code) {
+    const ast = extractAst(code);
 
     const modelDefinitions = [];
 
@@ -181,5 +249,7 @@ module.exports = {
     extractModelName,
     extractFields,
     extractTimestampFields,
-    extractRelations
+    extractRelations,
+    extractThroughRelationWithFields,
+    extractAst
 };
