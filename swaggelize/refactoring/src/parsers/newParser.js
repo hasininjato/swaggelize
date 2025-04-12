@@ -311,5 +311,13 @@ function modelParser(code) {
 }
 
 module.exports = {
-    modelParser
+    modelParser,
+    extractAst,
+    traverseAst,
+    extractModelName,
+    extractFields,
+    extractTimestampFields,
+    extractRelations,
+    extractRelationsManyToManyThroughString,
+    createModelManyToManyThroughString
 };
