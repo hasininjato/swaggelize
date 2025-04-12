@@ -74,6 +74,34 @@ function extractThroughRelationWithFields(ast) {
     return relations;
 }
 
+function createThroughModelIfString(relations) {
+    const sequelizeModelName = relations[0].through;
+    let values = [];
+    relations.forEach((relation) => {
+        const id = `${relation.source.toLowerCase()}Id`;
+        const value = {
+            field: id,
+            type: "field",
+            object: {
+                type: 'DataTypes.INTEGER',
+                references: {
+                    model: relation.source
+                }
+            },
+            comment: {
+                methods: ["list", "item"],
+                description: `${relation.source} ID`
+            }
+        };
+        values.push(value);
+    })
+    return {
+        sequelizeModel: sequelizeModelName,
+        value: values,
+        relations: relations
+    }
+}
+
 // Extract fields from model definition with @swag annotations
 function extractFields(modelDefinition) {
     const fields = [];
@@ -252,5 +280,6 @@ module.exports = {
     extractTimestampFields,
     extractRelations,
     extractThroughRelationWithFields,
-    extractAst
+    extractAst,
+    createThroughModelIfString
 };

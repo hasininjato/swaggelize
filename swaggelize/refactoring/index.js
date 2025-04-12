@@ -1,7 +1,7 @@
 const {mainParser} = require("./src/parsers/modelParser.js");
 const fs = require("fs");
 const {
-    extractThroughRelationWithFields, extractAst,
+    extractThroughRelationWithFields, extractAst, createThroughModelIfString,
 } = require("./src/parsers/modelParser");
 
 const userModel = `
@@ -55,4 +55,4 @@ module.exports = Instrument;
 
 const ast = extractAst(userModel);
 const test = extractThroughRelationWithFields(ast);
-console.log(JSON.stringify(test, null, 4));
+console.log(JSON.stringify(createThroughModelIfString(test), null, 4));
