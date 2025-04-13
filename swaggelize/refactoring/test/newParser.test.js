@@ -34,7 +34,8 @@ const {
     modelFieldsExpectedResult,
     modelFieldsWithTimeStampsExpectedResult,
     modelParserExpectedResult,
-    modelOneToOneRelationExpectedResult
+    modelOneToOneRelationExpectedResult,
+    modelParserNoAssociationOneModelExpectedResult
 } = require('./data/helpers/modelParser/index');
 const {
     modelOneToMannyRelationExpectedResult, modelManyToMannyRelationThroughIsStringExpectedResult,
@@ -72,7 +73,7 @@ describe('model parser module', () => {
 
     it('extract model without relation', () => {
         userModel.forEach((element) => {
-            expect(extractRelations(element)).toStrictEqual({"relations": []})
+            expect(extractRelations(element)).toStrictEqual({ "relations": [] })
         })
     })
 
@@ -107,7 +108,7 @@ describe('model parser module', () => {
     })
 
     // testing model parser function
-    it('model parser for no relation', () => {
-        expect(modelParser(user).toStrictEqual([]))
+    it('model parser, one sequelize model declared, with timestamps, no relation', () => {
+        expect(modelParser(user)).toStrictEqual(modelParserNoAssociationOneModelExpectedResult)
     })
 });
