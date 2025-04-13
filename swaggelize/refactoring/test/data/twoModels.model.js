@@ -1,6 +1,4 @@
-const {modelParser} = require('./src/parsers/newParser');
-
-const userModel = `
+const twoModels = `
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.conf');
 const User = require('./user.model');
@@ -32,5 +30,4 @@ const Tag = sequelize.define('Tag', {
 module.exports = Post;
 `;
 
-const model = modelParser(userModel);
-console.log(JSON.stringify(model, null, 4));
+module.exports = {twoModels};

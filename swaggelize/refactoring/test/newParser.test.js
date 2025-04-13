@@ -9,11 +9,12 @@ const {
 } = require("../src/parsers/newParser");
 
 // data models
-const { profile } = require('./data/profile.model');
-const { post } = require('./data/post.model');
-const { user } = require('./data/user.model');
-const { instrument } = require('./data/instrument.model');
-const { postTag } = require('./data/post.tag.model');
+const {profile} = require('./data/profile.model');
+const {post} = require('./data/post.model');
+const {user} = require('./data/user.model');
+const {instrument} = require('./data/instrument.model');
+const {postTag} = require('./data/post.tag.model');
+const {twoModels} = require('./data/twoModels.model');
 
 // extract AST
 const profileAst = extractAst(profile);
@@ -21,6 +22,7 @@ const postAst = extractAst(post);
 const userAst = extractAst(user);
 const instrumentAst = extractAst(instrument);
 const postTagAst = extractAst(postTag);
+const twoModelsAst = extractAst(twoModels);
 
 // ast traversed
 const profileModel = traverseAst(profileAst)
@@ -28,6 +30,7 @@ const postModel = traverseAst(postAst);
 const userModel = traverseAst(userAst);
 const instrumentModel = traverseAst(instrumentAst);
 const postTagModel = traverseAst(postTagAst);
+const twoModelsModel = traverseAst(twoModelsAst);
 
 // expected results
 const {
@@ -35,7 +38,8 @@ const {
     modelFieldsWithTimeStampsExpectedResult,
     modelParserExpectedResult,
     modelOneToOneRelationExpectedResult,
-    modelParserNoAssociationOneModelExpectedResult
+    modelParserNoAssociationOneModelExpectedResult,
+    twoModelsInOneFileExpectedResult
 } = require('./data/helpers/modelParser/index');
 const {
     modelOneToMannyRelationExpectedResult, modelManyToMannyRelationThroughIsStringExpectedResult,
@@ -73,7 +77,7 @@ describe('model parser module', () => {
 
     it('extract model without relation', () => {
         userModel.forEach((element) => {
-            expect(extractRelations(element)).toStrictEqual({ "relations": [] })
+            expect(extractRelations(element)).toStrictEqual({"relations": []})
         })
     })
 
@@ -108,7 +112,11 @@ describe('model parser module', () => {
     })
 
     // testing model parser function
-    it('model parser, one sequelize model declared, with timestamps, no relation', () => {
+    it('model parser, one sequelize model declared in one file, with timestamps, no relation', () => {
         expect(modelParser(user)).toStrictEqual(modelParserNoAssociationOneModelExpectedResult)
+    })
+
+    it('model parser, two sequelize models declared, no timestamps, no relation', () => {
+        expect(modelParser(twoModels)).toStrictEqual(twoModelsInOneFileExpectedResult)
     })
 });

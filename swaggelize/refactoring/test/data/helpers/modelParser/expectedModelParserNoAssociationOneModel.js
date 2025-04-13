@@ -1,4 +1,4 @@
-const modelParserNoAssociationOneModelExpectedResult = {
+const modelParserNoAssociationOneModelExpectedResult = [{
     "sequelizeModel": "User",
     "value": [
         {
@@ -136,6 +136,6 @@ const modelParserNoAssociationOneModelExpectedResult = {
     "options": {
         "timestamps": true
     }
-}
+}]
 
-module.exports = { modelParserNoAssociationOneModelExpectedResult };
+module.exports = modelParserNoAssociationOneModelExpectedResult;
