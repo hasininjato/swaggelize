@@ -4,7 +4,8 @@ const {
     extractTimestampFields,
     extractRelations, extractModelName, extractThroughRelationWithFields, extractAst,
     createModelManyToManyThroughString,
-    extractRelationsManyToManyThroughString
+    extractRelationsManyToManyThroughString,
+    modelParser
 } = require("../src/parsers/newParser");
 
 // data models
@@ -103,5 +104,10 @@ describe('model parser module', () => {
 
     it('create through model for many to many relation from extractRelationsManyToManyThroughString through relation is string', () => {
         expect(createModelManyToManyThroughString(extractRelationsManyToManyThroughString(instrumentAst))).toStrictEqual(newModelThroughIsString)
+    })
+
+    // testing model parser function
+    it('model parser for no relation', () => {
+        expect(modelParser(user).toStrictEqual([]))
     })
 });

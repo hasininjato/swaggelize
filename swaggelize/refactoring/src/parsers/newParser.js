@@ -1,8 +1,8 @@
 const parser = require("@babel/parser");
-const {default: traverse} = require("@babel/traverse");
+const { default: traverse } = require("@babel/traverse");
 const t = require("@babel/types");
-const {returnRelations, processRelationArguments, createRelationObject} = require("../utils/utils");
-const {SWAG_TAG, getValueFromNode} = require("../utils/constants");
+const { returnRelations, processRelationArguments, createRelationObject } = require("../utils/utils");
+const { SWAG_TAG, getValueFromNode } = require("../utils/constants");
 const utils = require("../utils/utils");
 
 /**
@@ -138,7 +138,7 @@ function extractTimestampFields(modelDefinition) {
  * @returns {{relations: []}}
  */
 function extractRelations(modelDefinition) {
-    const {relations, programNode, modelName} = returnRelations(modelDefinition);
+    const { relations, programNode, modelName } = returnRelations(modelDefinition);
     traverse(programNode, {
         ExpressionStatement(path) {
             if (!t.isCallExpression(path.node.expression)) return;
@@ -156,7 +156,7 @@ function extractRelations(modelDefinition) {
             const relationType = memberExpr.property.name;
             const target = callExpr.arguments[0]?.name || modelName;
 
-            const {args, options} = processRelationArguments(callExpr.arguments);
+            const { args, options } = processRelationArguments(callExpr.arguments);
 
             // Extract swag comment with relations
             const leadingComments = path.node.leadingComments;
@@ -179,7 +179,7 @@ function extractRelations(modelDefinition) {
         }
     });
 
-    return {relations};
+    return { relations };
 }
 
 /**
@@ -198,7 +198,7 @@ function extractRelationsManyToManyThroughString(ast) {
             if (
                 t.isCallExpression(expr) &&
                 t.isMemberExpression(expr.callee) &&
-                t.isIdentifier(expr.callee.property, {name: 'belongsToMany'})
+                t.isIdentifier(expr.callee.property, { name: 'belongsToMany' })
             ) {
                 const source = expr.callee.object.name;
                 const target = expr.arguments[0]?.name;
@@ -208,7 +208,7 @@ function extractRelationsManyToManyThroughString(ast) {
                 if (t.isObjectExpression(secondArg)) {
                     const throughProp = secondArg.properties.find(
                         (p) =>
-                            t.isIdentifier(p.key, {name: 'through'}) &&
+                            t.isIdentifier(p.key, { name: 'through' }) &&
                             t.isStringLiteral(p.value)
                     );
                     if (throughProp) {
@@ -305,9 +305,13 @@ function modelParser(code) {
         });
     });
     const relations = extractRelationsManyToManyThroughString(ast);
-    const manyToManyThroughStringModels = createModelManyToManyThroughString(relations);
+    let manyToManyThroughStringModels = [];
+    if (relations && relations.length > 0) {
+        manyToManyThroughStringModels = createModelManyToManyThroughString(relations);
+        return [...models, manyToManyThroughStringModels];
+    }
 
-    return [...models, manyToManyThroughStringModels];
+    return [...models];
 }
 
 module.exports = {
