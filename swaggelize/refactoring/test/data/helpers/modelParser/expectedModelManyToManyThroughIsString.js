@@ -83,8 +83,7 @@ const modelManyToManyThroughIsStringExpectedResult = [
                     }
                 ]
             }
-        ],
-        "options": {}
+        ]
     },
     {
         "sequelizeModel": "InstrumentUsers",

@@ -132,10 +132,7 @@ const modelParserNoAssociationOneModelExpectedResult = [{
             }
         }
     ],
-    "relations": [],
-    "options": {
-        "timestamps": true
-    }
+    "relations": []
 }]
 
 module.exports = modelParserNoAssociationOneModelExpectedResult;

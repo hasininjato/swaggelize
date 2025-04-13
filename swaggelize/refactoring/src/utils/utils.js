@@ -14,54 +14,25 @@ const readFileContent = (filePath) => {
 const getFileInDirectory = (directoryPath) => {
     try {
         return fs.readdirSync(directoryPath)
-            .filter(file => fs.statSync(path.join(directoryPath, file)).isFile());
+            .filter(file => {
+                const fullPath = path.join(directoryPath, file);
+                return fs.statSync(fullPath).isFile() && file !== 'index.js';
+            });
     } catch (err) {
-        console.error("Error reading directory:", err.message);
         return [];
     }
-}
+};
 
 const getMethodsFromComment = (comment) => {
-    // Clean up the comment
-    const cleanedComment = comment
-        .replace(/^\s*\*\s*/gm, '')  // Remove leading asterisks and spaces
-        .replace(/@swag/g, '')  // Remove the @swag annotation
-        .trim();  // Trim leading/trailing spaces
-
-    const methodsLine = cleanedComment
-        .split('\n')  // Split by lines
-        .find(line => line.toLowerCase().includes('methods'));  // Find the line with 'methods'
-
-    let methodsArray = [];
-    if (methodsLine !== undefined) {
-        methodsArray = methodsLine
-            .replace('methods:', '')  // Remove the 'methods:' prefix
-            .trim()  // Trim spaces
-            .split(',')  // Split by comma
-            .map(method => method.trim());  // Trim spaces around each method
-    }
-    return methodsArray;
+    const match = comment.match(/methods:\s*(.+)/);
+    return match
+        ? match[1].split(',').map(method => method.trim())
+        : [];
 }
 
 const getDescriptionFromComment = (comment) => {
-    // Clean up the comment
-    const cleanedComment = comment
-        .replace(/^\s*\*\s*/gm, '')  // Remove leading asterisks and spaces
-        .replace(/@swag/g, '')  // Remove the @swag annotation
-        .trim();  // Trim leading/trailing spaces
-
-    // Extract description
-    const descriptionLine = cleanedComment
-        .split('\n')  // Split by lines
-        .find(line => line.toLowerCase().includes('description'));  // Find the line with 'description'
-
-    let description = "";
-    if (descriptionLine !== undefined) {
-        description = descriptionLine
-            .replace('description:', '')  // Remove the 'description:' prefix
-            .trim();  // Trim spaces
-    }
-    return description;
+    const match = comment.match(/description:\s*(.+)/);
+    return match ? match[1] : "";
 }
 
 const getRelationsFromComment = (comment) => {

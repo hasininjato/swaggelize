@@ -31,8 +31,7 @@ const twoModelsInOneFileExpectedResult = [
                 }
             }
         ],
-        "relations": [],
-        "options": {}
+        "relations": []
     },
     {
         "sequelizeModel": "Tag",
@@ -52,8 +51,7 @@ const twoModelsInOneFileExpectedResult = [
                 }
             }
         ],
-        "relations": [],
-        "options": {}
+        "relations": []
     }
 ]
 
