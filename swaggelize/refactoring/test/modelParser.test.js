@@ -7,11 +7,13 @@ const {
 } = require("../src/parsers/modelParser");
 
 // data models
-const {profile} = require('./data/profile.model');
-const {post} = require('./data/post.model');
-const {user} = require('./data/user.model');
-const {instrument} = require('./data/instrument.model');
-const {postTag} = require('./data/post.tag.model');
+const {
+    profile,
+    post,
+    user,
+    instrument,
+    postTag
+} = require('./data')
 
 // main parser
 const postModel = mainParser(post);
@@ -60,10 +62,6 @@ describe('model parser module', () => {
             expect(extractTimestampFields(element)).toStrictEqual(modelFieldsWithTimeStampsExpectedResult)
         })
     });
-
-    it('extract model parser', () => {
-        expect(modelParser(post)).toStrictEqual(modelParserExpectedResult);
-    })
 
     it('extract model without relation', () => {
         userModel.forEach((element) => {

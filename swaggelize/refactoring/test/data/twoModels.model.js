@@ -30,4 +30,4 @@ const Tag = sequelize.define('Tag', {
 module.exports = Post;
 `;
 
-module.exports = {twoModels};
+module.exports = twoModels;

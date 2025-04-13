@@ -45,4 +45,4 @@ Tag.belongsToMany(Post, { through: PostTags });
 module.exports = PostTags;
 `
 
-module.exports = {postTag};
+module.exports = postTag;

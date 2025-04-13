@@ -28,4 +28,4 @@ Post.belongsTo(User);
 module.exports = Post;
 `;
 
-module.exports = {post};
+module.exports = post;

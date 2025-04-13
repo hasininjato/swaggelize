@@ -47,4 +47,4 @@ Instrument.belongsToMany(User, { through: 'InstrumentUsers' });
 module.exports = Instrument;
 `
 
-module.exports = {instrument};
+module.exports = instrument;

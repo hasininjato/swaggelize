@@ -9,12 +9,14 @@ const {
 } = require("../src/parsers/newParser");
 
 // data models
-const {profile} = require('./data/profile.model');
-const {post} = require('./data/post.model');
-const {user} = require('./data/user.model');
-const {instrument} = require('./data/instrument.model');
-const {postTag} = require('./data/post.tag.model');
-const {twoModels} = require('./data/twoModels.model');
+const {
+    profile,
+    post,
+    user,
+    instrument,
+    postTag,
+    twoModels
+} = require("./data");
 
 // extract AST
 const profileAst = extractAst(profile);
@@ -36,7 +38,6 @@ const twoModelsModel = traverseAst(twoModelsAst);
 const {
     modelFieldsExpectedResult,
     modelFieldsWithTimeStampsExpectedResult,
-    modelParserExpectedResult,
     modelOneToOneRelationExpectedResult,
     modelParserNoAssociationOneModelExpectedResult,
     twoModelsInOneFileExpectedResult

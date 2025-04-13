@@ -25,4 +25,4 @@ User.hasOne(Profile);
 Profile.belongsTo(User);
 `
 
-module.exports = {profile};
+module.exports = profile;

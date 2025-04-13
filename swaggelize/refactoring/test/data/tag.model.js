@@ -14,4 +14,4 @@ const Tag = sequelize.define('Tag', {
 module.exports = Tag;
 `
 
-module.exports.tag = {tag};
+module.exports = tag;
