@@ -2,8 +2,9 @@ const {
     traverseAst,
     extractFields,
     extractTimestampFields,
-    modelParser, extractRelations, extractModelName, extractThroughRelationWithFields, extractAst,
-    createThroughModelIfString
+    extractRelations, extractModelName, extractThroughRelationWithFields, extractAst,
+    createModelManyToManyThroughString,
+    extractRelationsManyToManyThroughString
 } = require("../src/parsers/newParser");
 
 // data models
@@ -50,7 +51,7 @@ describe('model parser module', () => {
         });
     });
 
-    it('extract model fields without sequelize', () => {
+    it('extract model fields', () => {
         postModel.forEach((element) => {
             expect(extractFields(element)).toStrictEqual(modelFieldsExpectedResult)
         });
@@ -72,5 +73,35 @@ describe('model parser module', () => {
         userModel.forEach((element) => {
             expect(extractRelations(element)).toStrictEqual({"relations": []})
         })
+    })
+
+    it('extract relations one to one', () => {
+        profileModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual(modelOneToOneRelationExpectedResult)
+        })
+    })
+
+    it('extract model with one to many relation', () => {
+        postModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual(modelOneToMannyRelationExpectedResult)
+        })
+    })
+
+    it('extract model with many to many relation through model is manually declared', () => {
+        instrumentModel.forEach((element) => {
+            expect(extractRelations(element)).toStrictEqual(modelManyToMannyRelationThroughIsStringExpectedResult)
+        })
+    })
+
+    it('extract through relations with fields in many to many relation when through relation is string', () => {
+        expect(extractRelationsManyToManyThroughString(instrumentAst)).toStrictEqual(manyToMannyRelationThroughIsStringExpectedResult)
+    })
+
+    it('extract through relations with fields in many to many relation when through relation is string', () => {
+        expect(extractRelationsManyToManyThroughString(postTagAst)).toStrictEqual([])
+    })
+
+    it('create through model for many to many relation from extractRelationsManyToManyThroughString through relation is string', () => {
+        expect(createModelManyToManyThroughString(extractRelationsManyToManyThroughString(instrumentAst))).toStrictEqual(newModelThroughIsString)
     })
 });
