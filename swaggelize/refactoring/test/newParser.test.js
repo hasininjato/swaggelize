@@ -1,3 +1,4 @@
+// Import parser functions
 const {
     traverseAst,
     extractFields,
@@ -8,7 +9,7 @@ const {
     modelParser
 } = require("../src/parsers/newParser");
 
-// data models
+// Importt data models
 const {
     profile,
     post,
@@ -18,7 +19,7 @@ const {
     twoModels
 } = require("./data");
 
-// extract AST
+// Generate AST
 const profileAst = extractAst(profile);
 const postAst = extractAst(post);
 const userAst = extractAst(user);
@@ -34,7 +35,7 @@ const instrumentModel = traverseAst(instrumentAst);
 const postTagModel = traverseAst(postTagAst);
 const twoModelsModel = traverseAst(twoModelsAst);
 
-// expected results
+// Import expected results for tests
 const {
     modelFieldsExpectedResult,
     modelFieldsWithTimeStampsExpectedResult,
