@@ -6,6 +6,7 @@ const modelManyToMannyRelationThroughIsStringExpectedResult = require("./expecte
 const manyToMannyRelationThroughIsStringExpectedResult = require("./expectedThroughIsStringRelationWithFields");
 const modelParserNoAssociationOneModelExpectedResult = require("./expectedModelParserNoAssociationOneModel");
 const twoModelsInOneFileExpectedResult = require("./expectedTwoModelsInOneFile");
+const modelManyToManyThroughIsStringExpectedResult = require("./expectedModelManyToManyThroughIsString");
 
 module.exports = {
     modelFieldsExpectedResult,
@@ -15,5 +16,6 @@ module.exports = {
     modelManyToMannyRelationThroughIsStringExpectedResult,
     manyToMannyRelationThroughIsStringExpectedResult,
     modelParserNoAssociationOneModelExpectedResult,
-    twoModelsInOneFileExpectedResult
+    twoModelsInOneFileExpectedResult,
+    modelManyToManyThroughIsStringExpectedResult
 };

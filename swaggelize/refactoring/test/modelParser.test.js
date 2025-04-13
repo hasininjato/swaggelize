@@ -7,7 +7,7 @@ const {
     createModelManyToManyThroughString,
     extractRelationsManyToManyThroughString,
     modelParser
-} = require("../src/parsers/newParser");
+} = require("../src/parsers/modelParser");
 
 // Importt data models
 const {
@@ -16,7 +16,7 @@ const {
     user,
     instrument,
     postTag,
-    twoModels
+    twoModels,
 } = require("./data");
 
 // Generate AST
@@ -41,7 +41,8 @@ const {
     modelFieldsWithTimeStampsExpectedResult,
     modelOneToOneRelationExpectedResult,
     modelParserNoAssociationOneModelExpectedResult,
-    twoModelsInOneFileExpectedResult
+    twoModelsInOneFileExpectedResult,
+    modelManyToManyThroughIsStringExpectedResult
 } = require('./data/helpers/modelParser/index');
 const {
     modelOneToMannyRelationExpectedResult, modelManyToMannyRelationThroughIsStringExpectedResult,
@@ -120,5 +121,9 @@ describe('model parser module', () => {
 
     it('model parser, two sequelize models declared, no timestamps, no relation', () => {
         expect(modelParser(twoModels)).toStrictEqual(twoModelsInOneFileExpectedResult)
+    })
+
+    it('model parser, one sequelize model declared, no timestamps, many to many relation, through is string', () => {
+        expect(modelParser(instrument)).toStrictEqual(modelManyToManyThroughIsStringExpectedResult)
     })
 });

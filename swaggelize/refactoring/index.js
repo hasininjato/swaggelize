@@ -1,4 +1,4 @@
-const {modelParser} = require('./src/parsers/newParser');
+const {modelParser} = require('./src/parsers/modelParser');
 
 const userModel = `
 const { DataTypes } = require('sequelize');
