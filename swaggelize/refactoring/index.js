@@ -50,14 +50,16 @@ const servicesFiles = getFileInDirectory(pathToServices)
 // Combining results from all service files
 let allOperations = {};
 servicesFiles.forEach(file => {
-    const content = readFileContent(`${pathToServices}/${file}`)
-    const fileOperations = serviceParser(content);
+    if (file === "test.yaml") {
+        const content = readFileContent(`${pathToServices}/${file}`)
+        const fileOperations = serviceParser(content);
 
-    // Combine the operations from the current service file into the overall operations
-    allOperations = {
-        default: {...allOperations.default, ...fileOperations.default},
-        custom: {...allOperations.custom, ...fileOperations.custom},
-    };
+        // Combine the operations from the current service file into the overall operations
+        allOperations = {
+            default: {...allOperations.default, ...fileOperations.default},
+            custom: {...allOperations.custom, ...fileOperations.custom},
+        };
+    }
 });
 
-// console.log(JSON.stringify(allOperations, null, 4));
+console.log(JSON.stringify(allOperations, null, 4));

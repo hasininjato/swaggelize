@@ -48,6 +48,38 @@ function parseCollectionOperations(service) {
     return operations;
 }
 
+function parseItemOperations(service) {
+    const operations = {default: {}, custom: {}};
+    const [model] = getModelName(service);
+    const modelNameLower = model.toLowerCase();
+    const {itemOperations} = service[model];
+
+    Object.entries(itemOperations).forEach(([method, details]) => {
+        const routeData = {
+            summary: details.openapi_context.summary,
+            description: details.openapi_context.description,
+            tags: details.tags ?? model,
+        };
+
+        if (['put', 'get', 'delete'].includes(method)) {
+            const route = `/${modelNameLower}s`;
+            if (!operations["default"][route]) {
+                operations["default"][route] = {};
+            }
+            operations["default"][route][method] = routeData;
+        } else {
+            const route = details.path;
+            if (!operations["custom"][route]) {
+                operations["custom"][route] = {};
+            }
+            const customMethod = details.method.toLowerCase();
+            operations["custom"][route][customMethod] = routeData;
+        }
+    });
+
+    return operations;
+}
+
 /**
  * parse service yaml file
  * @param content
@@ -56,12 +88,12 @@ function parseCollectionOperations(service) {
 function serviceParser(content) {
     const parsedYaml = yaml.load(content);
 
-    console.log(JSON.stringify(parseCollectionOperations(parsedYaml), null, 4));
-    return parseCollectionOperations(parsedYaml);
+    return parseItemOperations(parsedYaml);
 }
 
 module.exports = {
     serviceParser,
     parseCollectionOperations,
-    getModelName
+    getModelName,
+    parseItemOperations
 };
