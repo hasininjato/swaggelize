@@ -1,6 +1,7 @@
 const {modelParser} = require('./src/parsers/modelParser');
 const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
 const fs = require("node:fs");
+const serviceParser = require('./src/parsers/serviceParser');
 
 const userModel = `
 const { DataTypes } = require('sequelize');
@@ -34,11 +35,19 @@ const Tag = sequelize.define('Tag', {
 module.exports = Post;
 `;
 
-const path = '../../backend/app/models'
-const files = getFileInDirectory(path)
+const pathToModels = '../../backend/app/models'
+const pathToServices = '../../backend/app/docs/services'
+const modelsFiles = getFileInDirectory(pathToModels)
 const models = []
-files.forEach(file => {
-    const code = readFileContent(`${path}/${file}`)
+modelsFiles.forEach(file => {
+    const code = readFileContent(`${pathToModels}/${file}`)
     models.push(...modelParser(code).filter(m => !Array.isArray(m)));
 })
 fs.writeFileSync('test.json', JSON.stringify(models, null, 4));
+
+const servicesFiles = getFileInDirectory(pathToServices)
+let operations = {}
+servicesFiles.forEach(file => {
+    serviceParser(`${pathToServices}/${file}`, 'api', operations);
+})
+console.log(JSON.stringify(operations, null, 4));

@@ -28,7 +28,7 @@ const parser = (swaggelizeOptions) => {
         }
     };
     let models = [];
-    files.filter((file) => file != 'index.js').forEach((file) => {
+    files.filter((file) => file !== 'index.js').forEach((file) => {
         const code = utils.readFileContent(`${modelsPath}/${file}`);
         const model = modelParser.modelParser(code); // generate the model
         const schema = componentsCreator.createSchemas(model);
