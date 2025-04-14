@@ -9,7 +9,7 @@ const {
     modelParser
 } = require("../src/parsers/modelParser");
 
-// Importt data models
+// Import data models
 const {
     profile,
     post,
@@ -17,7 +17,7 @@ const {
     instrument,
     postTag,
     twoModels,
-} = require("./data");
+} = require("./data/helpers/modelParser/input");
 
 // Generate AST
 const profileAst = extractAst(profile);
@@ -43,12 +43,12 @@ const {
     modelParserNoAssociationOneModelExpectedResult,
     twoModelsInOneFileExpectedResult,
     modelManyToManyThroughIsStringExpectedResult
-} = require('./data/helpers/modelParser/index');
+} = require('./data/helpers/modelParser/expected');
 const {
     modelOneToMannyRelationExpectedResult, modelManyToMannyRelationThroughIsStringExpectedResult,
     manyToMannyRelationThroughIsStringExpectedResult
-} = require("./data/helpers/modelParser");
-const newModelThroughIsString = require("./data/helpers/modelParser/expectedNewModelThroughIsString");
+} = require("./data/helpers/modelParser/expected");
+const newModelThroughIsString = require("./data/helpers/modelParser/expected/expectedNewModelThroughIsString");
 
 describe('model parser module', () => {
     it('extract sequelize model name', () => {

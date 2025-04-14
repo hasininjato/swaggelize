@@ -11,48 +11,57 @@ function getModelName(content) {
     return Object.keys(content)
 }
 
-function parseCollectionOperations(contentCollectionOperations, routePrefix, modelName, operations) {
-    const modelNameLower = modelName.toLowerCase();
-    Object.entries(contentCollectionOperations).forEach((key, value) => {
-        const routeData = {
-            summary: key[1].openapi_context.summary,
-            description: key[1].openapi_context.description,
-            tags: key[1].tags ?? modelName,
-        };
-        if (['post', 'get'].includes(key[0])) {
-            const route = `/${modelNameLower}s`
-            // default routes
-            const method = key[0];
+/**
+ * parse collection operations in service yaml file
+ * @param service
+ * @returns {{default: {}, custom: {}}}
+ */
+function parseCollectionOperations(service) {
+    const operations = {default: {}, custom: {}};
+    const [model] = getModelName(service);
+    const modelNameLower = model.toLowerCase();
+    const {collectionOperations} = service[model];
 
-            if (!operations["default"]) {
-                operations["default"] = {};
-            }
+    Object.entries(collectionOperations).forEach(([method, details]) => {
+        const routeData = {
+            summary: details.openapi_context.summary,
+            description: details.openapi_context.description,
+            tags: details.tags ?? model,
+        };
+
+        if (['post', 'get'].includes(method)) {
+            const route = `/${modelNameLower}s`;
             if (!operations["default"][route]) {
                 operations["default"][route] = {};
             }
-            // Add the method under the route
             operations["default"][route][method] = routeData;
         } else {
-            const route = key[1].path;
-            if (!operations["custom"]) {
-                operations["custom"] = {};
-            }
+            const route = details.path;
             if (!operations["custom"][route]) {
                 operations["custom"][route] = {};
             }
-            // Add the method under the route
-            const method = key[1].method.toLowerCase();
-            operations["custom"][route][method] = routeData;
+            const customMethod = details.method.toLowerCase();
+            operations["custom"][route][customMethod] = routeData;
         }
-    })
+    });
+
+    return operations;
 }
 
-function serviceParser(file, routePrefix, operations) {
-    const contentYaml = readFileContent(file);
-    const parsedYaml = yaml.load(contentYaml);
-    const [model] = getModelName(parsedYaml)
-    const {collectionOperations, itemOperations} = parsedYaml[model];
-    parseCollectionOperations(collectionOperations, routePrefix, model, operations);
+/**
+ * parse service yaml file
+ * @param content
+ * @returns {{default: {}, custom: {}}}
+ */
+function serviceParser(content) {
+    const parsedYaml = yaml.load(content);
+
+    console.log(JSON.stringify(parseCollectionOperations(parsedYaml), null, 4));
+    return parseCollectionOperations(parsedYaml);
 }
 
-module.exports = serviceParser;
+module.exports = {
+    serviceParser,
+    parseCollectionOperations,
+    getModelName
+};

@@ -1,7 +1,7 @@
 const {modelParser} = require('./src/parsers/modelParser');
 const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
 const fs = require("node:fs");
-const serviceParser = require('./src/parsers/serviceParser');
+const {serviceParser} = require('./src/parsers/serviceParser');
 
 const userModel = `
 const { DataTypes } = require('sequelize');
@@ -46,8 +46,18 @@ modelsFiles.forEach(file => {
 fs.writeFileSync('test.json', JSON.stringify(models, null, 4));
 
 const servicesFiles = getFileInDirectory(pathToServices)
-let operations = {}
+
+// Combining results from all service files
+let allOperations = {};
 servicesFiles.forEach(file => {
-    serviceParser(`${pathToServices}/${file}`, 'api', operations);
-})
-console.log(JSON.stringify(operations, null, 4));
+    const content = readFileContent(`${pathToServices}/${file}`)
+    const fileOperations = serviceParser(content);
+
+    // Combine the operations from the current service file into the overall operations
+    allOperations = {
+        default: {...allOperations.default, ...fileOperations.default},
+        custom: {...allOperations.custom, ...fileOperations.custom},
+    };
+});
+
+// console.log(JSON.stringify(allOperations, null, 4));
