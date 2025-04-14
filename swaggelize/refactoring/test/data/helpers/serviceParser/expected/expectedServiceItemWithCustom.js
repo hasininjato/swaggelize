@@ -1,6 +1,6 @@
 const serviceItemWithCustomExpectedResult = {
     "default": {
-        "/tests": {
+        "/tests/{id}": {
             "get": {
                 "summary": "Test by id",
                 "description": "Test by id",
