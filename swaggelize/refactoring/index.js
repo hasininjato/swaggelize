@@ -48,18 +48,25 @@ fs.writeFileSync('test.json', JSON.stringify(models, null, 4));
 const servicesFiles = getFileInDirectory(pathToServices)
 
 // Combining results from all service files
-let allOperations = {};
+let allOperations = {
+    "collectionOperations": {},
+    "itemOperations": {},
+};
 servicesFiles.forEach(file => {
-    if (file === "test.yaml") {
-        const content = readFileContent(`${pathToServices}/${file}`)
-        const fileOperations = serviceParser(content);
+    // if (file !== "test.yaml") {
+    const content = readFileContent(`${pathToServices}/${file}`)
+    const {collectionOperations, itemOperations} = serviceParser(content);
 
-        // Combine the operations from the current service file into the overall operations
-        allOperations = {
-            default: {...allOperations.default, ...fileOperations.default},
-            custom: {...allOperations.custom, ...fileOperations.custom},
-        };
-    }
+    // Combine the operations from the current service file into the overall operations
+    allOperations.collectionOperations = {
+        default: {...allOperations?.default, ...collectionOperations?.default},
+        custom: {...allOperations?.custom, ...collectionOperations?.custom},
+    };
+    allOperations.itemOperations = {
+        default: {...allOperations?.default, ...itemOperations?.default},
+        custom: {...allOperations?.custom, ...itemOperations?.custom},
+    };
+    // }
 });
 
 console.log(JSON.stringify(allOperations, null, 4));
