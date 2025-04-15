@@ -1,0 +1,175 @@
+{
+    "collectionOperations": {
+        "default": {
+            "/posts": {
+                "get": {
+                    "summary": "List of all posts",
+                    "description": "List of all posts",
+                    "tags": "Post"
+                },
+                "post": {
+                    "summary": "Create a post",
+                    "description": "Create a post",
+                    "tags": "Post"
+                }
+            },
+            "/profiles": {
+                "get": {
+                    "summary": "List of all profiles",
+                    "description": "List of all profiles",
+                    "tags": "Profile"
+                },
+                "post": {
+                    "summary": "Create a profile",
+                    "description": "Create a profile",
+                    "tags": "Profile"
+                }
+            },
+            "/tags": {
+                "get": {
+                    "summary": "List of all tags",
+                    "description": "List of all tags",
+                    "tags": "Tag"
+                },
+                "post": {
+                    "summary": "Create a tag",
+                    "description": "Create a tag",
+                    "tags": "Tag"
+                }
+            },
+            "/users": {
+                "get": {
+                    "summary": "List of all users",
+                    "description": "List of all users",
+                    "tags": "User"
+                },
+                "post": {
+                    "summary": "Create a user",
+                    "description": "Create a user",
+                    "tags": "User"
+                }
+            }
+        },
+        "custom": {
+            "/auth/login": {
+                "post": {
+                    "summary": "Login an user",
+                    "description": "Login an user",
+                    "tags": "Authentication"
+                }
+            },
+            "/validate/token": {
+                "get": {
+                    "summary": "Validate token sent in parameter",
+                    "description": "Validate token sent in parameter",
+                    "tags": "Token"
+                }
+            }
+        }
+    },
+    "itemOperations": {
+        "default": {
+            "/posts/{id}": {
+                "get": {
+                    "summary": "Get post by id",
+                    "description": "Get post by id",
+                    "tags": "Post"
+                },
+                "put": {
+                    "summary": "Update a post by id",
+                    "description": "Update a post by id",
+                    "tags": "Post"
+                },
+                "delete": {
+                    "summary": "Delete a post by id",
+                    "description": "Delete a post by id",
+                    "tags": "Post"
+                }
+            },
+            "/profiles/{id}": {
+                "get": {
+                    "summary": "Get profile by id",
+                    "description": "Get profile by id",
+                    "tags": "Profile"
+                },
+                "put": {
+                    "summary": "Update a profile by id",
+                    "description": "Update a profile by id",
+                    "tags": "Profile"
+                },
+                "delete": {
+                    "summary": "Delete a profile by id",
+                    "description": "Delete a profile by id",
+                    "tags": "Profile"
+                }
+            },
+            "/tags/{id}": {
+                "get": {
+                    "summary": "Get tag by id",
+                    "description": "Get tag by id",
+                    "tags": "Tag"
+                },
+                "put": {
+                    "summary": "Update a tag by id",
+                    "description": "Update a tag by id",
+                    "tags": "Tag"
+                },
+                "delete": {
+                    "summary": "Delete a tag by id",
+                    "description": "Delete a tag by id",
+                    "tags": "Tag"
+                }
+            },
+            "/tests/{id}": {
+                "get": {
+                    "summary": "Test by id",
+                    "description": "Test by id",
+                    "tags": "Test"
+                },
+                "put": {
+                    "summary": "Update a test by id",
+                    "description": "Update a test by id",
+                    "tags": "Test"
+                }
+            },
+            "/users/{id}": {
+                "get": {
+                    "summary": "Get user by id",
+                    "description": "Get user by id",
+                    "tags": "User"
+                },
+                "put": {
+                    "summary": "Update an user by id",
+                    "description": "Update an user by id",
+                    "tags": "User"
+                },
+                "delete": {
+                    "summary": "Delete an user by id",
+                    "description": "Delete an user by id",
+                    "tags": "User"
+                }
+            }
+        },
+        "custom": {
+            "/test/{id}/custom": {
+                "get": {
+                    "summary": "Custom path",
+                    "description": "Custom path",
+                    "tags": "Custom path"
+                }
+            },
+            "/users/{id}/transactions": {
+                "post": {
+                    "summary": "Create a transaction of the user sent in param",
+                    "description": "Create a transaction of the user sent in param",
+                    "tags": "Transaction"
+                },
+                "get": {
+                    "summary": "List of all transactions of an user by id",
+                    "description": "List of all transactions of an user by id",
+                    "tags": "Transaction"
+                }
+            }
+        }
+    }
+}

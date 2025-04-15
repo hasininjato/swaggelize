@@ -1,7 +1,7 @@
 const { modelParser } = require('./src/parsers/modelParser');
 const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
 const { serviceParser } = require('./src/parsers/serviceParser');
-const parseRoute = require('./src/parsers/routeParser');
+const fs = require("fs");
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -9,6 +9,8 @@ function getModels(modelsPath, modelsFiles) {
         const code = readFileContent(`${modelsPath}/${file}`)
         models.push(...modelParser(code).filter(m => !Array.isArray(m)));
     })
+
+    fs.writeFileSync("../swaggelize/models.json", JSON.stringify(models, null, 4));
     return models;
 }
 
@@ -50,6 +52,8 @@ function getServiceParser(servicesPath, servicesFiles) {
             ...(itemOperations?.custom || {})
         };
     });
+
+    fs.writeFileSync("../swaggelize/services.json", JSON.stringify(allOperations, null, 4));
 
     return allOperations;
 }
