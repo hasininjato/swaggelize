@@ -16,6 +16,9 @@ const corsOptions = {
     methods: 'GET,POST,PATCH,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 };
+
+const parser = require("../swaggelize/refactoring")
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -69,6 +72,8 @@ const swaggelizeOptions = {
     middlewareAuth: 'verifyToken',
     routePrefix: "/api"
 }
+
+parser(app, "/api");
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
