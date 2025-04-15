@@ -1,6 +1,4 @@
 const yaml = require("js-yaml");
-const {readFileContent} = require("../../../old/src/utils");
-const {assertClassAccessorProperty} = require("@babel/types");
 
 /**
  * extract the model name from the service file
@@ -17,11 +15,10 @@ function getModelName(content) {
  * @returns {{default: {}, custom: {}}|null}
  */
 function parseCollectionOperations(service) {
-    const operations = {default: {}, custom: {}};
+    const operations = { default: {}, custom: {} };
     const [model] = getModelName(service);
     const modelNameLower = model.toLowerCase();
-    const {collectionOperations} = service[model];
-    console.log(collectionOperations);
+    const { collectionOperations } = service[model];
     if (collectionOperations) {
         Object.entries(collectionOperations)?.forEach(([method, details]) => {
             const routeData = {
@@ -52,10 +49,10 @@ function parseCollectionOperations(service) {
 }
 
 function parseItemOperations(service) {
-    const operations = {default: {}, custom: {}};
+    const operations = { default: {}, custom: {} };
     const [model] = getModelName(service);
     const modelNameLower = model.toLowerCase();
-    const {itemOperations} = service[model];
+    const { itemOperations } = service[model];
 
     if (itemOperations) {
         Object.entries(itemOperations)?.forEach(([method, details]) => {

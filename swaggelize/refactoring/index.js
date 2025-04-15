@@ -1,7 +1,8 @@
-const {modelParser} = require('./src/parsers/modelParser');
-const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
+const { modelParser } = require('./src/parsers/modelParser');
+const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
 const fs = require("node:fs");
-const {serviceParser} = require('./src/parsers/serviceParser');
+const { serviceParser } = require('./src/parsers/serviceParser');
+const { allowedNodeEnvironmentFlags } = require('node:process');
 
 const userModel = `
 const { DataTypes } = require('sequelize');
@@ -49,24 +50,39 @@ const servicesFiles = getFileInDirectory(pathToServices)
 
 // Combining results from all service files
 let allOperations = {
-    "collectionOperations": {},
-    "itemOperations": {},
+    "collectionOperations": {
+        default: {},
+        custom: {}
+    },
+    "itemOperations": {
+        default: {},
+        custom: {}
+    }
 };
-servicesFiles.forEach(file => {
-    // if (file !== "test.yaml") {
-    const content = readFileContent(`${pathToServices}/${file}`)
-    const {collectionOperations, itemOperations} = serviceParser(content);
 
-    // Combine the operations from the current service file into the overall operations
-    allOperations.collectionOperations = {
-        default: {...allOperations?.default, ...collectionOperations?.default},
-        custom: {...allOperations?.custom, ...collectionOperations?.custom},
+servicesFiles.forEach(file => {
+    const content = readFileContent(`${pathToServices}/${file}`);
+    const { collectionOperations, itemOperations } = serviceParser(content);
+
+    // Merge collectionOperations
+    allOperations.collectionOperations.default = {
+        ...allOperations.collectionOperations.default,
+        ...(collectionOperations?.default || {})
     };
-    allOperations.itemOperations = {
-        default: {...allOperations?.default, ...itemOperations?.default},
-        custom: {...allOperations?.custom, ...itemOperations?.custom},
+    allOperations.collectionOperations.custom = {
+        ...allOperations.collectionOperations.custom,
+        ...(collectionOperations?.custom || {})
     };
-    // }
+
+    // Merge itemOperations
+    allOperations.itemOperations.default = {
+        ...allOperations.itemOperations.default,
+        ...(itemOperations?.default || {})
+    };
+    allOperations.itemOperations.custom = {
+        ...allOperations.itemOperations.custom,
+        ...(itemOperations?.custom || {})
+    };
 });
 
 console.log(JSON.stringify(allOperations, null, 4));
