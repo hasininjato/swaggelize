@@ -120,7 +120,7 @@
                     "tags": "Tag"
                 }
             },
-            "/tests/{id}": {
+            "/tests/": {
                 "get": {
                     "summary": "Test by id",
                     "description": "Test by id",

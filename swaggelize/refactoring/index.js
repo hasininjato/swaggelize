@@ -14,7 +14,7 @@ function getModels(modelsPath, modelsFiles) {
     return models;
 }
 
-function getServiceParser(servicesPath, servicesFiles) {
+function getServiceParser(servicesPath, servicesFiles, routesVariable) {
 
     // Combining results from all service files
     let allOperations = {
@@ -30,7 +30,7 @@ function getServiceParser(servicesPath, servicesFiles) {
 
     servicesFiles.forEach(file => {
         const content = readFileContent(`${servicesPath}/${file}`);
-        const { collectionOperations, itemOperations } = serviceParser(content);
+        const { collectionOperations, itemOperations } = serviceParser(content, routesVariable);
 
         // Merge collectionOperations
         allOperations.collectionOperations.default = {
@@ -71,7 +71,7 @@ function parser(swaggelizeOptions) {
     const models = getModels(modelsPath, modelsFiles);
 
     const servicesFiles = getFileInDirectory(servicesPath);
-    const services = getServiceParser(servicesPath, servicesFiles);
+    const services = getServiceParser(servicesPath, servicesFiles, routesVariable);
 }
 
 module.exports = parser;

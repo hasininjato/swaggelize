@@ -1,4 +1,5 @@
 const yaml = require("js-yaml");
+const { getEndPointsApi, getVariablesIdFromPath } = require("../utils/utils");
 
 /**
  * extract the model name from the service file
@@ -48,7 +49,7 @@ function parseCollectionOperations(service) {
     return null;
 }
 
-function parseItemOperations(service) {
+function parseItemOperations(service, paths) {
     const operations = { default: {}, custom: {} };
     const [model] = getModelName(service);
     const modelNameLower = model.toLowerCase();
@@ -61,9 +62,11 @@ function parseItemOperations(service) {
                 description: details.openapi_context.description,
                 tags: details.tags ?? model,
             };
+            // const variableId = "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" ?? ""
+            const variableId = getVariablesIdFromPath(paths, modelNameLower) ? "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" : ""
 
             if (['put', 'get', 'delete'].includes(method)) {
-                const route = `/${modelNameLower}s/{id}`;
+                const route = `/${modelNameLower}s/${variableId}`;
                 if (!operations["default"][route]) {
                     operations["default"][route] = {};
                 }
@@ -88,11 +91,12 @@ function parseItemOperations(service) {
  * @param content
  * @returns {{collectionOperations: {default: {}, custom: {}}, itemOperations: {default: {}, custom: {}}}}
  */
-function serviceParser(content) {
+function serviceParser(content, routesVariable) {
     const parsedYaml = yaml.load(content);
 
+    const paths = getEndPointsApi(routesVariable);
     const collectionOperations = parseCollectionOperations(parsedYaml);
-    const itemOperations = parseItemOperations(parsedYaml);
+    const itemOperations = parseItemOperations(parsedYaml, paths);
     return {
         collectionOperations,
         itemOperations
