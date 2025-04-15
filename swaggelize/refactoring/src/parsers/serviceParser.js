@@ -26,6 +26,8 @@ function parseCollectionOperations(service) {
                 summary: details.openapi_context.summary,
                 description: details.openapi_context.description,
                 tags: details.tags ?? model,
+                input: details.input,
+                output: details.output
             };
 
             if (['post', 'get'].includes(method)) {
@@ -57,10 +59,13 @@ function parseItemOperations(service, paths) {
 
     if (itemOperations) {
         Object.entries(itemOperations)?.forEach(([method, details]) => {
+            console.log(details)
             const routeData = {
                 summary: details.openapi_context.summary,
                 description: details.openapi_context.description,
                 tags: details.tags ?? model,
+                input: details.input,
+                output: details.output
             };
             // const variableId = "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" ?? ""
             const variableId = getVariablesIdFromPath(paths, modelNameLower) ? "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" : ""

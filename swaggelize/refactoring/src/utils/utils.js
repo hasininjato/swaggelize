@@ -172,7 +172,6 @@ function getVariablesIdFromPath(paths, model) {
         route.path.startsWith(`/api/${model}s/`) &&
         /\/:[^\/]+$/.test(route.path)
     );
-    console.log(route)
 
     return route ? route.path.split('/').pop().substring(1) : null;
 }

@@ -5,48 +5,84 @@
                 "get": {
                     "summary": "List of all posts",
                     "description": "List of all posts",
-                    "tags": "Post"
+                    "tags": "Post",
+                    "output": [
+                        "post:list"
+                    ]
                 },
                 "post": {
                     "summary": "Create a post",
                     "description": "Create a post",
-                    "tags": "Post"
+                    "tags": "Post",
+                    "input": [
+                        "post:post"
+                    ],
+                    "output": [
+                        "post:item"
+                    ]
                 }
             },
             "/profiles": {
                 "get": {
                     "summary": "List of all profiles",
                     "description": "List of all profiles",
-                    "tags": "Profile"
+                    "tags": "Profile",
+                    "output": [
+                        "profile:list"
+                    ]
                 },
                 "post": {
                     "summary": "Create a profile",
                     "description": "Create a profile",
-                    "tags": "Profile"
+                    "tags": "Profile",
+                    "input": [
+                        "profile:post"
+                    ],
+                    "output": [
+                        "profile:item"
+                    ]
                 }
             },
             "/tags": {
                 "get": {
                     "summary": "List of all tags",
                     "description": "List of all tags",
-                    "tags": "Tag"
+                    "tags": "Tag",
+                    "output": [
+                        "tag:list"
+                    ]
                 },
                 "post": {
                     "summary": "Create a tag",
                     "description": "Create a tag",
-                    "tags": "Tag"
+                    "tags": "Tag",
+                    "input": [
+                        "tag:post"
+                    ],
+                    "output": [
+                        "tag:item"
+                    ]
                 }
             },
             "/users": {
                 "get": {
                     "summary": "List of all users",
                     "description": "List of all users",
-                    "tags": "User"
+                    "tags": "User",
+                    "output": [
+                        "user:list"
+                    ]
                 },
                 "post": {
                     "summary": "Create a user",
                     "description": "Create a user",
-                    "tags": "User"
+                    "tags": "User",
+                    "input": [
+                        "user:post"
+                    ],
+                    "output": [
+                        "user:item"
+                    ]
                 }
             }
         },
@@ -55,14 +91,23 @@
                 "post": {
                     "summary": "Login an user",
                     "description": "Login an user",
-                    "tags": "Authentication"
+                    "tags": "Authentication",
+                    "input": [
+                        "user:item"
+                    ],
+                    "output": [
+                        "user:list"
+                    ]
                 }
             },
             "/validate/token": {
                 "get": {
                     "summary": "Validate token sent in parameter",
                     "description": "Validate token sent in parameter",
-                    "tags": "Token"
+                    "tags": "Token",
+                    "input": [
+                        "user:item"
+                    ]
                 }
             }
         }
@@ -73,12 +118,21 @@
                 "get": {
                     "summary": "Get post by id",
                     "description": "Get post by id",
-                    "tags": "Post"
+                    "tags": "Post",
+                    "output": [
+                        "post:item"
+                    ]
                 },
                 "put": {
                     "summary": "Update a post by id",
                     "description": "Update a post by id",
-                    "tags": "Post"
+                    "tags": "Post",
+                    "input": [
+                        "post:put"
+                    ],
+                    "output": [
+                        "post:item"
+                    ]
                 },
                 "delete": {
                     "summary": "Delete a post by id",
@@ -90,12 +144,21 @@
                 "get": {
                     "summary": "Get profile by id",
                     "description": "Get profile by id",
-                    "tags": "Profile"
+                    "tags": "Profile",
+                    "output": [
+                        "profile:item"
+                    ]
                 },
                 "put": {
                     "summary": "Update a profile by id",
                     "description": "Update a profile by id",
-                    "tags": "Profile"
+                    "tags": "Profile",
+                    "input": [
+                        "profile:put"
+                    ],
+                    "output": [
+                        "profile:item"
+                    ]
                 },
                 "delete": {
                     "summary": "Delete a profile by id",
@@ -107,12 +170,21 @@
                 "get": {
                     "summary": "Get tag by id",
                     "description": "Get tag by id",
-                    "tags": "Tag"
+                    "tags": "Tag",
+                    "output": [
+                        "tag:item"
+                    ]
                 },
                 "put": {
                     "summary": "Update a tag by id",
                     "description": "Update a tag by id",
-                    "tags": "Tag"
+                    "tags": "Tag",
+                    "input": [
+                        "tag:put"
+                    ],
+                    "output": [
+                        "tag:item"
+                    ]
                 },
                 "delete": {
                     "summary": "Delete a tag by id",
@@ -124,24 +196,42 @@
                 "get": {
                     "summary": "Test by id",
                     "description": "Test by id",
-                    "tags": "Test"
+                    "tags": "Test",
+                    "output": [
+                        "test:item"
+                    ]
                 },
                 "put": {
                     "summary": "Update a test by id",
                     "description": "Update a test by id",
-                    "tags": "Test"
+                    "tags": "Test",
+                    "input": [
+                        "test:put"
+                    ],
+                    "output": [
+                        "test:item"
+                    ]
                 }
             },
             "/users/{id}": {
                 "get": {
                     "summary": "Get user by id",
                     "description": "Get user by id",
-                    "tags": "User"
+                    "tags": "User",
+                    "output": [
+                        "user:item"
+                    ]
                 },
                 "put": {
                     "summary": "Update an user by id",
                     "description": "Update an user by id",
-                    "tags": "User"
+                    "tags": "User",
+                    "input": [
+                        "user:put"
+                    ],
+                    "output": [
+                        "user:item"
+                    ]
                 },
                 "delete": {
                     "summary": "Delete an user by id",
@@ -155,19 +245,32 @@
                 "get": {
                     "summary": "Custom path",
                     "description": "Custom path",
-                    "tags": "Custom path"
+                    "tags": "Custom path",
+                    "output": [
+                        "test:item"
+                    ]
                 }
             },
             "/users/{id}/transactions": {
                 "post": {
                     "summary": "Create a transaction of the user sent in param",
                     "description": "Create a transaction of the user sent in param",
-                    "tags": "Transaction"
+                    "tags": "Transaction",
+                    "input": [
+                        "transaction:post"
+                    ],
+                    "output": [
+                        "transaction:item"
+                    ]
                 },
                 "get": {
                     "summary": "List of all transactions of an user by id",
                     "description": "List of all transactions of an user by id",
-                    "tags": "Transaction"
+                    "tags": "Transaction",
+                    "output": [
+                        "user:item",
+                        "transaction:list"
+                    ]
                 }
             }
         }
