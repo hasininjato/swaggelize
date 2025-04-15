@@ -121,7 +121,18 @@
                     "tags": "Post",
                     "output": [
                         "post:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Post ID"
+                        }
+                    }
                 },
                 "put": {
                     "summary": "Update a post by id",
@@ -132,12 +143,34 @@
                     ],
                     "output": [
                         "post:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Post ID"
+                        }
+                    }
                 },
                 "delete": {
                     "summary": "Delete a post by id",
                     "description": "Delete a post by id",
-                    "tags": "Post"
+                    "tags": "Post",
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Post ID"
+                        }
+                    }
                 }
             },
             "/profiles/{id}": {
@@ -147,7 +180,18 @@
                     "tags": "Profile",
                     "output": [
                         "profile:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Profile ID"
+                        }
+                    }
                 },
                 "put": {
                     "summary": "Update a profile by id",
@@ -158,12 +202,34 @@
                     ],
                     "output": [
                         "profile:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Profile ID"
+                        }
+                    }
                 },
                 "delete": {
                     "summary": "Delete a profile by id",
                     "description": "Delete a profile by id",
-                    "tags": "Profile"
+                    "tags": "Profile",
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Profile ID"
+                        }
+                    }
                 }
             },
             "/tags/{id}": {
@@ -173,7 +239,18 @@
                     "tags": "Tag",
                     "output": [
                         "tag:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Tag ID"
+                        }
+                    }
                 },
                 "put": {
                     "summary": "Update a tag by id",
@@ -184,12 +261,34 @@
                     ],
                     "output": [
                         "tag:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Tag ID"
+                        }
+                    }
                 },
                 "delete": {
                     "summary": "Delete a tag by id",
                     "description": "Delete a tag by id",
-                    "tags": "Tag"
+                    "tags": "Tag",
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Tag ID"
+                        }
+                    }
                 }
             },
             "/tests/": {
@@ -199,7 +298,18 @@
                     "tags": "Test",
                     "output": [
                         "test:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "null": {
+                            "in": "path",
+                            "name": null,
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Test ID"
+                        }
+                    }
                 },
                 "put": {
                     "summary": "Update a test by id",
@@ -210,7 +320,18 @@
                     ],
                     "output": [
                         "test:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "null": {
+                            "in": "path",
+                            "name": null,
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "Test ID"
+                        }
+                    }
                 }
             },
             "/users/{id}": {
@@ -220,7 +341,18 @@
                     "tags": "User",
                     "output": [
                         "user:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "User ID"
+                        }
+                    }
                 },
                 "put": {
                     "summary": "Update an user by id",
@@ -231,12 +363,34 @@
                     ],
                     "output": [
                         "user:item"
-                    ]
+                    ],
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "User ID"
+                        }
+                    }
                 },
                 "delete": {
                     "summary": "Delete an user by id",
                     "description": "Delete an user by id",
-                    "tags": "User"
+                    "tags": "User",
+                    "parameters": {
+                        "id": {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "number"
+                            },
+                            "required": true,
+                            "description": "User ID"
+                        }
+                    }
                 }
             }
         },
@@ -248,7 +402,8 @@
                     "tags": "Custom path",
                     "output": [
                         "test:item"
-                    ]
+                    ],
+                    "parameters": {}
                 }
             },
             "/users/{id}/transactions": {
@@ -261,7 +416,8 @@
                     ],
                     "output": [
                         "transaction:item"
-                    ]
+                    ],
+                    "parameters": {}
                 },
                 "get": {
                     "summary": "List of all transactions of an user by id",
@@ -270,7 +426,8 @@
                     "output": [
                         "user:item",
                         "transaction:list"
-                    ]
+                    ],
+                    "parameters": {}
                 }
             }
         }

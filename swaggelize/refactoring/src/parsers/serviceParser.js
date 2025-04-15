@@ -10,6 +10,18 @@ function getModelName(content) {
     return Object.keys(content)
 }
 
+function generateParamater(variableId, model) {
+    return {
+        "in": "path",
+        "name": variableId,
+        "schema": {
+            "type": "number"
+        },
+        "required": true,
+        "description": `${model} ID`
+    }
+}
+
 /**
  * parse collection operations in service yaml file
  * @param service
@@ -65,10 +77,12 @@ function parseItemOperations(service, paths) {
                 description: details.openapi_context.description,
                 tags: details.tags ?? model,
                 input: details.input,
-                output: details.output
+                output: details.output,
+                parameters: {}
             };
             // const variableId = "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" ?? ""
-            const variableId = getVariablesIdFromPath(paths, modelNameLower) ? "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" : ""
+            const variable = getVariablesIdFromPath(paths, modelNameLower);
+            const variableId = variable ? "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" : ""
 
             if (['put', 'get', 'delete'].includes(method)) {
                 const route = `/${modelNameLower}s/${variableId}`;
@@ -76,6 +90,7 @@ function parseItemOperations(service, paths) {
                     operations["default"][route] = {};
                 }
                 operations["default"][route][method] = routeData;
+                operations["default"][route][method].parameters[variable] = generateParamater(variable, model)
             } else {
                 const route = details.path;
                 if (!operations["custom"][route]) {
