@@ -78,7 +78,7 @@ function parseItemOperations(service, paths) {
                 tags: details.tags ?? model,
                 input: details.input,
                 output: details.output,
-                parameters: {}
+                parameters: []
             };
             // const variableId = "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" ?? ""
             const variable = getVariablesIdFromPath(paths, modelNameLower);
@@ -90,7 +90,11 @@ function parseItemOperations(service, paths) {
                     operations["default"][route] = {};
                 }
                 operations["default"][route][method] = routeData;
-                operations["default"][route][method].parameters[variable] = generateParamater(variable, model)
+
+                const param = generateParamater(variable, model);
+
+                routeData.parameters.push(param);
+                operations["default"][route][method].parameters[variable] = param;
             } else {
                 const route = details.path;
                 if (!operations["custom"][route]) {

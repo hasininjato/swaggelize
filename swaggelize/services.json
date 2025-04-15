@@ -122,8 +122,8 @@
                     "output": [
                         "post:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -132,7 +132,7 @@
                             "required": true,
                             "description": "Post ID"
                         }
-                    }
+                    ]
                 },
                 "put": {
                     "summary": "Update a post by id",
@@ -144,8 +144,8 @@
                     "output": [
                         "post:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -154,14 +154,14 @@
                             "required": true,
                             "description": "Post ID"
                         }
-                    }
+                    ]
                 },
                 "delete": {
                     "summary": "Delete a post by id",
                     "description": "Delete a post by id",
                     "tags": "Post",
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -170,7 +170,7 @@
                             "required": true,
                             "description": "Post ID"
                         }
-                    }
+                    ]
                 }
             },
             "/profiles/{id}": {
@@ -181,8 +181,8 @@
                     "output": [
                         "profile:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -191,7 +191,7 @@
                             "required": true,
                             "description": "Profile ID"
                         }
-                    }
+                    ]
                 },
                 "put": {
                     "summary": "Update a profile by id",
@@ -203,8 +203,8 @@
                     "output": [
                         "profile:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -213,14 +213,14 @@
                             "required": true,
                             "description": "Profile ID"
                         }
-                    }
+                    ]
                 },
                 "delete": {
                     "summary": "Delete a profile by id",
                     "description": "Delete a profile by id",
                     "tags": "Profile",
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -229,7 +229,7 @@
                             "required": true,
                             "description": "Profile ID"
                         }
-                    }
+                    ]
                 }
             },
             "/tags/{id}": {
@@ -240,8 +240,8 @@
                     "output": [
                         "tag:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -250,7 +250,7 @@
                             "required": true,
                             "description": "Tag ID"
                         }
-                    }
+                    ]
                 },
                 "put": {
                     "summary": "Update a tag by id",
@@ -262,8 +262,8 @@
                     "output": [
                         "tag:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -272,14 +272,14 @@
                             "required": true,
                             "description": "Tag ID"
                         }
-                    }
+                    ]
                 },
                 "delete": {
                     "summary": "Delete a tag by id",
                     "description": "Delete a tag by id",
                     "tags": "Tag",
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -288,7 +288,7 @@
                             "required": true,
                             "description": "Tag ID"
                         }
-                    }
+                    ]
                 }
             },
             "/tests/": {
@@ -299,8 +299,8 @@
                     "output": [
                         "test:item"
                     ],
-                    "parameters": {
-                        "null": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": null,
                             "schema": {
@@ -309,7 +309,7 @@
                             "required": true,
                             "description": "Test ID"
                         }
-                    }
+                    ]
                 },
                 "put": {
                     "summary": "Update a test by id",
@@ -321,8 +321,8 @@
                     "output": [
                         "test:item"
                     ],
-                    "parameters": {
-                        "null": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": null,
                             "schema": {
@@ -331,7 +331,7 @@
                             "required": true,
                             "description": "Test ID"
                         }
-                    }
+                    ]
                 }
             },
             "/users/{id}": {
@@ -342,8 +342,8 @@
                     "output": [
                         "user:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -352,7 +352,7 @@
                             "required": true,
                             "description": "User ID"
                         }
-                    }
+                    ]
                 },
                 "put": {
                     "summary": "Update an user by id",
@@ -364,8 +364,8 @@
                     "output": [
                         "user:item"
                     ],
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -374,14 +374,14 @@
                             "required": true,
                             "description": "User ID"
                         }
-                    }
+                    ]
                 },
                 "delete": {
                     "summary": "Delete an user by id",
                     "description": "Delete an user by id",
                     "tags": "User",
-                    "parameters": {
-                        "id": {
+                    "parameters": [
+                        {
                             "in": "path",
                             "name": "id",
                             "schema": {
@@ -390,7 +390,7 @@
                             "required": true,
                             "description": "User ID"
                         }
-                    }
+                    ]
                 }
             }
         },
@@ -403,7 +403,7 @@
                     "output": [
                         "test:item"
                     ],
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "/users/{id}/transactions": {
@@ -417,7 +417,7 @@
                     "output": [
                         "transaction:item"
                     ],
-                    "parameters": {}
+                    "parameters": []
                 },
                 "get": {
                     "summary": "List of all transactions of an user by id",
@@ -427,7 +427,7 @@
                         "user:item",
                         "transaction:list"
                     ],
-                    "parameters": {}
+                    "parameters": []
                 }
             }
         }
