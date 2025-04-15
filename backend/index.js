@@ -59,9 +59,6 @@ const swaggelizeOptions = {
         servers: [
             {
                 url: "http://localhost:8000/api"
-            },
-            {
-                url: "http://localhost:3000/api"
             }
         ],
     },
@@ -73,7 +70,7 @@ const swaggelizeOptions = {
     routePrefix: "/api"
 }
 
-parser(app, "/api");
+parser(swaggelizeOptions);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

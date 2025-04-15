@@ -1,14 +1,11 @@
+const listEndpoints = require("express-list-endpoints");
+
+function getEndPointsApi(app) {
+    return listEndpoints(app)
+}
+
 function parseRoute(routeVariable) {
-    const route = routeVariable.replace(/^\//, '');
-    const path = route.split('/').map((segment) => {
-        if (segment.startsWith(':')) {
-            return `{${segment.slice(1)}}`;
-        } else if (segment.startsWith('*')) {
-            return `*{${segment.slice(1)}}`;
-        }
-        return segment;
-    }).join('/');
-    return `/${path}`;
+    console.log(getEndPointsApi(routeVariable))
 }
 
 module.exports = parseRoute;

@@ -1,56 +1,18 @@
 const { modelParser } = require('./src/parsers/modelParser');
 const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
-const fs = require("node:fs");
 const { serviceParser } = require('./src/parsers/serviceParser');
-const listEndpoints = require("express-list-endpoints");
+const parseRoute = require('./src/parsers/routeParser');
 
-const userModel = `
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db.conf');
-const User = require('./user.model');
-
-const Post = sequelize.define('Post', {
-    /**
-     * @swag
-     * description: Post title
-     * methods: list, item, put, post
-     */
-    title: DataTypes.STRING,
-    /**
-     * @swag
-     * description: Post content
-     * methods: list, item, put, post
-     */
-    content: DataTypes.TEXT,
-});
-
-const Tag = sequelize.define('Tag', {
-    /**
-     * @swag
-     * description: Tag name
-     * methods: list, item, put, post
-     */
-    name: DataTypes.STRING,
-});
-
-module.exports = Post;
-`;
-
-const pathToModels = '../../backend/app/models'
-const pathToServices = '../../backend/app/docs/services'
-const modelsFiles = getFileInDirectory(pathToModels)
-const servicesFiles = getFileInDirectory(pathToServices)
-
-function getModels() {
+function getModels(modelsPath, modelsFiles) {
     const models = []
     modelsFiles.forEach(file => {
-        const code = readFileContent(`${pathToModels}/${file}`)
+        const code = readFileContent(`${modelsPath}/${file}`)
         models.push(...modelParser(code).filter(m => !Array.isArray(m)));
     })
-    fs.writeFileSync('test.json', JSON.stringify(models, null, 4));
+    return models;
 }
 
-function getServiceParser() {
+function getServiceParser(servicesPath, servicesFiles) {
 
     // Combining results from all service files
     let allOperations = {
@@ -65,7 +27,7 @@ function getServiceParser() {
     };
 
     servicesFiles.forEach(file => {
-        const content = readFileContent(`${pathToServices}/${file}`);
+        const content = readFileContent(`${servicesPath}/${file}`);
         const { collectionOperations, itemOperations } = serviceParser(content);
 
         // Merge collectionOperations
@@ -89,16 +51,23 @@ function getServiceParser() {
         };
     });
 
-    console.log(JSON.stringify(allOperations, null, 4));
     return allOperations;
 }
 
-function getEndPointsApi(app) {
-    return listEndpoints(app)
-}
+function parser(swaggelizeOptions) {
+    const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
+    const servicesPath = swaggelizeOptions.servicesPath;
+    const modelsPath = swaggelizeOptions.modelsPath;
+    const routesVariable = swaggelizeOptions.routesVariable;
+    const middlewareAuth = swaggelizeOptions.middlewareAuth;
+    const routePrefix = swaggelizeOptions.routePrefix;
+    const files = getFileInDirectory(modelsPath);
 
-function parser(routeVariable, routePrefix) {
-    console.log(getEndPointsApi(routeVariable));
+    const modelsFiles = getFileInDirectory(modelsPath);
+    const models = getModels(modelsPath, modelsFiles);
+
+    const servicesFiles = getFileInDirectory(servicesPath);
+    const services = getServiceParser(servicesPath, servicesFiles);
 }
 
 module.exports = parser;
