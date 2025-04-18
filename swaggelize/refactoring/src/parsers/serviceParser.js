@@ -1,5 +1,6 @@
 const yaml = require("js-yaml");
-const { getEndPointsApi, getVariablesIdFromPath } = require("../utils/utils");
+const { getEndPointsApi, getVariablesIdFromPath, getVariablesFromPath } = require("../utils/utils");
+const parseRouteParams = require("./routeParser");
 
 /**
  * extract the model name from the service file
@@ -71,7 +72,6 @@ function parseItemOperations(service, paths) {
 
     if (itemOperations) {
         Object.entries(itemOperations)?.forEach(([method, details]) => {
-            console.log(details)
             const routeData = {
                 summary: details.openapi_context.summary,
                 description: details.openapi_context.description,
@@ -83,7 +83,10 @@ function parseItemOperations(service, paths) {
             // const variableId = "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" ?? ""
             const variable = getVariablesIdFromPath(paths, modelNameLower);
             const variableId = variable ? "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" : ""
-
+            const params = parseRouteParams(details.path);
+            if (params) {
+                routeData.parameters.push(params);
+            }
             if (['put', 'get', 'delete'].includes(method)) {
                 const route = `/${modelNameLower}s/${variableId}`;
                 if (!operations["default"][route]) {

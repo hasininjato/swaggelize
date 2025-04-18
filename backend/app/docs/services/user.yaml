@@ -77,3 +77,13 @@ User:
       output:
         - "user:item"
         - "transaction:list"
+    list_transaction_with_name:
+      tags: "Transaction"
+      method: "GET"
+      path: "/users/{id}/transactions/{name}"
+      openapi_context:
+        summary: "List of all transactions with name of an user by id"
+        description: "List of all transactions with name of an user by id"
+      output:
+        - "user:item"
+        - "transaction:list"

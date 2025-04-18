@@ -257,6 +257,22 @@ router.get('/:id/transactions', verifyToken, async (req, res) => {
         }
     }, 500);
 });
+
+router.get('/:id/transactions/:name', verifyToken, async (req, res) => {
+    const { id } = req.params;
+    // I put a 500 delay to clearly show the loader spinner when loading user's transactions
+    setTimeout(async () => {
+        try {
+            const transactions = await getUserTransactions(id);
+            res.status(200).json(transactions);
+        } catch (error) {
+            if (error.message.includes("User not found")) {
+                return res.status(404).json({ message: "User not found" })
+            }
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }, 500);
+});
 // end routes for transaction
 
 /**

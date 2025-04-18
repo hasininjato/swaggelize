@@ -176,6 +176,31 @@ function getVariablesIdFromPath(paths, model) {
     return route ? route.path.split('/').pop().substring(1) : null;
 }
 
+function getVariablesFromPath(fullPath) {
+    if (typeof fullPath !== 'string') return null;
+
+    const segments = fullPath.split('/').filter(Boolean); // Remove empty segments
+    const result = [];
+
+    for (let i = 0; i < segments.length; i++) {
+        const segment = segments[i];
+        if (segment.startsWith('{') && segment.endsWith('}')) {
+            let lastStaticSegment = segments[i - 1]; // Get segment before {param}
+            if (lastStaticSegment) {
+                // Remove trailing 's' if it exists (e.g., "transactions" → "transaction")
+                lastStaticSegment = lastStaticSegment.replace(/s$/, '');
+                lastStaticSegment = capitalizeFirstLetter(lastStaticSegment);
+                result.push({
+                    lastStaticSegment,
+                    param: segment.slice(1, -1),
+                });
+            }
+        }
+    }
+
+    return result.length ? result : null;
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -192,5 +217,6 @@ module.exports = {
     hasForeignKey,
     returnRelations,
     getEndPointsApi,
-    getVariablesIdFromPath
+    getVariablesIdFromPath,
+    getVariablesFromPath
 }

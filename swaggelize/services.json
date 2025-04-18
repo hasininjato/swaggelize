@@ -334,7 +334,7 @@
                     ]
                 }
             },
-            "/users/{id}": {
+            "/users/{name}": {
                 "get": {
                     "summary": "Get user by id",
                     "description": "Get user by id",
@@ -345,7 +345,7 @@
                     "parameters": [
                         {
                             "in": "path",
-                            "name": "id",
+                            "name": "name",
                             "schema": {
                                 "type": "number"
                             },
@@ -367,7 +367,7 @@
                     "parameters": [
                         {
                             "in": "path",
-                            "name": "id",
+                            "name": "name",
                             "schema": {
                                 "type": "number"
                             },
@@ -383,7 +383,7 @@
                     "parameters": [
                         {
                             "in": "path",
-                            "name": "id",
+                            "name": "name",
                             "schema": {
                                 "type": "number"
                             },
@@ -403,7 +403,19 @@
                     "output": [
                         "test:item"
                     ],
-                    "parameters": []
+                    "parameters": [
+                        {
+                            "Test": {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "Test id"
+                            }
+                        }
+                    ]
                 }
             },
             "/users/{id}/transactions": {
@@ -417,7 +429,19 @@
                     "output": [
                         "transaction:item"
                     ],
-                    "parameters": []
+                    "parameters": [
+                        {
+                            "User": {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "User id"
+                            }
+                        }
+                    ]
                 },
                 "get": {
                     "summary": "List of all transactions of an user by id",
@@ -427,7 +451,52 @@
                         "user:item",
                         "transaction:list"
                     ],
-                    "parameters": []
+                    "parameters": [
+                        {
+                            "User": {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "User id"
+                            }
+                        }
+                    ]
+                }
+            },
+            "/users/{id}/transactions/{name}": {
+                "get": {
+                    "summary": "List of all transactions with name of an user by id",
+                    "description": "List of all transactions with name of an user by id",
+                    "tags": "Transaction",
+                    "output": [
+                        "user:item",
+                        "transaction:list"
+                    ],
+                    "parameters": [
+                        {
+                            "User": {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "User id"
+                            },
+                            "Transaction": {
+                                "in": "path",
+                                "name": "name",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "Transaction name"
+                            }
+                        }
+                    ]
                 }
             }
         }
