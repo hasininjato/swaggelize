@@ -58,6 +58,10 @@ function getServiceParser(servicesPath, servicesFiles, routesVariable) {
     return allOperations;
 }
 
+function getSchemaParser(servicesPath, servicesFiles) {
+
+}
+
 function parser(swaggelizeOptions) {
     const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
     const servicesPath = swaggelizeOptions.servicesPath;

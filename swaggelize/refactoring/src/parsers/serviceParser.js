@@ -1,6 +1,7 @@
 const yaml = require("js-yaml");
 const { getEndPointsApi, getVariablesIdFromPath, getVariablesFromPath } = require("../utils/utils");
 const parseRouteParams = require("./routeParser");
+const parseInput = require("./schemaParser");
 
 /**
  * extract the model name from the service file
@@ -11,7 +12,7 @@ function getModelName(content) {
     return Object.keys(content)
 }
 
-function generateParamater(variableId, model) {
+function generateParameter(variableId, model) {
     return {
         "in": "path",
         "name": variableId,
@@ -94,7 +95,7 @@ function parseItemOperations(service, paths) {
                 }
                 operations["default"][route][method] = routeData;
 
-                const param = generateParamater(variable, model);
+                const param = generateParameter(variable, model);
 
                 routeData.parameters.push(param);
                 operations["default"][route][method].parameters[variable] = param;
