@@ -5,6 +5,10 @@ const sequelize = require('./app/config/db.conf');
 const cors = require('cors');
 const helmet = require("helmet")
 
+// swagger documentation
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
+
 // models
 const User = require('./app/models/user.model');
 const Transaction = require('./app/models/transaction.model');
@@ -16,9 +20,6 @@ const corsOptions = {
     methods: 'GET,POST,PATCH,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 };
-
-const parser = require("../swaggelize/refactoring")
-
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -28,6 +29,40 @@ app.use(express.urlencoded({ extended: false }))
 app.use(helmet());
 
 const port = 8000
+
+// swagger configuration
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Swaggelize API',
+            description: 'API automatic generator using Swagger API and Swaggelize',
+            contact: {
+                name: 'Hasininjato Rojovao'
+            },
+            version: "1.0.0"
+        },
+        components: {
+            securitySchemes: {
+                BearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+                basicAuth: {
+                    type: 'http',
+                    scheme: 'basic',
+                }
+            },
+        },
+        servers: [
+            {
+                url: "http://localhost:8000/api"
+            }
+        ],
+    },
+    apis: ['./app/routes/*.js']
+}
 
 const syncDb = async () => {
     try {
@@ -45,32 +80,9 @@ app.use('/api/profiles', require('./app/routes/profile.route'));
 app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
-const swaggelizeOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Swaggelize API',
-            description: 'API automatic generator using Swagger API and Swaggelize',
-            contact: {
-                name: 'Hasininjato Rojovao'
-            },
-            version: '1.0.0'
-        },
-        servers: [
-            {
-                url: "http://localhost:8000/api"
-            }
-        ],
-    },
-    servicesPath: './app/docs/services',
-    modelsPath: './app/models',
-    defaultSecurity: 'jwt',
-    routesVariable: app,
-    middlewareAuth: 'verifyToken',
-    routePrefix: "/api"
-}
+const swaggerSpec = swaggerJsDoc(swaggerOptions);
 
-parser(swaggelizeOptions);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
