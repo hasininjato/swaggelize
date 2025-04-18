@@ -85,7 +85,7 @@ function parseItemOperations(service, paths) {
             const variableId = variable ? "{" + getVariablesIdFromPath(paths, modelNameLower) + "}" : ""
             const params = parseRouteParams(details.path);
             if (params) {
-                routeData.parameters.push(params);
+                routeData.parameters.push(...params);
             }
             if (['put', 'get', 'delete'].includes(method)) {
                 const route = `/${modelNameLower}s/${variableId}`;

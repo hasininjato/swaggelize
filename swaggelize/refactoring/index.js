@@ -65,13 +65,14 @@ function parser(swaggelizeOptions) {
     const routesVariable = swaggelizeOptions.routesVariable;
     const middlewareAuth = swaggelizeOptions.middlewareAuth;
     const routePrefix = swaggelizeOptions.routePrefix;
-    const files = getFileInDirectory(modelsPath);
 
     const modelsFiles = getFileInDirectory(modelsPath);
     const models = getModels(modelsPath, modelsFiles);
+    fs.writeFileSync("../swaggelize/test-models.json", JSON.stringify(models, null, 4));
 
     const servicesFiles = getFileInDirectory(servicesPath);
     const services = getServiceParser(servicesPath, servicesFiles, routesVariable);
+    fs.writeFileSync("../swaggelize/test-services.json", JSON.stringify(services, null, 4));
 }
 
 module.exports = parser;

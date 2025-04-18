@@ -73,7 +73,7 @@ const transformStr = (input) => {
         ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
         : pascalPrefix;
 
-    return { pascalCase, suffix, prefix };
+    return {pascalCase, suffix, prefix};
 }
 
 const processValueNode = (node) => {
@@ -131,13 +131,13 @@ const processRelationArguments = (argsNodes) => {
         }
     });
 
-    return { args, options };
+    return {args, options};
 };
 
 const createRelationObject = (source, relationType, target, args, options) => {
     if (!hasForeignKey(options)) {
         const defaultForeignKey = generateDefaultForeignKey(target);
-        options = { ...options, foreignKey: defaultForeignKey };
+        options = {...options, foreignKey: defaultForeignKey};
 
         if (args.length > 1 && typeof args[1] === 'object') {
             args[1] = options;
@@ -163,17 +163,26 @@ const returnRelations = (modelDefinition) => {
         path.isProgram()
     )?.node;
 
-    if (!programNode) return { relations, programNode, modelName };
-    return { relations, programNode, modelName };
+    if (!programNode) return {relations, programNode, modelName};
+    return {relations, programNode, modelName};
 }
 
 function getVariablesIdFromPath(paths, model) {
-    const route = paths.find(route =>
-        route.path.startsWith(`/api/${model}s/`) &&
-        /\/:[^\/]+$/.test(route.path)
-    );
+    const route = paths.find(route => {
+        const segments = route.path.split('/');
+        return (
+            segments.length === 4 && // ['', 'api', '<model>s', ':id']
+            segments[1] === 'api' &&
+            segments[2] === `${model}s` &&
+            segments[3].startsWith(':')
+        );
+    });
 
-    return route ? route.path.split('/').pop().substring(1) : null;
+    if (route) {
+        return route.path.split('/').pop().substring(1); // remove the colon
+    }
+
+    return null;
 }
 
 function getVariablesFromPath(fullPath) {

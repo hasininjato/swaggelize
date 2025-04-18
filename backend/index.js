@@ -13,6 +13,8 @@ const swaggerUi = require('swagger-ui-express')
 const User = require('./app/models/user.model');
 const Transaction = require('./app/models/transaction.model');
 
+const swagglizeConfig = require('./swaggerDoc')
+
 const app = express()
 
 const corsOptions = {
@@ -81,6 +83,8 @@ app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
+
+swagglizeConfig(app)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
