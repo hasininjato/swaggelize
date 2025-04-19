@@ -117,6 +117,7 @@ function parseItemOperations(service, paths) {
 /**
  * parse service yaml file
  * @param content
+ * @param routesVariable
  * @returns {{collectionOperations: {default: {}, custom: {}}, itemOperations: {default: {}, custom: {}}}}
  */
 function serviceParser(content, routesVariable) {
