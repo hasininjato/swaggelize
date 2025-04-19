@@ -1,0 +1,242 @@
+[
+    {
+        "method": "GET",
+        "route": "/posts/{id}",
+        "input": [],
+        "output": [
+            "post:item"
+        ]
+    },
+    {
+        "method": "PUT",
+        "route": "/posts/{id}",
+        "input": [
+            "post:put"
+        ],
+        "output": [
+            "post:item"
+        ]
+    },
+    {
+        "method": "DELETE",
+        "route": "/posts/{id}",
+        "input": [],
+        "output": []
+    },
+    {
+        "method": "GET",
+        "route": "/posts",
+        "input": [],
+        "output": [
+            "post:list"
+        ]
+    },
+    {
+        "method": "POST",
+        "route": "/posts",
+        "input": [
+            "post:post"
+        ],
+        "output": [
+            "post:item"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/profiles/{id}",
+        "input": [],
+        "output": [
+            "profile:item"
+        ]
+    },
+    {
+        "method": "PUT",
+        "route": "/profiles/{id}",
+        "input": [
+            "profile:put"
+        ],
+        "output": [
+            "profile:item"
+        ]
+    },
+    {
+        "method": "DELETE",
+        "route": "/profiles/{id}",
+        "input": [],
+        "output": []
+    },
+    {
+        "method": "GET",
+        "route": "/profiles",
+        "input": [],
+        "output": [
+            "profile:list"
+        ]
+    },
+    {
+        "method": "POST",
+        "route": "/profiles",
+        "input": [
+            "profile:post"
+        ],
+        "output": [
+            "profile:item"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/tags/{id}",
+        "input": [],
+        "output": [
+            "tag:item"
+        ]
+    },
+    {
+        "method": "PUT",
+        "route": "/tags/{id}",
+        "input": [
+            "tag:put"
+        ],
+        "output": [
+            "tag:item"
+        ]
+    },
+    {
+        "method": "DELETE",
+        "route": "/tags/{id}",
+        "input": [],
+        "output": []
+    },
+    {
+        "method": "GET",
+        "route": "/tags",
+        "input": [],
+        "output": [
+            "tag:list"
+        ]
+    },
+    {
+        "method": "POST",
+        "route": "/tags",
+        "input": [
+            "tag:post"
+        ],
+        "output": [
+            "tag:item"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/tests/",
+        "input": [],
+        "output": [
+            "test:item"
+        ]
+    },
+    {
+        "method": "PUT",
+        "route": "/tests/",
+        "input": [
+            "test:put"
+        ],
+        "output": [
+            "test:item"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/test/{id}/custom",
+        "input": [],
+        "output": [
+            "test:item"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/users/{id}",
+        "input": [],
+        "output": [
+            "user:item"
+        ]
+    },
+    {
+        "method": "PUT",
+        "route": "/users/{id}",
+        "input": [
+            "user:put"
+        ],
+        "output": [
+            "user:item"
+        ]
+    },
+    {
+        "method": "DELETE",
+        "route": "/users/{id}",
+        "input": [],
+        "output": []
+    },
+    {
+        "method": "POST",
+        "route": "/users/{id}/transactions",
+        "input": [
+            "transaction:post"
+        ],
+        "output": [
+            "transaction:item"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/users/{id}/transactions",
+        "input": [],
+        "output": [
+            "user:item",
+            "transaction:list"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/users/{id}/transactions/{name}",
+        "input": [],
+        "output": [
+            "user:item",
+            "transaction:list"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/users",
+        "input": [],
+        "output": [
+            "user:list"
+        ]
+    },
+    {
+        "method": "POST",
+        "route": "/users",
+        "input": [
+            "user:post"
+        ],
+        "output": [
+            "user:item"
+        ]
+    },
+    {
+        "method": "POST",
+        "route": "/auth/login",
+        "input": [
+            "user:item"
+        ],
+        "output": [
+            "user:list"
+        ]
+    },
+    {
+        "method": "GET",
+        "route": "/validate/token",
+        "input": [
+            "user:item"
+        ],
+        "output": []
+    }
+]

@@ -1,7 +1,8 @@
-const { modelParser } = require('./src/parsers/modelParser');
-const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
-const { serviceParser } = require('./src/parsers/serviceParser');
+const {modelParser} = require('./src/parsers/modelParser');
+const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
+const {serviceParser} = require('./src/parsers/serviceParser');
 const fs = require("fs");
+const parseInputOutput = require("./src/parsers/schemaParser");
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -15,9 +16,8 @@ function getModels(modelsPath, modelsFiles) {
 }
 
 function getServiceParser(servicesPath, servicesFiles, routesVariable) {
-
     // Combining results from all service files
-    let allOperations = {
+    let services = {
         "collectionOperations": {
             default: {},
             custom: {}
@@ -27,39 +27,39 @@ function getServiceParser(servicesPath, servicesFiles, routesVariable) {
             custom: {}
         }
     };
+    let schemas = [];
 
     servicesFiles.forEach(file => {
         const content = readFileContent(`${servicesPath}/${file}`);
-        const { collectionOperations, itemOperations } = serviceParser(content, routesVariable);
+        const {collectionOperations, itemOperations} = serviceParser(content, routesVariable);
+        schemas.push(...parseInputOutput(itemOperations));
+        schemas.push(...parseInputOutput(collectionOperations));
 
         // Merge collectionOperations
-        allOperations.collectionOperations.default = {
-            ...allOperations.collectionOperations.default,
+        services.collectionOperations.default = {
+            ...services.collectionOperations.default,
             ...(collectionOperations?.default || {})
         };
-        allOperations.collectionOperations.custom = {
-            ...allOperations.collectionOperations.custom,
+        services.collectionOperations.custom = {
+            ...services.collectionOperations.custom,
             ...(collectionOperations?.custom || {})
         };
 
         // Merge itemOperations
-        allOperations.itemOperations.default = {
-            ...allOperations.itemOperations.default,
+        services.itemOperations.default = {
+            ...services.itemOperations.default,
             ...(itemOperations?.default || {})
         };
-        allOperations.itemOperations.custom = {
-            ...allOperations.itemOperations.custom,
+        services.itemOperations.custom = {
+            ...services.itemOperations.custom,
             ...(itemOperations?.custom || {})
         };
     });
 
-    fs.writeFileSync("../swaggelize/services.json", JSON.stringify(allOperations, null, 4));
+    fs.writeFileSync("../swaggelize/services.json", JSON.stringify(services, null, 4));
+    fs.writeFileSync("../swaggelize/schemas.json", JSON.stringify(schemas, null, 4));
 
-    return allOperations;
-}
-
-function getSchemaParser(servicesPath, servicesFiles) {
-
+    return {services, schemas};
 }
 
 function parser(swaggelizeOptions) {
@@ -75,8 +75,9 @@ function parser(swaggelizeOptions) {
     fs.writeFileSync("../swaggelize/test-models.json", JSON.stringify(models, null, 4));
 
     const servicesFiles = getFileInDirectory(servicesPath);
-    const services = getServiceParser(servicesPath, servicesFiles, routesVariable);
-    fs.writeFileSync("../swaggelize/test-services.json", JSON.stringify(services, null, 4));
+    const {services, schemas} = getServiceParser(servicesPath, servicesFiles, routesVariable);
+
+    fs.writeFileSync("../swaggelize/test-services.json", JSON.stringify({services, schemas}, null, 4));
 }
 
 module.exports = parser;

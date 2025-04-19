@@ -1,496 +1,740 @@
 {
-    "collectionOperations": {
-        "default": {
-            "/posts": {
-                "get": {
-                    "summary": "List of all posts",
-                    "description": "List of all posts",
-                    "tags": "Post",
-                    "output": [
-                        "post:list"
-                    ]
+    "services": {
+        "collectionOperations": {
+            "default": {
+                "/posts": {
+                    "get": {
+                        "summary": "List of all posts",
+                        "description": "List of all posts",
+                        "tags": "Post",
+                        "output": [
+                            "post:list"
+                        ]
+                    },
+                    "post": {
+                        "summary": "Create a post",
+                        "description": "Create a post",
+                        "tags": "Post",
+                        "input": [
+                            "post:post"
+                        ],
+                        "output": [
+                            "post:item"
+                        ]
+                    }
                 },
-                "post": {
-                    "summary": "Create a post",
-                    "description": "Create a post",
-                    "tags": "Post",
-                    "input": [
-                        "post:post"
-                    ],
-                    "output": [
-                        "post:item"
-                    ]
+                "/profiles": {
+                    "get": {
+                        "summary": "List of all profiles",
+                        "description": "List of all profiles",
+                        "tags": "Profile",
+                        "output": [
+                            "profile:list"
+                        ]
+                    },
+                    "post": {
+                        "summary": "Create a profile",
+                        "description": "Create a profile",
+                        "tags": "Profile",
+                        "input": [
+                            "profile:post"
+                        ],
+                        "output": [
+                            "profile:item"
+                        ]
+                    }
+                },
+                "/tags": {
+                    "get": {
+                        "summary": "List of all tags",
+                        "description": "List of all tags",
+                        "tags": "Tag",
+                        "output": [
+                            "tag:list"
+                        ]
+                    },
+                    "post": {
+                        "summary": "Create a tag",
+                        "description": "Create a tag",
+                        "tags": "Tag",
+                        "input": [
+                            "tag:post"
+                        ],
+                        "output": [
+                            "tag:item"
+                        ]
+                    }
+                },
+                "/users": {
+                    "get": {
+                        "summary": "List of all users",
+                        "description": "List of all users",
+                        "tags": "User",
+                        "output": [
+                            "user:list"
+                        ]
+                    },
+                    "post": {
+                        "summary": "Create a user",
+                        "description": "Create a user",
+                        "tags": "User",
+                        "input": [
+                            "user:post"
+                        ],
+                        "output": [
+                            "user:item"
+                        ]
+                    }
                 }
             },
-            "/profiles": {
-                "get": {
-                    "summary": "List of all profiles",
-                    "description": "List of all profiles",
-                    "tags": "Profile",
-                    "output": [
-                        "profile:list"
-                    ]
+            "custom": {
+                "/auth/login": {
+                    "post": {
+                        "summary": "Login an user",
+                        "description": "Login an user",
+                        "tags": "Authentication",
+                        "input": [
+                            "user:item"
+                        ],
+                        "output": [
+                            "user:list"
+                        ]
+                    }
                 },
-                "post": {
-                    "summary": "Create a profile",
-                    "description": "Create a profile",
-                    "tags": "Profile",
-                    "input": [
-                        "profile:post"
-                    ],
-                    "output": [
-                        "profile:item"
-                    ]
-                }
-            },
-            "/tags": {
-                "get": {
-                    "summary": "List of all tags",
-                    "description": "List of all tags",
-                    "tags": "Tag",
-                    "output": [
-                        "tag:list"
-                    ]
-                },
-                "post": {
-                    "summary": "Create a tag",
-                    "description": "Create a tag",
-                    "tags": "Tag",
-                    "input": [
-                        "tag:post"
-                    ],
-                    "output": [
-                        "tag:item"
-                    ]
-                }
-            },
-            "/users": {
-                "get": {
-                    "summary": "List of all users",
-                    "description": "List of all users",
-                    "tags": "User",
-                    "output": [
-                        "user:list"
-                    ]
-                },
-                "post": {
-                    "summary": "Create a user",
-                    "description": "Create a user",
-                    "tags": "User",
-                    "input": [
-                        "user:post"
-                    ],
-                    "output": [
-                        "user:item"
-                    ]
+                "/validate/token": {
+                    "get": {
+                        "summary": "Validate token sent in parameter",
+                        "description": "Validate token sent in parameter",
+                        "tags": "Token",
+                        "input": [
+                            "user:item"
+                        ]
+                    }
                 }
             }
         },
-        "custom": {
-            "/auth/login": {
-                "post": {
-                    "summary": "Login an user",
-                    "description": "Login an user",
-                    "tags": "Authentication",
-                    "input": [
-                        "user:item"
-                    ],
-                    "output": [
-                        "user:list"
-                    ]
+        "itemOperations": {
+            "default": {
+                "/posts/{id}": {
+                    "get": {
+                        "summary": "Get post by id",
+                        "description": "Get post by id",
+                        "tags": "Post",
+                        "output": [
+                            "post:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Post ID"
+                            }
+                        ]
+                    },
+                    "put": {
+                        "summary": "Update a post by id",
+                        "description": "Update a post by id",
+                        "tags": "Post",
+                        "input": [
+                            "post:put"
+                        ],
+                        "output": [
+                            "post:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Post ID"
+                            }
+                        ]
+                    },
+                    "delete": {
+                        "summary": "Delete a post by id",
+                        "description": "Delete a post by id",
+                        "tags": "Post",
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Post ID"
+                            }
+                        ]
+                    }
+                },
+                "/profiles/{id}": {
+                    "get": {
+                        "summary": "Get profile by id",
+                        "description": "Get profile by id",
+                        "tags": "Profile",
+                        "output": [
+                            "profile:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Profile ID"
+                            }
+                        ]
+                    },
+                    "put": {
+                        "summary": "Update a profile by id",
+                        "description": "Update a profile by id",
+                        "tags": "Profile",
+                        "input": [
+                            "profile:put"
+                        ],
+                        "output": [
+                            "profile:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Profile ID"
+                            }
+                        ]
+                    },
+                    "delete": {
+                        "summary": "Delete a profile by id",
+                        "description": "Delete a profile by id",
+                        "tags": "Profile",
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Profile ID"
+                            }
+                        ]
+                    }
+                },
+                "/tags/{id}": {
+                    "get": {
+                        "summary": "Get tag by id",
+                        "description": "Get tag by id",
+                        "tags": "Tag",
+                        "output": [
+                            "tag:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Tag ID"
+                            }
+                        ]
+                    },
+                    "put": {
+                        "summary": "Update a tag by id",
+                        "description": "Update a tag by id",
+                        "tags": "Tag",
+                        "input": [
+                            "tag:put"
+                        ],
+                        "output": [
+                            "tag:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Tag ID"
+                            }
+                        ]
+                    },
+                    "delete": {
+                        "summary": "Delete a tag by id",
+                        "description": "Delete a tag by id",
+                        "tags": "Tag",
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Tag ID"
+                            }
+                        ]
+                    }
+                },
+                "/tests/": {
+                    "get": {
+                        "summary": "Test by id",
+                        "description": "Test by id",
+                        "tags": "Test",
+                        "output": [
+                            "test:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": null,
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Test ID"
+                            }
+                        ]
+                    },
+                    "put": {
+                        "summary": "Update a test by id",
+                        "description": "Update a test by id",
+                        "tags": "Test",
+                        "input": [
+                            "test:put"
+                        ],
+                        "output": [
+                            "test:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": null,
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "Test ID"
+                            }
+                        ]
+                    }
+                },
+                "/users/{id}": {
+                    "get": {
+                        "summary": "Get user by id",
+                        "description": "Get user by id",
+                        "tags": "User",
+                        "output": [
+                            "user:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "User ID"
+                            }
+                        ]
+                    },
+                    "put": {
+                        "summary": "Update an user by id",
+                        "description": "Update an user by id",
+                        "tags": "User",
+                        "input": [
+                            "user:put"
+                        ],
+                        "output": [
+                            "user:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "User ID"
+                            }
+                        ]
+                    },
+                    "delete": {
+                        "summary": "Delete an user by id",
+                        "description": "Delete an user by id",
+                        "tags": "User",
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "number"
+                                },
+                                "required": true,
+                                "description": "User ID"
+                            }
+                        ]
+                    }
                 }
             },
-            "/validate/token": {
-                "get": {
-                    "summary": "Validate token sent in parameter",
-                    "description": "Validate token sent in parameter",
-                    "tags": "Token",
-                    "input": [
-                        "user:item"
-                    ]
+            "custom": {
+                "/test/{id}/custom": {
+                    "get": {
+                        "summary": "Custom path",
+                        "description": "Custom path",
+                        "tags": "Custom path",
+                        "output": [
+                            "test:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "Test id"
+                            }
+                        ]
+                    }
+                },
+                "/users/{id}/transactions": {
+                    "post": {
+                        "summary": "Create a transaction of the user sent in param",
+                        "description": "Create a transaction of the user sent in param",
+                        "tags": "Transaction",
+                        "input": [
+                            "transaction:post"
+                        ],
+                        "output": [
+                            "transaction:item"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "User id"
+                            }
+                        ]
+                    },
+                    "get": {
+                        "summary": "List of all transactions of an user by id",
+                        "description": "List of all transactions of an user by id",
+                        "tags": "Transaction",
+                        "output": [
+                            "user:item",
+                            "transaction:list"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "User id"
+                            }
+                        ]
+                    }
+                },
+                "/users/{id}/transactions/{name}": {
+                    "get": {
+                        "summary": "List of all transactions with name of an user by id",
+                        "description": "List of all transactions with name of an user by id",
+                        "tags": "Transaction",
+                        "output": [
+                            "user:item",
+                            "transaction:list"
+                        ],
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "id",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "User id"
+                            },
+                            {
+                                "in": "path",
+                                "name": "name",
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "required": true,
+                                "description": "Transaction name"
+                            }
+                        ]
+                    }
                 }
             }
         }
     },
-    "itemOperations": {
-        "default": {
-            "/posts/{id}": {
-                "get": {
-                    "summary": "Get post by id",
-                    "description": "Get post by id",
-                    "tags": "Post",
-                    "output": [
-                        "post:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Post ID"
-                        }
-                    ]
-                },
-                "put": {
-                    "summary": "Update a post by id",
-                    "description": "Update a post by id",
-                    "tags": "Post",
-                    "input": [
-                        "post:put"
-                    ],
-                    "output": [
-                        "post:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Post ID"
-                        }
-                    ]
-                },
-                "delete": {
-                    "summary": "Delete a post by id",
-                    "description": "Delete a post by id",
-                    "tags": "Post",
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Post ID"
-                        }
-                    ]
-                }
-            },
-            "/profiles/{id}": {
-                "get": {
-                    "summary": "Get profile by id",
-                    "description": "Get profile by id",
-                    "tags": "Profile",
-                    "output": [
-                        "profile:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Profile ID"
-                        }
-                    ]
-                },
-                "put": {
-                    "summary": "Update a profile by id",
-                    "description": "Update a profile by id",
-                    "tags": "Profile",
-                    "input": [
-                        "profile:put"
-                    ],
-                    "output": [
-                        "profile:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Profile ID"
-                        }
-                    ]
-                },
-                "delete": {
-                    "summary": "Delete a profile by id",
-                    "description": "Delete a profile by id",
-                    "tags": "Profile",
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Profile ID"
-                        }
-                    ]
-                }
-            },
-            "/tags/{id}": {
-                "get": {
-                    "summary": "Get tag by id",
-                    "description": "Get tag by id",
-                    "tags": "Tag",
-                    "output": [
-                        "tag:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Tag ID"
-                        }
-                    ]
-                },
-                "put": {
-                    "summary": "Update a tag by id",
-                    "description": "Update a tag by id",
-                    "tags": "Tag",
-                    "input": [
-                        "tag:put"
-                    ],
-                    "output": [
-                        "tag:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Tag ID"
-                        }
-                    ]
-                },
-                "delete": {
-                    "summary": "Delete a tag by id",
-                    "description": "Delete a tag by id",
-                    "tags": "Tag",
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Tag ID"
-                        }
-                    ]
-                }
-            },
-            "/tests/": {
-                "get": {
-                    "summary": "Test by id",
-                    "description": "Test by id",
-                    "tags": "Test",
-                    "output": [
-                        "test:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": null,
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Test ID"
-                        }
-                    ]
-                },
-                "put": {
-                    "summary": "Update a test by id",
-                    "description": "Update a test by id",
-                    "tags": "Test",
-                    "input": [
-                        "test:put"
-                    ],
-                    "output": [
-                        "test:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": null,
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "Test ID"
-                        }
-                    ]
-                }
-            },
-            "/users/{id}": {
-                "get": {
-                    "summary": "Get user by id",
-                    "description": "Get user by id",
-                    "tags": "User",
-                    "output": [
-                        "user:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "User ID"
-                        }
-                    ]
-                },
-                "put": {
-                    "summary": "Update an user by id",
-                    "description": "Update an user by id",
-                    "tags": "User",
-                    "input": [
-                        "user:put"
-                    ],
-                    "output": [
-                        "user:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "User ID"
-                        }
-                    ]
-                },
-                "delete": {
-                    "summary": "Delete an user by id",
-                    "description": "Delete an user by id",
-                    "tags": "User",
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "number"
-                            },
-                            "required": true,
-                            "description": "User ID"
-                        }
-                    ]
-                }
-            }
+    "schemas": [
+        {
+            "method": "GET",
+            "route": "/posts/{id}",
+            "input": [],
+            "output": [
+                "post:item"
+            ]
         },
-        "custom": {
-            "/test/{id}/custom": {
-                "get": {
-                    "summary": "Custom path",
-                    "description": "Custom path",
-                    "tags": "Custom path",
-                    "output": [
-                        "test:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "string"
-                            },
-                            "required": true,
-                            "description": "Test id"
-                        }
-                    ]
-                }
-            },
-            "/users/{id}/transactions": {
-                "post": {
-                    "summary": "Create a transaction of the user sent in param",
-                    "description": "Create a transaction of the user sent in param",
-                    "tags": "Transaction",
-                    "input": [
-                        "transaction:post"
-                    ],
-                    "output": [
-                        "transaction:item"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "string"
-                            },
-                            "required": true,
-                            "description": "User id"
-                        }
-                    ]
-                },
-                "get": {
-                    "summary": "List of all transactions of an user by id",
-                    "description": "List of all transactions of an user by id",
-                    "tags": "Transaction",
-                    "output": [
-                        "user:item",
-                        "transaction:list"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "string"
-                            },
-                            "required": true,
-                            "description": "User id"
-                        }
-                    ]
-                }
-            },
-            "/users/{id}/transactions/{name}": {
-                "get": {
-                    "summary": "List of all transactions with name of an user by id",
-                    "description": "List of all transactions with name of an user by id",
-                    "tags": "Transaction",
-                    "output": [
-                        "user:item",
-                        "transaction:list"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "id",
-                            "schema": {
-                                "type": "string"
-                            },
-                            "required": true,
-                            "description": "User id"
-                        },
-                        {
-                            "in": "path",
-                            "name": "name",
-                            "schema": {
-                                "type": "string"
-                            },
-                            "required": true,
-                            "description": "Transaction name"
-                        }
-                    ]
-                }
-            }
+        {
+            "method": "PUT",
+            "route": "/posts/{id}",
+            "input": [
+                "post:put"
+            ],
+            "output": [
+                "post:item"
+            ]
+        },
+        {
+            "method": "DELETE",
+            "route": "/posts/{id}",
+            "input": [],
+            "output": []
+        },
+        {
+            "method": "GET",
+            "route": "/posts",
+            "input": [],
+            "output": [
+                "post:list"
+            ]
+        },
+        {
+            "method": "POST",
+            "route": "/posts",
+            "input": [
+                "post:post"
+            ],
+            "output": [
+                "post:item"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/profiles/{id}",
+            "input": [],
+            "output": [
+                "profile:item"
+            ]
+        },
+        {
+            "method": "PUT",
+            "route": "/profiles/{id}",
+            "input": [
+                "profile:put"
+            ],
+            "output": [
+                "profile:item"
+            ]
+        },
+        {
+            "method": "DELETE",
+            "route": "/profiles/{id}",
+            "input": [],
+            "output": []
+        },
+        {
+            "method": "GET",
+            "route": "/profiles",
+            "input": [],
+            "output": [
+                "profile:list"
+            ]
+        },
+        {
+            "method": "POST",
+            "route": "/profiles",
+            "input": [
+                "profile:post"
+            ],
+            "output": [
+                "profile:item"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/tags/{id}",
+            "input": [],
+            "output": [
+                "tag:item"
+            ]
+        },
+        {
+            "method": "PUT",
+            "route": "/tags/{id}",
+            "input": [
+                "tag:put"
+            ],
+            "output": [
+                "tag:item"
+            ]
+        },
+        {
+            "method": "DELETE",
+            "route": "/tags/{id}",
+            "input": [],
+            "output": []
+        },
+        {
+            "method": "GET",
+            "route": "/tags",
+            "input": [],
+            "output": [
+                "tag:list"
+            ]
+        },
+        {
+            "method": "POST",
+            "route": "/tags",
+            "input": [
+                "tag:post"
+            ],
+            "output": [
+                "tag:item"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/tests/",
+            "input": [],
+            "output": [
+                "test:item"
+            ]
+        },
+        {
+            "method": "PUT",
+            "route": "/tests/",
+            "input": [
+                "test:put"
+            ],
+            "output": [
+                "test:item"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/test/{id}/custom",
+            "input": [],
+            "output": [
+                "test:item"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/users/{id}",
+            "input": [],
+            "output": [
+                "user:item"
+            ]
+        },
+        {
+            "method": "PUT",
+            "route": "/users/{id}",
+            "input": [
+                "user:put"
+            ],
+            "output": [
+                "user:item"
+            ]
+        },
+        {
+            "method": "DELETE",
+            "route": "/users/{id}",
+            "input": [],
+            "output": []
+        },
+        {
+            "method": "POST",
+            "route": "/users/{id}/transactions",
+            "input": [
+                "transaction:post"
+            ],
+            "output": [
+                "transaction:item"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/users/{id}/transactions",
+            "input": [],
+            "output": [
+                "user:item",
+                "transaction:list"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/users/{id}/transactions/{name}",
+            "input": [],
+            "output": [
+                "user:item",
+                "transaction:list"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/users",
+            "input": [],
+            "output": [
+                "user:list"
+            ]
+        },
+        {
+            "method": "POST",
+            "route": "/users",
+            "input": [
+                "user:post"
+            ],
+            "output": [
+                "user:item"
+            ]
+        },
+        {
+            "method": "POST",
+            "route": "/auth/login",
+            "input": [
+                "user:item"
+            ],
+            "output": [
+                "user:list"
+            ]
+        },
+        {
+            "method": "GET",
+            "route": "/validate/token",
+            "input": [
+                "user:item"
+            ],
+            "output": []
         }
-    }
+    ]
 }
